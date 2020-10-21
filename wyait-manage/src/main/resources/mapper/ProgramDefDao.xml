@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.dao.ProgramDefDao">
+	<resultMap id="BaseResultMap" type="com.wyait.manage.pojo.ProgramDef">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="program_id" jdbcType="VARCHAR" property="programId" />
+		<result column="program_name" jdbcType="VARCHAR" property="programName" />
+		<result column="program_code" jdbcType="VARCHAR" property="programCode" />
+		<result property="serviceObject" column="service_object" jdbcType="VARCHAR" />
+		<result property="adminDept" column="admin_dept" jdbcType="VARCHAR" />
+		<result property="reportDate" column="report_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="latestUpdateDate" column="latest_update_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+		<result property="createDate" column="create_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+		<result property="modifyDate" column="modify_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<!--  事项目录信息 -->
+	<select id="fetchAllmatterList" resultType="com.wyait.manage.pojo.ProgramDef">
+        SELECT * FROM (select rownum r, b.version ,b.PROGRAM_ID,b.PROGRAM_NAME, b.PROGRAM_CODE, b.SERVICE_OBJECT, b.ADMIN_DEPT, b.REPORT_DATE, b.LATEST_UPDATE_DATE,
+            ROW_NUMBER() over (partition by b.PROGRAM_CODE order by b.report_date desc) RN
+        from PY_BASE.APPR_PROGRAM_DEF b
+        where b.data_src = 'cityPull'
+            and b.is_deleted = 0
+--             and b.program_level = 0
+            and b.exchange = 1
+--             and b.audit_status = 2
+            <if test="programName!=null and programName!=''">
+                and b.PROGRAM_NAME like CONCAT(CONCAT('%',#{programName}),'%')
+            </if>
+        ) where RN = 1
+            and r BETWEEN #{start} AND #{end}
+	</select>
+
+    <!--  事项总数 -->
+    <select id="getMatterCounts" resultType="java.lang.Integer">
+        select count(1) as totales from (select b.version, ROW_NUMBER() over (partition by b.PROGRAM_CODE order by b.report_date desc) RN
+        from PY_BASE.APPR_PROGRAM_DEF b
+        where b.data_src = 'cityPull'
+            and b.is_deleted = 0
+--             and b.program_level = 0
+            and b.exchange = 1
+--             and b.audit_status = 2
+            <if test="programName!=null and programName!=''">
+                and b.PROGRAM_NAME like CONCAT(CONCAT('%',#{programName}),'%')
+            </if>
+        ) where RN = 1
+    </select>
+
+    <!-- 事项基本信息 -->
+    <select id="fetchByIdBasicsData" resultType="com.wyait.manage.pojo.ProgramDef">
+        select e.program_id,e.program_name, e.program_type, e.program_code,e.service_object, e.admin_dept, e.report_date, e.latest_update_date, e.legal_time_limit, e.promise_time_limit, e.is_online_open, e.apply_url, e.ask_url, e.result_query_url, e.process_query_url, e.base_code, e.impl_code, e.category_id, e.version, e.can_self_terminal_apply
+        from PY_BASE.appr_program_def e,PY_BASE.lzcity_approve_unit_info i
+        where i.unit_code = e.competent_dept
+            and e.program_id = #{programId}
+    </select>
+
+    <!--    申请材料 -->
+    <select id="fetchByIdMatter" resultType="com.wyait.manage.pojo.ProgramMaterial">
+        select m.program_id, m.material_id,m.material_class, m.is_trust, m.material_name,m.norm_code, m.mate_sort,m.material_remark, m.access_standard,
+           m.blank_url,m.template_url, m.blank_type,  m.template_type
+        from PY_BASE.APPR_PROGRAM_MATERIAL m
+        where  m.program_id = #{programId}
+    </select>
+
+    <!--  办事窗口 -->
+    <select id="fetchByIdMaterialWindow" resultType="com.wyait.manage.pojo.ProgramWindow">
+        select k.win_name,k.tel, k.address, k.worktime, k.traffic_guide, k.win_id
+        from PY_BASE.APPR_PROGRAM_WINDOW k, PY_BASE.APPR_PROGRAM_WINDOW_RELATE r
+        where k.win_id = r.win_id
+            and r.program_id = #{programId}
+    </select>
+
+    <!--  办理结果 -->
+    <select id="fetchByIdMaterResult" resultType="com.wyait.manage.pojo.ProgramLicenseResult">
+        select r.result_id,r.result_name, r.indate, r.program_id, r.ds_remark, r.stuff_type,r.law_force, r.is_relate_license, r.license_code
+        from PY_BASE.APPR_PROGRAM_LICENSE_RESULT r
+        where r.program_id = #{programId}
+    </select>
+
+    <!--  审批咨询，投诉  -->
+    <select id="fetchByIdMaterItemAsk" resultType="com.wyait.manage.pojo.ProgramItemAsk">
+        select a.seq ,a.review_org_addr,a.review_org_phone,a.advise_web, a.blog_web, a.wechat_num, a.email, a.ask_type
+        from PY_BASE.APPR_PROGRAM_ITEM_ASK a ,PY_BASE.APPR_PROGRAM_ITEM_ASK_RELATED r
+        where a.seq = r.seq
+           and r.program_id  = #{programId}
+    </select>
+
+    <!--  权利与义务-->
+    <select id="fetchByIDRightDuty" resultType="com.wyait.manage.pojo.ProgramItemRightDuty">
+        select y.content, y.order_num, y.seq, y.content_type, y.program_id
+        from PY_BASE.APPR_PROGRAM_ITEM_RIGHT_DUTY y
+        where y.program_id = #{programId}
+    </select>
+
+</mapper>

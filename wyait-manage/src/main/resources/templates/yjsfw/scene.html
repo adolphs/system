@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8" />
+    <title>情形引导 - 政务服务事项自助查询</title>
+    <link rel="shortcut icon" href="/images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/js/yjsfw/index.css" />
+    <script src="/js/yjsfw/jquery-1.8.3.min.js"></script>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            /*font-size: 1.5rem;*/
+        }
+
+        h4{
+            font-size: 14px;
+            color: #666666;
+            margin-top: 10px;
+        }
+        /*input*/
+        .ul_box {
+            margin:0 auto;
+            padding:0;
+            list-style:none;
+            /*width:600px;*/
+        }
+        .ul_box>li {
+            /*padding:10px 10px 0 10px;*/
+            padding:2px 10px 0 10px;
+            overflow:hidden;
+            border-bottom:#e5e5e5 solid 1px;
+        }
+        .ul_box>li:last-child {
+            border-bottom:none;
+        }
+        .ul_box>li>div {
+            float:left;
+        }
+        .ul_box>li>div:nth-child(1) {
+            width:100px;
+        }
+        .ul_box>li>div:nth-child(2) {
+            width:480px;
+            overflow:hidden;
+        }
+        .label_box>label {
+            display:block;
+            float:left;
+            margin:0 10px 10px 0;
+            position:relative;
+            overflow:hidden;
+        }
+        .label_box>label>input {
+            position:absolute;
+            top:0;
+            left:-20px;
+        }
+        .label_box>label>div {
+            width:100px;
+            text-align:center;
+            border:#dddddd solid 1px;
+            height:30px;
+            line-height:30px;
+            color:#666666;
+            user-select:none;
+            overflow:hidden;
+            position:relative;
+            background-color: floralwhite;
+        }
+        .label_box>label>input:checked + div {
+            border:#d51917 solid 1px;
+            color:#d51917;
+        }
+        .label_box>label>input:checked + div:after {
+            content:'';
+            display:block;
+            width:20px;
+            height:20px;
+            background-color:#d51917;
+            transform:skewY(-45deg);
+            position:absolute;
+            bottom:-10px;
+            right:0;
+            z-index:1;
+        }
+        .label_box>label>input:checked + div:before {
+            content:'';
+            display:block;
+            width:3px;
+            height:8px;
+            border-right:#ffffff solid 2px;
+            border-bottom:#ffffff solid 2px;
+            transform:rotate(35deg);
+            position:absolute;
+            bottom:2px;
+            right:4px;
+            z-index:2;
+        }
+    </style>
+
+    <!--点击事件-->
+<!--    <script type="text/javascript"  src="/js/getUrlParam.js"></script>-->
+    <script language="javascript" type="text/javascript">
+        $(function () {
+           $("#submit_button1").on("click",function () {
+               // var val=$(this).val();
+               // alert(val);
+               console.log("1111---")
+               $.ajax({
+                   type : "post",
+                   url : "/yjsfw/itemList",
+                   data : $('#inputForm').serialize(),
+                   contentType: 'application/json',
+                   success:function(data){
+                       console.log("22222====");
+                       console.log(data.type());
+                       // $('#workeDate').val(data);
+                       window.location.href = "../yjsfw/itemList?ids=14572";
+                   },
+                   error:function(data){
+                       console.log("error")
+                       console.log(data)
+                   }
+               })
+           })
+        });
+        // console.log(situationList);
+        // $(function(){
+            // $("#submit_button1").on("click",function(){
+            //     // f1();
+            //     window.location.href = "../yjsfw/itemList?ids=14572";
+            // });
+        // });
+    </script>
+</head>
+<body>
+<form method="post" id="inputForm" action="../yjsfw/itemList">
+    <input type="hidden" th:value="${did} + ',did'" name="did"/>
+    <!--导行-->
+    <div class="zwtop">
+        <div class="zwtopLeft">
+            欢迎您进入政务服务事项自助查询！</div>
+        <div class="zwtopRight">
+            <a href="../yjsfw/matter_list">返回首页</a></div>
+    </div>
+
+    <!--banner结束-->
+    <div class="zwmain">
+<!--        <div class="clear">-->
+        <h5 style="color: #545454;font-size: 14px;" class="materialSelf">您的位置：<a href="#">网上办事</a> 》<a href="#"> 部门服务</a> 》<a href="#">建设工程规划类许可证核发（建筑类）</a> </h5>
+        <h4 style="background-color: #E7E7E7;height: 35px;margin-top: 5px;font-size: 15px;" class="materialSelf"><span>智能导服，为您提供准确办事引导</span></h4>
+        <div class="materialSelf" style="background: rgb(255, 255, 255); margin-top: 18px;">
+<!--            mapList-->
+            <span><h4 th:each="malt,maltStar:${situationList}">
+                <span th:text="${maltStar.index + 1} + '、' + ${malt.situationDescribe}+'&nbsp;(单选)'" th:id="${malt.situationId}"></span>
+                    <ul class="ul_box">
+                        <li>
+                            <div></div><br/>
+                            <div class="label_box">
+                                <label th:each="mapS:${malt.situatDesList}">
+                                    <input type="radio" th:name="${mapS.situationId}" th:value="${mapS.situationDetailsId}"/>
+                                    <div th:text="${mapS.detailsDescribe}" th:title="${mapS.detailsDescribe}">
+<!--                                        <input type="hidden" th:name="${mapS.situationId}" th:value="${mapS.situationId}"/>-->
+                                    </div>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+            </h4></span><hr/>
+<!--            <span><h4>二、是否属于南站，汽车城、万博商务区、大学城等管委会所辖地块（单选）</h4></span>-->
+<!--            <ul class="ul_box">-->
+<!--                <li>-->
+<!--                    <div></div>-->
+<!--                    <div class="label_box">-->
+<!--                        <label>-->
+<!--                            <input type="radio" name="sex" />-->
+<!--                            <div>属于</div>-->
+<!--                        </label>-->
+<!--                        <label>-->
+<!--                            <input type="radio" name="sex" />-->
+<!--                            <div>不属于</div>-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--                </li>-->
+<!--            </ul><hr/>-->
+        </div>
+    </div>
+    <div style="margin-right: 10%;">
+        <input type="submit" id="submit_button1" class="button" value="线下办理" style="float: right; margin-right: 10px; margin-bottom: 20px;font-size: 15px;margin-top: 18px;"/>
+        <input type="submit" id="online_process" class="button" value="网上办理" style="float: right; margin-right: 10px; margin-bottom: 20px;font-size: 15px;margin-top: 18px;"/>
+        <!--<input type="submit" class="button" value="下一步" style="float: right; margin-right: 10px; margin-bottom: 20px;"/>-->
+        <!--<input type="submit" class="button" value="返回" style="float: right; margin-right: 10px; margin-bottom: 20px;"/>-->
+    </div>
+    <!--zwmain结束-->
+    <div class="footer">
+        <div class="wenzi2">
+            主页 | 关于我们 | 联系我们 | 设为首页 | 加入收藏</div>
+        <div class="wenzi3">
+            总访问次数：58909419次 备案号：xxxxxx2号<br />
+            广州市番禺区便民服务平台 版权所有 xxx信息技术有限公司 技术支持</div>
+    </div>
+</form>
+</body>
+</html>

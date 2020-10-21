@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.db1.dao.PrograMapper">
+    <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.ProgramCategory">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="program_id" jdbcType="VARCHAR" property="programId" />
+        <result column="program_name" jdbcType="VARCHAR" property="programName" />
+<!--        <result property="adminDept" column="admin_dept" jdbcType="VARCHAR" javaType="String"/>-->
+        <result property="createDate" column="create_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="modifyDate" column="modify_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+</mapper>

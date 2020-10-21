@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="doooForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input id="dataId" type="hidden" name="dataId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">材料名称</label>
+                <div class="layui-input-inline">
+                    <input id="dataName" name="dataName" lay-verify="required" autocomplete="off" class="layui-input" type="text" style="width: 390px" />
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">空表名称</label>
+                <div class="layui-input-inline">
+                    <input id="blankName" name="blankName"  autocomplete="off" class="layui-input" type="text" placeholder="地址来源政务服务网，如果没有不需要填写" style="width: 390px"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">空表地址</label>
+                <div class="layui-input-inline">
+                    <input id="blankUrl" name="blankUrl"  autocomplete="off" class="layui-input" type="text" placeholder="地址来源政务服务网，如果没有不需要填写" style="width: 390px"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">示例名称</label>
+                <div class="layui-input-inline">
+                    <input id="templateName" name="templateName"  autocomplete="off" class="layui-input" placeholder="地址来源政务服务网，如果没有不需要填写" type="text" style="width: 390px"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">示例地址</label>
+                <div class="layui-input-inline">
+                    <input id="templateUrl" name="templateUrl"  autocomplete="off" class="layui-input" placeholder="地址来源政务服务网，如果没有不需要填写" type="text" style="width: 390px"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="width: 500px">
+                <label class="layui-form-label">是否可容缺</label>
+                <div class="layui-input-block">
+                    <select name="dataType" lay-verify="required" id="departmentInsert">
+                        <option value=""></option>
+                        <option value="1">是</option>
+                        <option value="2" selected="selected">否</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text" style="width: 500px">
+                <label class="layui-form-label">材料形式</label>
+                <div class="layui-input-block">
+                    <textarea name="dataForm"  lay-verify="required" placeholder="材料形式" class="layui-textarea" id="dataForm"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text" style="width: 500px">
+                <label class="layui-form-label">填表须知</label>
+                <div class="layui-input-block">
+                    <textarea name="remarks"  placeholder="填表须知" class="layui-textarea" id="remarks"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">涉及部门</label>
+                <div class="layui-input-block" id="departmentIds">
+                    <input type="checkbox" name="type" title="个人" value="2" />
+                    <input type="checkbox" name="type" title="法人" value="1" checked="checked" />
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <input type="button" value="提交" class="layui-btn" onclick="add()"/>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script>
+        getdepartment();
+        function getdepartment() {
+            $.ajax({
+                type: "GET",
+                url: "/department/getDepartments",
+                success: function (data) {
+                    var htm="";
+                    $.each(data, function (index, item) {
+                        htm+='<input type="checkbox" name="departmentIds" title="'+ item.departmentName +'" value="'+ item.departmentId +'" />';
+                    })
+                    $("#departmentIds").html(htm);
+                    layui.form.render('checkbox');
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+        function add() {
+            $.ajax({
+                type: "POST",
+                data: $("#doooForm").serialize(),
+                url: "/data/addData",
+                success: function (data) {
+                    if (data == "ok") {
+                        layer.alert("操作成功",function(){
+                            window.location.href='/data/dataList';
+                        });
+                    }else{
+                        layer.alert(data,function(){
+                            layer.closeAll();
+                            cleanUser();
+                            load(obj);
+                        });
+                    }
+                },
+                error: function () {
+                    layer.alert("操作请求错误，请您稍后再试",function(){
+                        layer.closeAll();
+                        //加载load方法
+                        load(obj);//自定义
+                    });
+                }
+            });
+            // console.log("开始")
+        }
+    </script>
+</div>
+</body>
+</html>

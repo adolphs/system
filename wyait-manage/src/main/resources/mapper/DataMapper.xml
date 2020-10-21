@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.dao.DataMapper" >
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.Data">
+    <id column="data_id" property="dataId" jdbcType="INTEGER" />
+    <result column="data_name" property="dataName" jdbcType="VARCHAR" />
+    <result column="blank_url" property="blankUrl" jdbcType="VARCHAR" />
+    <result column="blank_name" property="blankName" jdbcType="VARCHAR" />
+    <result column="template_url" property="templateUrl" jdbcType="VARCHAR" />
+    <result column="template_name" property="templateName" jdbcType="VARCHAR" />
+    <result column="data_type" property="dataType" jdbcType="INTEGER" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="data_form" property="dataForm" jdbcType="VARCHAR" />
+    <result column="new_time" property="newTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="departmentIds" property="departmentIds" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getDatas" resultType="com.wyait.manage.pojo.Data">
+    select data_id,data_name,blank_url,template_url,remarks,data_type,data_form,new_time,update_time,template_name,blank_name
+      from `data`
+      <where>
+        1=1
+        <if test="data.dataName!=null and data.dataName!=''">
+          AND data_name like CONCAT(CONCAT('%',#{data.dataName}),
+          '%')
+        </if>
+      </where>
+      order by new_time desc
+  </select>
+
+  <select id="getDoooByNameAndId" resultType="com.wyait.manage.pojo.Data">
+        select data_id,data_name,blank_url,template_url,remarks,data_type,data_form,new_time,update_time,template_name,blank_name from `data`
+        where data_id != #{dataId} and data_name = #{dataName}
+  </select>
+
+  <select id="getDataByName" resultType="com.wyait.manage.pojo.Data">
+     select data_id,data_name,blank_url,template_url,remarks,data_type,data_form,new_time,update_time,template_name,blank_name from `data`
+        where data_name = #{dataName}
+  </select>
+
+  <update id="updateData" parameterType="com.wyait.manage.pojo.Data">
+    update `data`
+    <set>
+      <if test="dataName != null and dataName != ''">
+        data_name = #{dataName},
+      </if>
+      <if test="dataForm != null and dataForm != ''">
+        data_form = #{dataForm},
+      </if>
+      <if test="remarks != null and remarks !=''">
+        remarks = #{remarks},
+      </if>
+      <if test="dataType != null and dataType != ''">
+        data_type = #{dataType},
+      </if>
+      <if test="newTime != null and newTime != ''">
+        new_time = #{newTime},
+      </if>
+        <if test="departmentIds != null and departmentIds != ''">
+            departmentIds = #{departmentIds},
+        </if>
+      blank_url = #{blankUrl},
+      blank_name = #{blankName},
+      template_url = #{templateUrl},
+      template_name = #{templateName},
+      update_time = #{updateTime}
+
+    </set>
+    where data_id = #{dataId}
+  </update>
+
+  <insert id="insertData" parameterType="com.wyait.manage.pojo.Data">
+    insert into `data` ( data_name,blank_url,blank_name,template_url,template_name,remarks,data_type,data_form,new_time,update_time,departmentIds)
+		values (#{dataName,jdbcType=VARCHAR},#{blankUrl,jdbcType=VARCHAR},#{blankName,jdbcType=VARCHAR},#{templateUrl,jdbcType=VARCHAR},#{templateName,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},#{dataType,jdbcType=INTEGER},#{dataForm,jdbcType=VARCHAR},#{newTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},
+		#{departmentIds,jdbcType=VARCHAR})
+  </insert>
+
+  <delete id="delData" parameterType="int">
+          DELETE FROM `data` WHERE data_id = #{dataId}
+  </delete>
+
+  <select id="selectById" resultType="com.wyait.manage.pojo.Data">
+        select * from `data` where data_id = #{dataId}
+  </select>
+
+  <update id="delBlankUrl" parameterType="int">
+        update `data` set blank_url = null , blank_name = null where data_id = #{dataId}
+  </update>
+
+  <update id="delTemplateUrl" parameterType="int">
+        update `data` set template_url = null , template_name = null where data_id = #{dataId}
+  </update>
+
+  <select id="getDataAll" resultType="com.wyait.manage.pojo.Data">
+        select * from `data`
+  </select>
+
+  <select id="getDataByDoooId" resultType="com.wyait.manage.pojo.Data">
+        SELECT d.* FROM `data` d inner join data_dooo dd on d.data_id = dd.data_id where dd.dooo_id = #{doooId}
+  </select>
+
+  <delete id="delDataAndDooo" parameterType="int">
+         DELETE FROM data_dooo WHERE data_id = #{dataId} and dooo_id = #{doooId}
+  </delete>
+
+  <select id="getDataBySituationId" resultType="com.wyait.manage.pojo.Data">
+        SELECT d.* FROM `data` d inner join data_situation ds on d.data_id = ds.data_id where ds.situation_id = #{situationId}
+  </select>
+
+  <select id="getDataAndSituationVOById" resultType="com.wyait.manage.entity.DataAndSiutationVO">
+        SELECT distinct
+            d.data_id AS dataId,
+            d.data_name AS dataName,
+            d.blank_url AS blankUrl,
+            d.blank_name AS blankName,
+            d.template_url AS templateUrl,
+            d.template_name AS templateName,
+            d.remarks as remarks,
+            d.data_type as dataType,
+            d.data_form as dataForm,
+            d.new_time as newTime,
+            sd.situation_details_id as situationDetailsId,
+            sd.details_describe as detailsDescribe
+        FROM
+            data_situation ds
+            LEFT JOIN `data` d ON d.data_id = ds.data_id
+            LEFT JOIN situation_details sd ON sd.situation_details_id = ds.situation_details_id
+            where ds.situation_id = #{situationId}
+  </select>
+
+    <select id="getDataAndSituationVOById2" resultType="com.wyait.manage.entity.DataAndSiutationVO">
+            SELECT distinct
+            d.data_id AS dataId,
+            d.data_name AS dataName,
+            d.blank_url AS blankUrl,
+            d.blank_name AS blankName,
+            d.template_url AS templateUrl,
+            d.template_name AS templateName,
+            d.remarks as remarks,
+            d.data_type as dataType,
+            d.data_form as dataForm,
+            d.new_time as newTime
+        FROM
+            data_situation ds
+            inner JOIN `data` d ON d.data_id = ds.data_id
+            inner JOIN situation s ON s.situation_id = ds.situation_id
+            where ds.situation_id = #{situationId}
+  </select>
+
+    <select id="getDataAndComboSituationVOById" resultType="com.wyait.manage.entity.DataAndSiutationVO">
+            SELECT distinct
+            d.data_id AS dataId,
+            d.data_name AS dataName,
+            d.blank_url AS blankUrl,
+            d.blank_name AS blankName,
+            d.template_url AS templateUrl,
+            d.template_name AS templateName,
+            d.remarks as remarks,
+            d.data_type as dataType,
+            d.data_form as dataForm,
+            d.new_time as newTime,
+            csd.details_describe as detailsDescribe
+        FROM
+            data_combo_situation ds
+            inner JOIN `data` d ON d.data_id = ds.data_id
+            inner JOIN combo_situation s ON s.id = ds.combo_situation_id
+            inner JOIN combo_situation_details csd on csd.id = ds.combo_situation_details_id
+            where ds.combo_situation_id = #{id}
+  </select>
+
+  <delete id="delDataAndSituation" parameterType="int">
+    DELETE FROM data_situation WHERE data_id = #{dataId} and situation_details_id = #{situationDetailsId}
+  </delete>
+
+  <select id="getDataAndSituation" resultType="com.wyait.manage.pojo.Data">
+    select d.* from `data` d inner join data_situation ds on ds.data_id = d.data_id where ds.situation_details_id = #{situationDetailsId}
+  </select>
+
+    <insert id="setDataAndSituation" parameterType="int">
+        insert into data_situation ( data_id,situation_id,situation_details_id)
+		values (#{dataId,jdbcType=INTEGER},#{situationId,jdbcType=INTEGER},#{situationDetailsId,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertDataSituation" parameterType="int">
+        insert into data_situation ( data_id,situation_id)
+		values (#{dataId,jdbcType=INTEGER},#{situationId,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="setDataAndCombo" parameterType="int">
+        insert into data_combo ( data_id,combo_id)
+		values (#{dataId,jdbcType=INTEGER},#{comboId,jdbcType=INTEGER})
+    </insert>
+
+    <select id="queryDataAndSituation" resultType="string">
+        select data_id as dataId from data_situation where data_id = #{dataId} and situation_details_id = #{situationDetailsId}
+    </select>
+
+     <select id="queryDataAndData" resultType="string">
+        select data_id as dataId from data_combo where data_id = #{dataId} and combo_id = #{comboId}
+    </select>
+
+ <select id="queryDataAndSituationId" resultType="string">
+        select data_id as dataId from data_situation where data_id = #{dataId} and situation_id = #{situationId}
+    </select>
+
+    <select id="getTemplateDataBySituationIds" resultType="com.wyait.manage.pojo.Data">
+        SELECT DISTINCT
+            d.*
+        FROM
+            `data` d
+	    INNER JOIN data_situation ds ON ds.data_id = d.data_id
+	    WHERE
+	        ds.situation_id in
+        <foreach collection="situaionIds" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="delSituationAndData" parameterType="int">
+        DELETE FROM data_situation WHERE data_id = #{dataId} and situation_id = #{situationId}
+    </delete>
+
+    <select id="getDataByComboId" resultType="com.wyait.manage.pojo.Data">
+        select distinct d.* from `data` d inner join data_combo dc on d.data_id = dc.data_id where combo_id = #{comboId}
+    </select>
+
+    <delete id="delDataAndCombo" parameterType="int">
+        DELETE FROM data_combo WHERE data_id = #{dataId} and combo_id = #{comboId}
+    </delete>
+
+    <update id="delComboSituationDetails" parameterType="int">
+        DELETE FROM data_combo_situation WHERE combo_situation_details_id = #{id}
+    </update>
+
+    <insert id="setDataAndComboSituation" parameterType="int">
+        insert into data_combo_situation ( data_id,combo_situation_id,combo_situation_details_id)
+		values (#{dataId,jdbcType=INTEGER},#{comboSituationId,jdbcType=INTEGER},#{comboSituationDetailsId,jdbcType=INTEGER})
+    </insert>
+
+    <select id="setDataComboSituationQureyDataId" resultType="int">
+        select data_id from data_combo_situation where data_id = #{dataId} and combo_situation_details_id = #{comboSituationDetailsId}
+    </select>
+
+    <select id="getDataComboSituationDetails" resultType="com.wyait.manage.pojo.Data">
+        select d.* from `data` d inner join data_combo_situation dcs on dcs.data_id = d.data_id where dcs.combo_situation_details_id = #{id}
+    </select>
+
+    <update id="delDataComboSituationDetails" parameterType="int">
+        DELETE FROM data_combo_situation WHERE combo_situation_details_id = #{id} and data_id = #{dataId}
+    </update>
+
+    <select id="getDataComboSituationVOByIdTow" resultType="com.wyait.manage.entity.DataAndSiutationVO">
+        SELECT distinct
+            d.data_id AS dataId,
+            d.data_name AS dataName,
+            d.blank_url AS blankUrl,
+            d.blank_name AS blankName,
+            d.template_url AS templateUrl,
+            d.template_name AS templateName,
+            d.remarks as remarks,
+            d.data_type as dataType,
+            d.data_form as dataForm,
+            d.new_time as newTime
+        FROM
+            data_combo_situation ds
+            inner JOIN `data` d ON d.data_id = ds.data_id
+            inner JOIN combo_situation s ON s.id = ds.combo_situation_id
+            where ds.combo_situation_id = #{id}
+    </select>
+
+    <select id="getDataComboSituation" resultType="int">
+        select d.data_id as dataId from data_combo_situation d where d.data_id = #{dataId} and combo_situation_id = #{comboSituationId}
+    </select>
+
+    <delete id="delDataComboSituation" parameterType="int">
+        DELETE FROM data_combo_situation WHERE combo_situation_id = #{id} and data_id = #{dataId}
+    </delete>
+
+    <select id="getTemplateDataByComboId" resultType="com.wyait.manage.pojo.Data">
+        SELECT distinct
+            da.data_id,da.data_name,da.blank_url,da.template_url,da.data_form,da.remarks,da.data_type
+        FROM
+            `data` da
+            INNER JOIN data_combo_situation ds ON ds.data_id = da.data_id
+            INNER JOIN combo_situation s ON s.id = ds.combo_situation_id
+        WHERE
+            s.combo_id = #{ids}
+    </select>
+
+    <select id="getTemplateDataByDoooId" resultType="com.wyait.manage.pojo.Data">
+        SELECT
+            da.data_id,da.data_name,da.blank_url,da.template_url,da.data_form,da.remarks,da.data_type
+        FROM
+            `data` da
+            INNER JOIN data_situation ds ON ds.data_id = da.data_id
+            INNER JOIN situation s ON s.situation_id = ds.situation_id
+        WHERE
+            s.dooo_id = #{doooId}
+    </select>
+
+    <!--  事项 查通用材料  -->
+    <select id="fetchByDataDooo" resultType="com.wyait.manage.pojo.Data">
+        SELECT da.data_id,da.data_name,da.blank_url,da.template_url,da.data_form,da.remarks,da.data_type
+        FROM data da,data_dooo dd
+        WHERE da.data_id = dd.data_id and dd.dooo_id = #{did}
+    </select>
+
+    <select id="fetchByDataSituation" resultType="com.wyait.manage.pojo.Data">
+        SELECT da.data_id,da.data_name,da.blank_url,da.template_url,da.data_form,da.remarks,da.data_type
+        FROM data da,data_situation ds
+        WHERE da.data_id=ds.data_id
+            and ds.situation_id in (#{situationId})
+            and ds.situation_details_id in (#{situationDetailsId})
+    </select>
+
+    <!--一件事套餐-  查通用材料  -->
+    <select id="fetchByDataCombo" resultType="com.wyait.manage.pojo.Data">
+        SELECT
+            da.data_id,
+            da.data_name,
+            da.blank_url,
+            da.blank_name,
+            da.template_url,
+            da.template_name,
+            da.data_form,
+            da.remarks,
+            da.departmentIds
+        FROM data da,data_combo dc
+        WHERE da.data_id=dc.data_id AND combo_id = #{comboId}
+    </select>
+    <!--一件事套餐-  查情形材料  -->
+    <select id="fetchByComboSituation" resultType="com.wyait.manage.pojo.Data">
+        SELECT DISTINCT da.data_id,da.data_name,da.blank_url,da.blank_name,da.template_url,da.template_name,da.data_form,da.remarks
+        FROM data da
+        LEFT JOIN data_combo_situation dcs ON dcs.data_id=da.data_id
+        LEFT JOIN combo_situation_details cosd ON cosd.combo_situation_id= dcs.combo_situation_id
+        WHERE cosd.type = 1 AND dcs.combo_situation_id IN ( #{cstd} )
+    </select>
+
+    <!-- 根据选项ID选择情形 -->
+    <select id="getTemplateDataByComboSituationDetailsIds" resultType="com.wyait.manage.pojo.Data">
+        SELECT DISTINCT
+            da.data_id,
+            da.data_name,
+            da.blank_url,
+            da.blank_name,
+            da.template_url,
+            da.template_name,
+            da.data_form,
+            da.remarks,
+            da.departmentIds
+        FROM
+            DATA da
+            LEFT JOIN data_combo_situation dcs ON dcs.data_id = da.data_id
+            LEFT JOIN combo_situation_details cosd ON cosd.combo_situation_id = dcs.combo_situation_id
+        WHERE
+            dcs.combo_situation_details_id in
+            <foreach item="ids" index="index" collection="array" open="(" separator="," close=")">
+                #{ids}
+            </foreach>
+    </select>
+
+    <!-- 根据选项ID选择情形 -->
+    <select id="getTemplateDataBySituationDetailsIds" resultType="com.wyait.manage.pojo.Data">
+        SELECT DISTINCT
+        da.data_id,
+        da.data_name,
+        da.blank_url,
+        da.blank_name,
+        da.template_url,
+        da.template_name,
+        da.data_form,
+        da.remarks,
+        da.departmentIds
+        FROM
+        DATA da
+        LEFT JOIN data_situation dcs ON dcs.data_id = da.data_id
+        LEFT JOIN situation_details cosd ON cosd.situation_id = dcs.situation_id
+        WHERE
+        dcs.situation_details_id in
+        <foreach item="ids" index="index" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </select>
+</mapper>

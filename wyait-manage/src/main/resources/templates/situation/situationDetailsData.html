@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<style>
+    .top{
+        margin-top:10px;
+        width: 100%;
+        /*background-color: #00B83F;*/
+    }
+    .top1{
+        width: 50%;
+
+        float: left;
+        /*background-color: #00b8b8;*/
+    }
+    .top2{
+        width: 50%;
+
+        float: left;
+        /*background-color: #6200b8;*/
+    }
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 116px">当前情形名称</label>
+                <div class="layui-input-inline">
+                    <input id="situationDescribe2" name="situationDescribe" th:value="${situation.situationDescribe}" autocomplete="off" class="layui-input" type="text" style="width: 300px"/>
+                </div>
+            </div>
+        </form>
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+        <button class="layui-btn layui-btn-normal" onclick="addUser()">关联材料</button>
+<!--        <button class="layui-btn layui-btn-normal" onclick="addCombo()">新增情形</button>-->
+
+
+<!--        <div class="top">-->
+<!--            <div class="top1">-->
+<!--                <table class="layui-table" style="width: 90%;margin: 0 auto;">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                        <th>序号</th>-->
+<!--                        <th>选项名称</th>-->
+<!--                        <th>查看材料</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                    <tr th:each="situationDetail,loopStatus:${situationDetails}" th:class="${loopStatus}">-->
+<!--                        <td th:text="${loopStatus.count}" style="width: 80px;"></td>-->
+<!--                        <td th:text="${situationDetail.detailsDescribe}"></td>-->
+<!--                        <td>-->
+<!--                            <div class="layui-table-cell laytable-cell-1-5">-->
+<!--                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'sel('+ ${situationDetail.situationDetailsId} +')'">查看</a>-->
+<!--                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.situationDetailsId} +',\''+ ${situationDetail.detailsDescribe} +'\')'">编辑</a>-->
+<!--                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'add('+ ${situationDetail.situationDetailsId} +')'">关联</a>-->
+<!--                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'del('+ ${situationDetail.situationDetailsId} +')'">删除</a>-->
+<!--                            </div>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    </tbody>-->
+<!--                </table>-->
+<!--&lt;!&ndash;                <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" style="margin-left: 47%;margin-top: 10px" onclick="addWEB()">查看全部事项</button>&ndash;&gt;-->
+<!--            </div>-->
+<!--            <div class="top2">-->
+<!--                <table class="layui-table" lay-filter="userTable" style="width: 90%;margin: 0 auto;">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                        <th style="width: 80px;">序号</th>-->
+<!--                        <th>材料名称</th>-->
+<!--                        <th style="width: 80px;">操作</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody id="dataAll">-->
+
+<!--                    </tbody>-->
+<!--                </table>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <script type="text/html" id="optBar">
+
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+
+        <hr style="background-color:#FFF"/>
+        <div style="height: 20px;border-top:1px solid black" ></div>
+        <div class="top">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>材料名称</th>
+                    <th>填表须知</th>
+                    <th>材料形式</th>
+                    <th>空表下载</th>
+                    <th>示例下载</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="DataAndSiutationVO,loopStatus:${DataAndSiutationVOs}" th:class="${loopStatus}">
+                        <td th:text="${loopStatus.count}"></td>
+                        <td th:text="${DataAndSiutationVO.dataName}" th:name="${DataAndSiutationVO.dataId}"></td>
+                        <td th:text="${DataAndSiutationVO.remarks}"></td>
+                        <td th:text="${DataAndSiutationVO.dataForm}"></td>
+                        <td><a th:text="${DataAndSiutationVO.blankName}" th:href="@{${DataAndSiutationVO.blankUrl}}"></a></td>
+                        <td><a th:text="${DataAndSiutationVO.templateName}" th:href="@{${DataAndSiutationVO.templateUrl}}"></a></td>
+                        <td><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'del('+ ${DataAndSiutationVO.dataId} +','+ ${situation.situationId} +')'">删除</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-left: 47%">
+            <a class="layui-btn layui-btn-normal" onclick="fanhui()">返回</a>
+        </div>
+    </div>
+
+
+    <!--添加或编辑用户-->
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 400px">
+        <form id="doooForm2" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <!--            <input type="hidden" th:value="${dataId}" name="dataId"/>-->
+            <input id="situationId" type="hidden" name="situationId" th:value="${situation.situationId}"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">材料名称</label>
+                <div class="layui-input-inline" style="width: 350px">
+                    <select  id="dataSelect" name="dataId" lay-filter="test" lay-verify="" lay-search="" >
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit2">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/situation/situationDetailData.js"></script>
+    <script>
+        /*<![CDATA[*/
+        dataAll();
+        function dataAll() {
+            $.ajax({
+                url: '/data/getDataAll',
+                type: 'post',
+                success: function (data) {
+                    var tmp='';
+                    tmp +='<option value=""></option>';
+                    for (var i in data){
+                        tmp +='<option value="'+data[i].dataId+'">'+data[i].dataName+'</option>';
+                    }
+                    $("#dataSelect").html(tmp);
+                    layui.form.render("select");
+                }
+            });
+        }
+        function edit(id,name) {
+            $("#situationDetailsId").val(id);
+            $("#detailsDescribe").val(name);
+            openUser(null,"修改选项");
+        }
+        function del(dataId,situationId) {
+            if (confirm("删除选项会解除所关联的材料，是否确定删除？")){
+                $.ajax({
+                    url: '/data/delSituationAndData',
+                    data:{"situationId":situationId,"dataId":dataId},
+                    type: 'post',
+                    success: function (data) {
+                        console.log(data)
+                        if (data == "ok") {
+                            layer.alert("操作成功",function(){
+                                location.reload();
+                            });
+                        }else{
+                            layer.alert(data,function(){
+
+                            });
+                        }
+                        //重新渲染 固定写法
+                    }
+                });
+            }
+        }
+        function sel(id) {
+            $.ajax({
+                url: '/data/getDataAndSituation',
+                data:{"situationDetailsId":id},
+                type: 'post',
+                success: function (data) {
+                    $("#dataAll").html("");
+                    console.log(data);
+                    var htm='';
+                    for(var i=0;i<data.length;i++){
+                        console.log(data[i]);
+                        var dataName = data[i].dataName;
+                        var dataId = data[i].dataId;
+                        var j = i+1;
+                        htm+=' <tr>';
+                        htm+=' <td>'+ j +'</td>';
+                        htm+=' <td>'+ dataName +'</td>';
+                        htm+=' <td><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" onclick="dell('+ dataId +','+ id +')">删除</a></td>';
+                        htm+='</tr>';
+                    }
+                    $("#dataAll").html(htm);
+                }
+            });
+        }
+        function dell(dataId,situationDetailsId) {
+            if(confirm("是否删除材料与情形的绑定？")){
+                $.ajax({
+                    url: '/data/delDataAndSituation',
+                    data:{"situationDetailsId":situationDetailsId,'dataId':dataId},
+                    type: 'post',
+                    success: function (data) {
+                        if (data == "ok") {
+                            layer.alert("操作成功",function(){
+                                location.reload();
+                            });
+                        }else{
+                            layer.alert(data,function(){
+
+                            });
+                        }
+                    }
+                });
+            }
+
+        }
+        function addWEB() {
+            var comboId = $("#id").val();
+            window.location.href="/combo/comboDetails?id="+comboId;
+        }
+        function fanhui() {
+            window.history.back();
+        }
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>

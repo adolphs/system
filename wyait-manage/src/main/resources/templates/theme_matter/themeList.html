@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>一件事列表-一件事一次办</title>
+    <link rel="stylesheet" href="/js/theme_matter/common.css"/>
+    <link rel="stylesheet" href="/js/theme_matter/item.css"/>
+    <script type="text/javascript" src="/js/theme_matter/jquery1.8.2.js"></script>
+    <script type="text/javascript" src="/js/theme_matter/common.js"></script>
+    <style type="text/css">
+        .content{width: 100%;}
+        /* footer */
+        .footer {
+            height: 120px;
+            background-color: #595959;
+        }
+        .wenzi2 {
+            text-align: center;
+            margin: auto;
+            padding-top: 30px;
+            color: #ffffff;
+            font-size: 13px;
+        }
+        .wenzi3 {
+            margin: auto;
+            width: 1024px;
+            text-align: center;
+            font-size: 13px;
+            color: #8b8e8e;
+            line-height: 26px;
+        }
+        /*title*/
+        .yjs-banner {
+            /*background: url(static/images/yjs-banner.jpg) no-repeat center center;*/
+            position: relative;
+            height: 239px;
+            background: #013D7C;
+        }
+        .yjs-banner-pic .yjs-title {
+            top: 50px;
+        }
+        .yjs-title {
+            font-size: 50px;
+            color: #fff;
+            position: absolute;
+            top: 36%;
+            left: 20%;
+            text-shadow: #888 0 0 10px;
+        }
+        .yjs-banner-pic .yjs-title-pic {
+            font-size: 16px;
+            color: #FFF;
+            position: absolute;
+            top: 62%;
+            left: 20%;
+            text-shadow: #888 0 0 10px;
+            width: 440px;
+        }
+        .yjs-banner-pic .yjs-title-pic li {
+            margin: 0 40px 20px 0;
+        }
+        .header-logo a{
+            padding-left: 42px;
+            background: url(http://static.gdzwfw.gov.cn/mhyy/20180827/6d4851fe-fdcd-406d-ae2e-5dd0e5f68929.png) no-repeat left center transparent;
+            background-size: 32px 32px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var type='KCKD';//开店开厂
+            reLoadText();
+            //	toItems(type);
+
+        })
+        //type='KCKD' 开店开厂 type='BZSQ' 办证申请
+        function toItems(type){
+            var rmd = new Date().getTime();
+            $('.affix-menu').empty();
+            $('.town-div').empty();
+            $('.link-item-box').empty();
+            $.ajax({
+                url : 'http://113.106.13.192:8080/api/interface/oneThing/getTopLst.action',
+                data : {type : type,rmd:rmd},
+                type : 'post',
+                dataType : 'json',
+                success : function (data) {
+                    if(data.status=='SUCCESS'){
+                        var results=data.data;
+                        var json=eval(results);
+                        $('.affix-menu').empty();
+                        $('.link-item-box').empty();
+                        var html='';
+                        var html1='<div class="empty-div"></div>';
+                    }
+                }
+            })
+        }
+        //查看详情
+        function toItem(id){
+            window.open("/zsonline/oneThing/guides/toParticulars.action?id=" + id);
+        }
+        //搜索事项
+        function toSearch(){
+            var name = $("#item_name").val();
+            window.open("/zsonline/oneThing/guides/itemsSearchList.action?name=" + name);
+        }
+    </script>
+</head>
+<body>
+<!-- 头部 -->
+
+
+
+<script type="text/javascript">
+    <!--
+    /**退出**/
+    function logoutNew(isOrganUser) {
+        if(isOrganUser){
+            logoutUrl = "/zsonline/oauth/organLogin.action";
+        }else{
+            logoutUrl = "/zsonline/yth/pc/front/home/index.action";
+        }
+        logoutUrl = "http://zsbs.zs.gov.cn/zsonline/jumpit/logoutJump.action?u=" + encodeURIComponent(logoutUrl);
+        logoutUrl = "https://zsbs.zs.gov.cn/cas/integration/manualManaged?logoutMode=true&logoutURL=" + encodeURIComponent(logoutUrl);
+        location.href = logoutUrl;
+    }
+
+    function onethering(obj) {
+        window.location.href = "../theme_matter/scene?did=yjs" +obj.id;
+    }
+    //-->
+</script>
+
+<div class="header">
+    <div class="width">
+        <!--<h1 class="header-logo fl">-->
+            <!--<img src="http://zsbs.zs.gov.cn/skin/oneThing/images/logo-1.png" alt="" />-->
+        <!--</h1>-->
+        <h1 class="header-logo"><a href="http://www.gdzwfw.gov.cn/">广东政务服务网</a></h1>
+        <div class="header-title">番禺区一件事主题式导办</div>
+
+    </div>
+</div>
+<div class="content">
+
+    <div class="yjs-banner yjs-banner-pic">
+        <h2 class="yjs-title">一件事主题服务</h2>
+        <div class="yjs-title-pic clear">
+            <ul>
+                <li class="left">
+                    <!--<img src="/iegov_unified/webapp/yms/govServiceNet/images/ico-yjs-title-4.png" alt="">-->
+                    <span>一件事情一张材料清单，一次性告知</span>
+                </li>
+            </ul>
+        </div>
+        <!-- <h3 class="yjs-title-txt">方便、快速寻找自己关注的“一件事”</h3> -->
+    </div>
+    <div class="width">
+        <ul class="items-data">
+            <li>
+                <b th:text="${mattersNums.matters}"></b>
+                件
+                <p>套餐入驻数</p>
+            </li>
+            <li>
+                <b th:text="${mattersNums.involvedNum}"></b>
+                项
+                <p>涉及的事项</p>
+            </li>
+            <li>
+                <b>0</b>
+                次
+                <p>累计少跑腿</p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="items-box">
+        <div class="items-tab tab-btn">
+            <a class="active1">导办指南</a>
+            <!--<a href="javascript:toItems('SMZQ');" data-index="1" class="active">个人全生命周期</a>-->
+            <!--<a href="javascript:toItems('GCYJS');" data-index="2" class="">工程一件事</a>-->
+            <!--&lt;!&ndash;  <a href="javascript:toItems('BZSQ');" data-index="3" class="">办证申请</a> &ndash;&gt;-->
+            <!--<a href="javascript:toItems('TOWNSHIP');" data-index="3" class="">镇区一件事</a>-->
+<!--            <form action="/zsonline/oneThing/guides/itemsSearchList.action" class="search fr" method="post">-->
+<!--                <input type="text" placeholder="请输入关键字" name="name" id="item_name"/>-->
+<!--                <span class="placeholder">请输入关键字</span>-->
+<!--                <button type="button" onclick="toSearch()">搜索</button>-->
+<!--            </form>-->
+        </div>
+        <div class="tab-box">
+            <div class="tab-content affix-box active">
+                <!-- 左边导航栏 -->
+                <div class="affix-menu">
+                    <a href="javascript:;" class="active">营商环境相关</a>
+                    <a href="javascript:;">商事经营</a>
+                    <a href="javascript:;">建设工程</a>
+                    <a href="javascript:;">个人事务</a>
+                </div>
+                <div class="town-div" style="display:none;"></div>
+
+                <div class="link-item-box">
+                    <div class="empty-div"></div>
+
+                    <div class="link-item">
+                        <div class="link-title">营商环境相关</div>
+                        <div class="select-box">
+                            <ul class="select-tab clearfix" data-col="4">
+                                <li th:each="combl,comblStar:${comboLists}">
+                                    <a href="javascript:void(0);" th:id="${combl.id}" onclick="onethering(this);" target="_self">
+                                        <span th:text="${combl.comboName}"/>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="link-item">
+                        <div class="link-title">商事经营</div>
+                        <div class="select-box">
+                            <ul class="select-tab clearfix" data-col="4">
+                                <li>
+                                    <a href="../theme_matter/scene?id=68c84ddb-fc83-4c53-b42e-60ea33ef6f2c" target="_self">
+                                        <span>我要开便利店</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="link-item">
+                        <div class="link-title">建设工程</div>
+                        <div class="select-box">
+                            <ul class="select-tab clearfix" data-col="4">
+                                <li>
+                                    <a href="../theme_matter/scene?id=68c84ddb-fc83-4c53-b42e-60ea33ef6f2c" target="_self">
+                                        <span>我要举行演出</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="link-item">
+                        <div class="link-title">个人事务</div>
+                        <div class="select-box">
+                            <ul class="select-tab clearfix" data-col="4">
+                                <li>
+                                    <a href="../theme_matter/scene?id=68c84ddb-fc83-4c53-b42e-60ea33ef6f2c" target="_blank">
+                                        <span>我要办理新办纳税人“套餐式”服务</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="mt80"></div>
+</div>
+    <!-- footer -->
+    <div class="footer">
+        <div class="wenzi2">
+            主页 | 关于我们 | 联系我们 | 设为首页 | 加入收藏</div>
+        <div class="wenzi3">
+            总访问次数：58909419次 备案号：xxxxxx2号<br />
+            广州市番禺区便民服务平台 版权所有 xxx信息技术有限公司 技术支持</div>
+    </div>
+
+
+</body>
+<script>
+    function reLoadText(){
+        $(".link-item-box a").each(function (){
+            var _in_height = $(this).find('span').innerHeight();
+            var initHeight = (68 - _in_height) / 2;
+            $(this).find('span').css('margin-top', initHeight + 'px');
+        });
+    }
+</script>
+</html>

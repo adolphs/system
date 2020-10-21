@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.dao.SituationDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.SituationDetails" >
+    <id column="situation_details_id" property="situationDetailsId" jdbcType="INTEGER" />
+    <result column="situation_id" property="situationId" jdbcType="INTEGER" />
+    <result column="details_describe" property="detailsDescribe" jdbcType="INTEGER" />
+    <result column="new_time" property="newTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="getSituationDetailsBySituationId" resultType="com.wyait.manage.pojo.SituationDetails">
+        select situation_details_id,situation_id,details_describe,new_time,update_time,type
+        from situation_details where situation_id = #{situationId}
+  </select>
+
+<!--  <select id="getDoooByNameAndId" resultType="com.wyait.manage.pojo.Dooo">-->
+<!--        select * from dooo where dooo_name = #{doooName} and dooo_id != #{doooId}-->
+<!--  </select>-->
+
+
+<!--  <select id="getDoooByName" resultType="com.wyait.manage.pojo.Dooo">-->
+<!--        select * from dooo where dooo_name = #{doooName}-->
+<!--  </select>-->
+
+<!--  <update id="updateDooo" parameterType="com.wyait.manage.pojo.Dooo">-->
+<!--      update dooo-->
+<!--      <set>-->
+<!--        <if test="doooName != null and doooName != ''">-->
+<!--          dooo_name = #{doooName,jdbcType=VARCHAR},-->
+<!--        </if>-->
+<!--        <if test="remark != null and remark != ''">-->
+<!--          remark = #{remark,jdbcType=VARCHAR},-->
+<!--        </if>-->
+<!--        <if test="type != null and type != ''">-->
+<!--          type = #{type,jdbcType=INTEGER},-->
+<!--        </if>-->
+<!--        <if test="departmentId != null and departmentId !=''">-->
+<!--          department_id = #{departmentId,jdbcType=INTEGER},-->
+<!--        </if>-->
+<!--        <if test="condition != null">-->
+<!--          dooo_condition = #{doooCondition,jdbcType=VARCHAR},-->
+<!--        </if>-->
+<!--        <if test="newTime != null">-->
+<!--          new_time = #{newTime,jdbcType=TIMESTAMP},-->
+<!--        </if>-->
+<!--        update_time = #{updateTime,jdbcType=TIMESTAMP}-->
+<!--      </set>-->
+<!--      where dooo_id = #{id,jdbcType=INTEGER}-->
+<!--  </update>-->
+
+  <insert id="insert" parameterType="com.wyait.manage.pojo.SituationDetails">
+       insert into situation_details ( situation_id,details_describe,new_time,update_time,type)
+		values (#{situationId,jdbcType=INTEGER},#{detailsDescribe,jdbcType=VARCHAR},#{newTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{type,jdbcType=INTEGER})
+  </insert>
+
+    <delete id="delSituationDetail" parameterType="int">
+        DELETE FROM situation_details WHERE situation_details_id = #{situationDetailsId}
+    </delete>
+
+    <delete id="delSituationDetailAndData" parameterType="int">
+        DELETE FROM data_situation WHERE situation_details_id = #{situationDetailsId}
+    </delete>
+
+    <select id="getsituationDetailsByNameAndId" resultType="com.wyait.manage.pojo.SituationDetails">
+        select * from situation_details where details_describe = #{detailsDescribe} and situation_details_id != #{situationDetailsId} and situation_id = #{situationId}
+    </select>
+
+    <select id="getsituationDetailsByNameAndId2"  resultType="com.wyait.manage.pojo.SituationDetails">
+        select * from situation_details where details_describe = #{detailsDescribe} and situation_id = #{situationId}
+    </select>
+
+    <update id="updateSituationDetails" parameterType="com.wyait.manage.pojo.SituationDetails">
+        update situation_details
+        <set>
+            <if test="detailsDescribe != null and detailsDescribe != ''">
+                details_describe = #{detailsDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </set>
+        where situation_details_id = #{situationDetailsId}
+    </update>
+
+    <delete id="delSituationByPid" parameterType="int">
+        delete from situation where pid = #{situationDetailsId}
+    </delete>
+
+</mapper>

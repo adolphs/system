@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.dao.DoooMapper" >
+    <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.Dooo" >
+        <id column="dooo_id" property="doooId" jdbcType="INTEGER" />
+        <result column="dooo_name" property="doooName" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="put_text" property="putText" jdbcType="VARCHAR" />
+        <result column="approval_text" property="approvalText" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="approval_type" property="approvalType" jdbcType="INTEGER" />
+        <result column="department_id" property="departmentId" jdbcType="INTEGER" />
+        <result column="dooo_condition" property="doooCondition" jdbcType="VARCHAR" />
+        <result column="new_time" property="newTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="getDooos" resultType="com.wyait.manage.pojo.Dooo">
+        select dooo_id,dooo_name,remark,type,department_id,new_time,update_time,dooo_condition,approval_type
+        from dooo
+        <where>
+            1=1
+            <if test="dooo.departmentId!=null and dooo.departmentId!=''">
+                AND department_id =#{dooo.departmentId}
+            </if>
+            <if test="approvalType != null and approvalType!=''">
+                AND approval_type = #{approvalType}
+            </if>
+            <if test="dooo.doooName!=null and dooo.doooName!=''">
+                AND dooo_name like CONCAT(CONCAT('%',#{dooo.doooName}),
+                '%')
+            </if>
+        </where>
+        order by new_time desc
+    </select>
+
+    <select id="getDoooByNameAndId" resultType="com.wyait.manage.pojo.Dooo">
+        select * from dooo where dooo_name = #{doooName} and dooo_id != #{doooId}
+  </select>
+
+    <select id="getDoooById" resultType="com.wyait.manage.pojo.Dooo">
+            select * from dooo where dooo_id = #{doooId}
+    </select>
+
+
+    <select id="getDoooByName" resultType="com.wyait.manage.pojo.Dooo">
+        select * from dooo where dooo_name = #{doooName}
+  </select>
+
+    <update id="updateDooo" parameterType="com.wyait.manage.pojo.Dooo">
+        update dooo
+        <set>
+            <if test="doooName != null and doooName != ''">
+                dooo_name = #{doooName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentId != null and departmentId !=''">
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="doooCondition != null">
+                dooo_condition = #{doooCondition,jdbcType=VARCHAR},
+            </if>
+            <if test="newTime != null">
+                new_time = #{newTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="approvalType != null">
+                approval_type = #{approvalType,jdbcType=INTEGER},
+            </if>
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </set>
+        where dooo_id = #{doooId,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insertDooo" parameterType="com.wyait.manage.pojo.Dooo">
+       insert into dooo ( dooo_name,remark,`type`,department_id,dooo_condition,new_time,update_time,approval_type,put_text,approval_text)
+		values (#{doooName,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{departmentId,jdbcType=INTEGER},#{doooCondition,jdbcType=VARCHAR},#{newTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},
+		#{approvalType,jdbcType=INTEGER},#{putText,jdbcType=VARCHAR},#{approvalText,jdbcType=VARCHAR})
+  </insert>
+
+    <delete id="delDooo" parameterType="int">
+        DELETE FROM dooo WHERE dooo_id = #{doooId}
+  </delete>
+
+    <select id="getDoooList" resultType="com.wyait.manage.pojo.Dooo">
+        select * from dooo where department_id = #{departmentId}
+  </select>
+
+    <insert id="addDoooAndData" parameterType="int">
+        insert into data_dooo (data_id,dooo_id)
+        values (#{dataId,jdbcType=INTEGER},#{doooId,jdbcType=INTEGER})
+    </insert>
+
+    <select id="getDataDooo" resultType="com.wyait.manage.pojo.DataDooo">
+        select data_id as dataId,dooo_id as doooId from data_dooo where data_id = #{dataId} and dooo_id = #{doooId}
+    </select>
+
+    <update id="putApprovalType">
+        update dooo set approval_type = #{approvalType},put_text = #{approvalText} where dooo_id = #{doooId}
+    </update>
+
+    <update id="passApprovalType">
+        update dooo set approval_type = #{approvalType},approval_text = #{approvalText} where dooo_id = #{doooId}
+    </update>
+
+    <update id="sendBackApprovalType">
+        update dooo set approval_type = #{approvalType} where dooo_id = #{doooId}
+    </update>
+
+    <!-- fetchByName  -->
+    <select id="fetchByName" resultType="com.wyait.manage.pojo.Dooo">
+        select doo.dooo_id,doo.dooo_name,doo.remark,doo.type,doo.department_id,doo.new_time,doo.update_time,doo.dooo_condition,dpt.department_name
+        from dooo doo,department  dpt
+        <where>
+            doo.department_id = dpt.department_id
+            <if test="doooName!=null and doooName!=''">
+                and doo.dooo_name like CONCAT('%',#{doooName},'%')
+            </if>
+
+            <if test="departmentId>0">
+                and doo.department_id =#{departmentId}
+            </if>
+            <if test="type!=null and type!=''">
+                and doo.type = #{type}
+            </if>
+        </where>
+        order by doo.new_time desc
+    </select>
+
+
+    <select id="APIDoooList" resultType="com.wyait.manage.pojo.Dooo">
+        SELECT
+            d.dooo_name AS doooName,
+            d.dooo_id AS doooId,
+            de.department_name AS departmentName,
+            de.department_id AS departmentId
+        FROM
+            dooo d
+            INNER JOIN department de ON de.department_id = d.department_id
+        <where>
+            d.approval_type = 3
+            <if test="keyWord != null and keyWord != ''">
+               and d.dooo_name LIKE CONCAT('%',#{keyWord},'%')
+            </if>
+            <if test="type != null and type != ''">
+               and d.type like CONCAT('%',#{type},'%')
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                and d.department_id = #{departmentId}
+            </if>
+        </where>
+            LIMIT ${(page-1) * pageSize},${pageSize};
+    </select>
+
+    <select id="APIDoooListCount" resultType="int">
+        SELECT
+        count(1)
+        FROM
+        dooo d
+        INNER JOIN department de ON de.department_id = d.department_id
+        <where>
+            d.approval_type = 3
+            <if test="keyWord != null and keyWord != ''">
+                and d.dooo_name LIKE CONCAT('%',#{keyWord},'%')
+            </if>
+            <if test="type != null and type != ''">
+                and d.type like CONCAT('%',#{type},'%')
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                and d.department_id = #{departmentId}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getDoooCount" resultType="int">
+        select count(*) from dooo
+    </select>
+
+    <select id="getHotDooo" resultType="com.wyait.manage.pojo.Dooo">
+        select d.* from dooo d inner join
+        (
+            SELECT
+                dooo_id,
+                count(dooo_id)
+                    FROM
+                            visit_count
+                    WHERE
+                            MONTH ( visit_time ) = MONTH ( curdate( ) )
+                            AND YEAR ( visit_time ) = YEAR ( curdate( ) )
+							AND dooo_id is not null
+                    GROUP BY
+                            dooo_id
+                    ORDER BY
+                            count(dooo_id) desc
+                    limit #{number}
+        ) m on m.dooo_id = d.dooo_id
+    </select>
+</mapper>

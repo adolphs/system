@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 600px">
+            <form id="situationForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+                <input id="situationId" type="hidden" name="situationId"/>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">情形名称</label>
+                    <div class="layui-input-inline">
+                        <input id="situationDescribe" name="situationDescribe" lay-verify="required" autocomplete="off" class="layui-input" type="text" style="width: 390px;"/>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属部门</label>
+                    <div class="layui-input-block">
+                        <select name="departmentId" lay-verify="required" id="departmentInsert" lay-filter="department">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属事项</label>
+                    <div class="layui-input-block">
+                        <select name="doooId" lay-verify="required" id="doooInsert">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">情形类型</label>
+                    <div class="layui-input-block">
+                        <select name="nodesType" lay-verify="required" id="nodesTyps">
+                            <option value="1">节点情形</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">情形级别</label>
+                    <div class="layui-input-block">
+                        <select name="situationLevel" lay-verify="required" id="situationLevel">
+                            <option value="1">一级情形</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">情形状态</label>
+                    <div class="layui-input-block">
+                        <select name="type" lay-verify="required" id="type">
+                            <option value=""></option>
+                            <option value="1">单选</option>
+                            <option value="2">多选</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="margin-left: 10px;">
+                        <button class="layui-btn"  lay-submit="" lay-filter="userSubmit">提交</button>
+                        <input type="button" value="提交" class="layui-btn" onclick="add()" />
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script>
+        getdepartment();
+        function getdepartment() {
+            $.ajax({
+                type: "GET",
+                url: "/department/getDepartments",
+                success: function (data) {
+                    var htm="";
+                    $.each(data, function (index, item) {
+                        htm+='<input type="checkbox" name="departmentIds" title="'+ item.departmentName +'" value="'+ item.departmentId +'" />';
+                    })
+                    $("#departmentIds").html(htm);
+                    layui.form.render('checkbox');
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+        function add() {
+            $.ajax({
+                type: "POST",
+                data: $("#doooForm").serialize(),
+                url: "/data/addData",
+                success: function (data) {
+                    if (data == "ok") {
+                        layer.alert("操作成功",function(){
+                            window.location.href='/data/dataList';
+                        });
+                    }else{
+                        layer.alert(data,function(){
+                            layer.closeAll();
+                            cleanUser();
+                            load(obj);
+                        });
+                    }
+                },
+                error: function () {
+                    layer.alert("操作请求错误，请您稍后再试",function(){
+                        layer.closeAll();
+                        //加载load方法
+                        load(obj);//自定义
+                    });
+                }
+            });
+            // console.log("开始")
+        }
+    </script>
+</div>
+</body>
+</html>

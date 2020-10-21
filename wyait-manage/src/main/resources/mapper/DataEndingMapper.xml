@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.dao.DataEndingMapper" >
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.DataEnding" >
+    <id column="data_ending_id" property="data_ending_id" jdbcType="INTEGER" />
+    <result column="data_ending_name" property="data_ending_name" jdbcType="VARCHAR" />
+    <result column="blank_url" property="blank_url" jdbcType="VARCHAR" />
+    <result column="blank_name" property="blank_name" jdbcType="VARCHAR" />
+    <result column="template_url" property="template_url" jdbcType="VARCHAR" />
+    <result column="template_name" property="template_name" jdbcType="VARCHAR" />
+    <result column="data_type" property="data_type" jdbcType="INTEGER" />
+    <result column="is_electronic_license" property="is_electronic_license" jdbcType="VARCHAR" />
+    <result column="new_time" property="new_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+    <select id="getDatas" resultMap="BaseResultMap">
+        select data_ending_id,data_ending_name,blank_url,blank_name,template_name,template_url,data_type,is_electronic_license,
+        new_time
+        from `data_ending`
+        <where>
+            1=1
+            <if test="data_ending_name!=null and data_ending_name!=''">
+                AND data_ending_name like CONCAT(CONCAT('%',#{data_ending_name}),
+                '%')
+            </if>
+        </where>
+        order by new_time desc
+    </select>
+
+    <select id="selDataEndingNameByName" resultType="com.wyait.manage.pojo.DataEnding">
+        select * from data_ending where data_ending_name = #{data_ending_name};
+    </select>
+
+    <select id="selDataEndingNameByNameAndId" resultType="com.wyait.manage.pojo.DataEnding">
+        select * from data_ending where data_ending_name = #{name} and data_ending_id != #{id};
+    </select>
+
+    <insert id="insert" parameterType="com.wyait.manage.pojo.DataEnding">
+        insert into data_ending ( data_ending_name,
+		blank_url,blank_name, template_name,template_url,
+		data_type,is_electronic_license,
+		new_time
+		)
+		values (#{data_ending_name,jdbcType=VARCHAR},
+		#{blank_url,jdbcType=VARCHAR},#{blank_name,jdbcType=VARCHAR},#{template_name,jdbcType=VARCHAR},#{template_url,jdbcType=VARCHAR},
+		#{data_type,jdbcType=INTEGER},#{is_electronic_license,jdbcType=INTEGER},
+		#{new_time,jdbcType=TIMESTAMP}
+		)
+    </insert>
+
+    <update id="update" parameterType="com.wyait.manage.pojo.DataEnding">
+        update data_ending
+        <set>
+
+            <if test="blank_url != null and blank_url != ''">
+                blank_url = #{blank_url,jdbcType=VARCHAR},
+            </if>
+            <if test="blank_name != null and blank_name != ''">
+                blank_name = #{blank_name,jdbcType=VARCHAR},
+            </if>
+            <if test="template_name != null and template_name != ''">
+                template_name = #{template_name,jdbcType=VARCHAR},
+            </if>
+            <if test="template_url != null and template_url != ''">
+                template_url = #{template_url,jdbcType=VARCHAR},
+            </if>
+            <if test="data_type != null and data_type != ''">
+                data_type = #{data_type,jdbcType=INTEGER},
+            </if>
+            <if test="is_electronic_license != null">
+                is_electronic_license = #{is_electronic_license,jdbcType=TIMESTAMP},
+            </if>
+            data_ending_name = #{data_ending_name,jdbcType=VARCHAR}
+        </set>
+        where data_ending_id = #{data_ending_id}
+    </update>
+
+    <select id="setAll" resultMap="BaseResultMap">
+        select * from data_ending
+    </select>
+
+    <insert id="addDataEndingAndDooo" parameterType="int">
+        insert into dataending_dooo_combo(data_ending_id,dooo_id)
+        values (#{dataEndId},#{doooId})
+    </insert>
+
+    <insert id="addDataEndingAndCombo" parameterType="int">
+        insert into dataending_dooo_combo(data_ending_id,combo_id)
+        values (#{dataEndId},#{comboId})
+    </insert>
+
+    <delete id="delDataEndingAndDooo" parameterType="int">
+        delete from dataending_dooo_combo where data_ending_id = #{dataEndId} and dooo_id = #{doooId}
+    </delete>
+
+    <delete id="delDataEndingAndCombo" parameterType="int">
+        delete from dataending_dooo_combo where data_ending_id = #{dataEndId} and combo_id = #{comboId}
+    </delete>
+
+    <select id="getDataEndingByDoooId" resultMap="BaseResultMap">
+        SELECT d.* from data_ending d inner join dataending_dooo_combo dd on dd.data_ending_id = d.data_ending_id
+        where dd.dooo_id = #{doooId}
+    </select>
+
+    <select id="getDataEndingByComboId" resultMap="BaseResultMap">
+        SELECT d.* from data_ending d inner join dataending_dooo_combo dd on dd.data_ending_id = d.data_ending_id
+        where dd.combo_id = #{id}
+    </select>
+</mapper>

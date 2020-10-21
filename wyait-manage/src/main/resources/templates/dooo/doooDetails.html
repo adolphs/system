@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<style>
+    .top{
+        margin-top:10px;
+        width: 100%;
+        /*background-color: #00B83F;*/
+    }
+    .top1{
+        width: 100%;
+
+        float: left;
+        /*background-color: #00b8b8;*/
+    }
+
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+        <span>事项详情</span><br/>
+        <hr class="layui-bg-black"/>
+
+        <button class="layui-btn layui-btn-normal" onclick="addUser()">绑定通用材料</button>
+        <button class="layui-btn layui-btn-normal" onclick="addDataEnding()">绑定审批结果</button>
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+
+<!--        <button class="layui-btn layui-btn-normal" onclick="addCombo()">绑定情形材料</button>-->
+
+
+        <div class="top">
+            <div class="top1">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 40%">事项名称</th>
+                        <th style="width: 20%">备注</th>
+                        <th style="width: 15%">所属部门</th>
+                        <th style="width: 25%">受理条件</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${dooo.doooName}" style="width: 80px;"></td>
+                        <td th:text="${dooo.remark}"></td>
+                        <td th:text="${departmentName}"></td>
+                        <td th:text="${dooo.doooCondition}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+<!--                <div style="margin-left: 47%;margin-top: 1%;">-->
+<!--                    <a href="/data/dataList" class="layui-btn layui-btn-normal">返回</a>-->
+<!--                </div>-->
+            </div>
+        </div>
+<!--        </script>-->
+
+        <hr class="layui-bg-black" style="margin-top: 130px"/>
+        <span>事项关联的情形</span>
+        <table id="uesrList" lay-filter="userTable"></table>
+        <div style="display:none;" id="currentUser"><shiro:principal property="id"></shiro:principal></div>
+
+        <script type="text/html" id="jobTpl">
+            {{#  if(!d.job){ }}
+            <input type="checkbox" name="{{d.username}}_{{d.version}}" value="{{d.id}}" lay-skin="switch" lay-text="在职|离职" lay-filter="isJobTpl" checked="checked" />
+            {{#  } else { }}
+            <input type="checkbox" name="{{d.username}}_{{d.version}}" value="{{d.id}}" lay-skin="switch" lay-text="在职|离职" lay-filter="isJobTpl"/>
+            {{#  } }}
+        </script>
+
+        <script type="text/html" id="optBar">
+            <a class="layui-btn layui-btn-xs" lay-event="sel">查看</a>
+        </script>
+
+        <hr class="layui-bg-black"/>
+        <span>审批结果</span>
+        <div class="top">
+            <div class="top1">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>材料名称</th>
+                        <th>类型</th>
+                        <th>是否关联电子证照</th>
+                        <th>空表下载</th>
+                        <th>示例下载</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="dataEnding">
+
+                    </tbody>
+                </table>
+                <!--                <div style="margin-left: 47%;margin-top: 1%;">-->
+                <!--                    <a href="/data/dataList" class="layui-btn layui-btn-normal">返回</a>-->
+                <!--                </div>-->
+            </div>
+        </div>
+        <hr class="layui-bg-black"/>
+        <span>通用材料</span>
+        <div class="top">
+            <div class="top1">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>材料名称</th>
+                        <th>填表须知</th>
+                        <th>材料形式</th>
+                        <th>空表下载</th>
+                        <th>示例下载</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="blankData">
+
+                    </tbody>
+                </table>
+                <!--                <div style="margin-left: 47%;margin-top: 1%;">-->
+                <!--                    <a href="/data/dataList" class="layui-btn layui-btn-normal">返回</a>-->
+                <!--                </div>-->
+            </div>
+        </div>
+        <hr class="layui-bg-black"/>
+        <span>情形材料</span>
+        <div class="top">
+            <div class="top1">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>材料名称</th>
+                        <th>填表须知</th>
+                        <th>材料形式</th>
+                        <th>空表下载</th>
+                        <th>示例下载</th>
+                    </tr>
+                    </thead>
+                    <tbody id="templateData">
+
+                    </tbody>
+                </table>
+                <!--                <div style="margin-left: 47%;margin-top: 1%;">-->
+                <!--                    <a href="/data/dataList" class="layui-btn layui-btn-normal">返回</a>-->
+                <!--                </div>-->
+            </div>
+        </div>
+    </div>
+
+    <!--添加或编辑用户-->
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 300px">
+        <form id="doooForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+<!--            <input type="hidden" th:value="${dataId}" name="dataId"/>-->
+            <input id="doooId" type="hidden" th:value="${doooId}" name="doooId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">材料名称</label>
+                <div class="layui-input-inline" style="width: 350px">
+                    <select  id="dataSelect" name="dataId" lay-filter="test" lay-verify="" lay-search="" >
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="setUser2" class="layer_self_wrap" style="width:500px;display:none;height: 300px">
+        <form id="doooForm2" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <!--            <input type="hidden" th:value="${dataId}" name="dataId"/>-->
+            <input id="doooId2" type="hidden" th:value="${doooId}" name="doooId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">审批结果</label>
+                <div class="layui-input-inline" style="width: 350px">
+                    <select  id="dataSelect2" name="data_ending_id" lay-filter="test" lay-verify="" lay-search="" >
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit2">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/dooo/doooDetails.js"></script>
+    <script>
+        /*<![CDATA[*/
+
+        function sel(id) {
+            var comboId = $("#id").val();
+            window.location.href="/combo/comboDetails?id="+comboId+"&departmentId="+id;
+        }
+
+        function addWEB() {
+            var comboId = $("#id").val();
+            window.location.href="/combo/comboDetails?id="+comboId;
+        }
+        /*]]>*/
+    </script>
+    <script>
+        templateData();
+        blankData();
+        getDataEndingByDoooId();
+        function templateData() {
+            $.ajax({
+                url: '/data/getTemplateDataByDoooId',
+                data:{"doooId":$("#doooId").val()},
+                type: 'get',
+                success: function (data) {
+                    var tmp= '';
+                    for (var i in data){
+                        tmp += '<tr>';
+                        tmp += ' <td>'+ data[i].dataName +'</td>';
+                        tmp += ' <td>'+ data[i].remarks +'</td>';
+                        tmp += ' <td>'+ data[i].dataForm +'</td>';
+                        tmp += ' <td><a href="'+ data[i].blankUrl +'">'+ data[i].blankName +'</a></td>';
+                        tmp += ' <td><a href="'+ data[i].templateUrl +'">'+ data[i].templateName +'</a></td>';
+                        tmp += '</tr>';
+                    }
+                    $("#templateData").html(tmp);
+                }
+            });
+        }
+       function blankData() {
+           $.ajax({
+               url: '/data/getDataByDoooId',
+               data:{"doooId":$("#doooId").val()},
+               type: 'get',
+               success: function (data) {
+                   var tmp= '';
+                   for (var i in data){
+                       tmp += '<tr>';
+                       tmp += ' <td>'+ data[i].dataName +'</td>';
+                       tmp += ' <td>'+ data[i].remarks +'</td>';
+                       tmp += ' <td>'+ data[i].dataForm +'</td>';
+                       tmp += ' <td><a href="'+ data[i].blankUrl +'">'+ data[i].blankName +'</a></td>';
+                       tmp += ' <td><a href="'+ data[i].templateUrl +'">'+ data[i].templateName +'</a></td>';
+                       tmp += ' <td><button type="button" class="layui-btn layui-btn-xs" onclick="delBlankUrl('+ data[i].dataId +')">删除</button></td>';
+                       tmp += '</tr>';
+                   }
+                   $("#blankData").html(tmp);
+               }
+           });
+       }
+        function getDataEndingByDoooId() {
+            $.ajax({
+                url: '/dataEnding/getDataEndingByDoooId',
+                data:{"id":$("#doooId").val(),"type":1},
+                type: 'get',
+                success: function (data) {
+                    var tmp= '';
+                    for (var i in data){
+                        tmp += '<tr>';
+                        tmp += ' <td>'+ data[i].data_ending_name +'</td>';
+                        tmp += ' <td>'+ data[i].dataTypeName +'</td>';
+                        tmp += ' <td>'+ data[i].isElectronicLicense +'</td>';
+                        tmp += ' <td><a href="'+ data[i].blank_url +'">'+ data[i].blank_name +'</a></td>';
+                        tmp += ' <td><a href="'+ data[i].template_name +'">'+ data[i].template_url +'</a></td>';
+                        tmp += ' <td><button type="button" class="layui-btn layui-btn-xs" onclick="delDataEnding('+ data[i].data_ending_id +')">删除</button></td>';
+                        tmp += '</tr>';
+                    }
+                    $("#dataEnding").html(tmp);
+                }
+            });
+        }
+       function delBlankUrl(id) {
+           if (confirm("是否确定删除本项材料")){
+               $.ajax({
+                   url: '/data/delDataAndDooo',
+                   data:{"dataId":id,"doooId":$("#doooId").val()},
+                   type: 'post',
+                   success: function (data) {
+                       layer.alert("删除成功",function(){
+                           location.reload();
+                       });
+                   }
+               });
+           }
+       }
+
+       function delDataEnding(id) {
+           if (confirm("是否确定删除本项材料")){
+               $.ajax({
+                   url: '/dataEnding/delDataEndingAndDooo',
+                   data:{"dataEndId":id,"doooId":$("#doooId2").val()},
+                   type: 'post',
+                   success: function (data) {
+                       layer.alert("删除成功",function(){
+                           location.reload();
+                       });
+                   }
+               });
+           }
+
+       }
+    </script>
+
+</div>
+</body>
+</html>

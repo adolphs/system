@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"></meta>
+    <title>个人办事 - 政务服务事项自助查询</title>
+<!--    <meta name="SiteDomain" content="www.panyu.gov.cn">-->
+
+    <meta name="renderer" content="webkit"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
+    <link rel="shortcut icon" href="/images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/js/yjsfw/index.css" />
+    <script src="/js/jquery-2.1.1.min.js"></script>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        body{
+            margin: 5px;
+            font-size: 1.2rem;
+        }
+
+        ul{
+            list-style-type: none;
+        }
+
+        #panes {
+            clear: both;
+        }
+
+        h2 {
+            display: block;
+            font-size: 1.5em;
+            margin-block-start: 0.83em;
+            margin-block-end: 0.83em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            font-weight: bold;
+        }
+        a{
+            text-decoration: none;  //去掉下划线
+        color: #fff;
+        }
+        a:hover{
+            text-decoration: none;
+            color: #02aae9;
+        }
+    </style>
+    <script>
+        $(function(){
+            $("#bars td").click(function(){
+                $(this).addClass("current").siblings().removeClass("current");
+                var index = $("#bars td").index($(this));
+
+                $("#panes div:eq("+index+")").show().siblings().hide();
+
+            });
+        });
+
+        function showDes(){
+            var ossitems1 =document.getElementById("ssitems1").style.display;
+            if(ossitems1 == "none"){
+                alert("111");
+            } else {
+                $("#ssitems1").hide();
+                $("#ssitems2").show();
+            }
+        };
+
+        function showDes1(){
+            var ossitems1 =document.getElementById("ssitems1").style.display;
+            if(ossitems1 == "none"){
+                alert("111");
+            } else {
+                $("#ssitems1").hide();
+                $("#ssitems3").show();
+            }
+        };
+    </script>
+</head>
+<body>
+<form method="post" action="##" id="form1">
+    <div class="zwtop">
+        <div class="zwtopLeft">
+            欢迎您进入政务服务事项自助查询！</div>
+        <div class="zwtopRight">
+            <a href="../pyzwfw">返回首页</a></div>
+    </div>
+    <!--top结束-->
+    <div class="banner" style="background-color:#2E7AD2;">
+        <div class="banner2">
+            <div class="zwbt2">
+                <!--<img src="images/index_1.png" width="1024" height="130" />-->
+                <h1>广州市番禺区政务服务事项自助查询</h1>
+            </div>
+            <div class="cx">
+                <div class="cxLeft">
+                    <input name="T_KeyWord" type="text" value="请输入您想找的服务" id="T_KeyWord" class="wenzi1"/></div>
+                <div class="cxRight">
+                    <input type="image" name="IMG_Search" id="IMG_Search" src="/images/1.jpg" style="border-style:None;height:37px;width:60px;" /></div>
+            </div>
+            <!--<div id="hottype" class="rd">热点办事：<a href='itemList.aspx?tab=1&type=&code=22' >环境气象</a>、<a href='itemList.aspx?tab=1&type=&code=03' >教育</a>、<a href='itemList.aspx?tab=1&type=1&code=18' >民族宗教</a>、<a href='#' >质量检测</a>、<a href='itemList.aspx?tab=2&type=&code=18' >招标采购</a>、<a href='itemList.aspx?tab=2&type=1&code=03' >投资审批</a></div>-->
+            <div class="tubiao" id="tabs">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr id="bars">
+                        <td align="center" class="current">
+                            <a href="#">
+                                <img src="/images/index_2.png" width="115" height="115" border="0" alt=""></img></a>
+                        </td>
+                        <td align="center">
+                            <a href="#">
+                                <img src="/images/index_3.png" width="115" height="115" border="0"></img></a>
+                        </td>
+                        <td align="center">
+                            <a href="#">
+                                <img src="/images/index_4.png" width="115" height="115" border="0"></img></a>
+                        </td>
+                        <td align="center">
+                            <a href="#">
+                                <img src="/images/index_5.png" width="115" height="115" border="0"></img></a>
+                        </td>
+                        <td align="center">
+                            <a href="#">
+                                <img src="/images/index_6.png" width="115" height="115" border="0"></img></a>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--banner结束-->
+    <div class="zwmain">
+        <div class="zwmainLeft">
+            <div class="title1" style="background-color:#2E7AD2;">
+                <span id="l_TypeNnme">按部门</span></div>
+            <!--<div id="box_type" class="bumen"><div class="bumenlist"><ul><li><a href="#" title="市府办">市府办</a></li><li><a href="#" title="市民族宗教事务局">市民宗局</a></li></ul></div><div class="bumenlist"><ul><li><a href="itemList.aspx?tab=1&type=2&code=001008007012050&searchkey=" title="市机构编制委员会办公室">市编委办</a></li><li><a href="itemList.aspx?tab=1&type=2&code=001008007012073&searchkey=" title="中共市委、市人民政府信访局">市信访局</a></li></ul></div><div class="bumenlist"><ul><li><a href="itemList.aspx?tab=1&type=2&code=001008007012089&searchkey=" title="中共市委、市人民政府农业和农村工作办公室">市农办</a></li><li><a href="itemList.aspx?tab=1&type=2&code=001008007012059&searchkey=" title="市档案局">市档案局</a></li></ul></div><div class="bumenlist"><ul><li><a href="itemList.aspx?tab=1&type=2&code=001008007012115&searchkey=" title="团市委">团市委</a></li><li><a href="itemList.aspx?tab=1&type=2&code=001008007012114&searchkey=" title="市妇联">市妇联</a></li></ul></div><div class="bumenlist"><ul><li><a href="itemList.aspx?tab=1&type=2&code=001008007012056&searchkey=" title="市残疾人联合会">市残联</a></li><li><a href="itemList.aspx?tab=1&type=2&code=001008007012002&searchkey=" title="市发展和改革委员会（物价局）">市发改委（物...</a></li></ul></div><div class="bumenlist"><ul><li><a href="itemList.aspx?tab=1&type=2&code=001008007012003&searchkey=" title="市经济和信息化委员会">市经信委</a></li><li><a href="itemList.aspx?tab=1&type=2&code=001008007012004&searchkey=" title="市教育局">市教育局</a></li></ul></div><div class="bumenlist"><ul><li><a href="itemList.aspx?tab=1&type=2&code=001008007012005&searchkey=" title="市科学技术局（地震局）">市科技局</a></li><li><a href="itemList.aspx?tab=1&type=2&code=001008007012006&searchkey=" title="市公安局">市公安局</a></li></ul></div><div class="bumenlist"><ul><li><a href="itemList.aspx?tab=1&type=2&code=001008007012094&searchkey=" title="市国家安全局">市国家安全局</a></li></ul></div></div>-->
+            <div id="panes">
+                <div class="bumenlist"><ul><li><a href="#" title="纳税缴费">纳税缴费</a></li>
+                    <li><a href="#" title="职业资格">职业资格</a></li>
+                    <li><a href="#" title="户籍">户籍</a></li>
+                    <li><a href="#" title="出境入境">出境入境</a></li>
+                </ul>
+                </div>
+                <div style="display: none;" class="bumenlist">
+                    <ul><li><a href="#" title="市府办">市府办</a></li>
+                        <li><a href="#" title="市机构编制委员会办公室">市编委办</a></li>
+                        <li><a href="#" title="市档案局">市档案局</a></li>
+                    </ul>
+                </div>
+                <div style="display: none;" class="bumenlist">
+                    <ul><li><a href="#" title="设立变更">设立变更</a></li>
+                        <li><a href="#" title="投资审批">投资审批</a></li>
+                    </ul>
+                </div>
+                <div style="display: none;" class="bumenlist">
+                    <ul><li><a href="#" title="市府办" onclick="">市府办</a></li><li><a href="#" title="市民族宗教事务局">市民宗局</a></li>
+                        <li><a href="#" title="市机构编制委员会办公室">市编委办</a></li><li><a href="#" title="中共市委、市人民政府信访局">市信访局</a></li>
+                        <li><a href="#" title="中共市委、市人民政府农业和农村工作办公室">市农办</a></li><li><a href="#" title="市档案局">市档案局</a></li>
+                        <li><a href="#" title="团市委">团市委</a></li> <li><a href="#" title="市妇联">市妇联</a></li>
+                        <li><a href="#" title="市残疾人联合会">市残联</a></li> <li><a href="javascript:void(0)" onclick="showDes()" title="市发展和改革委员会（物价局）">市发改委（物...</a></li>
+                        <li><a href="#" title="市经济和信息化委员会">市经信委</a></li><li><a href="#" title="市教育局">市教育局</a></li>
+                        <li><a href="#" title="市科学技术局（地震局）">市科技局</a></li><li><a href="#" title="市公安局">市公安局</a></li>
+                        <li><a href="#" title="市国家安全局">市国家安全局</a></li><li><a href="javascript:void(0)" title="国土和规划建设" onclick="showDes1();">国土和规划建设</a></li>
+                    </ul>
+                </div>
+                <div style="display: none;" class="bumenlist">
+                    <ul><li><a href="#" title="资质认证">资质认证</a></li>
+                        <li><a href="#" title="文物保护">文物保护</a></li>
+                        <li><a href="#" title="教育科技">教育科技</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--zwmainLeft结束-->
+        <div class="zwmainRight">
+            <div class="title2">
+                <span id="l_TypeValue">个人办事 > 按部门 > 市发展和改革委员会（物价局）</span>
+                <div class="box_area">
+                    <span id="l_areaname">广州市</span>
+                </div>
+            </div>
+            <div id="box_itemList">
+                <div id="ssitems1">
+                    未查询到数据。
+                </div>
+
+                <!--粮食收购资格认定申请演示-->
+                <div id="ssitems2" style="display: none">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse: separate;border-spacing: 0px 10px;">
+                        <tr>
+                            <td><a href="../gzpy/fagaiwei/fg_list">粮食收购资格认定（新申请）</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="javascript:void(0);">粮食收购资格认定（延续）</a></td>
+                        </tr>
+                    </table>
+                </div>
+                <!--建筑规划演示用-->
+                <div id="ssitems3" style="display: none">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse: separate;border-spacing: 0px 10px;">
+                        <tr>
+                            <td><a href="/ztfw/matter">建设工程规划类许可证核发（建筑类）</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="../yjsfw/matter">建设工程规划类许可证调整（建筑类）</a></td>
+                        </tr>
+                    </table>
+                </div>
+                <br/></div>
+            <div id="page_link" class="zhuanye">
+
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <!--zwmain结束-->
+    <div class="footer">
+        <div class="wenzi2">
+            主页 | 关于我们 | 联系我们 | 设为首页 | 加入收藏</div>
+        <!--<div class="rx">&lt;!&ndash;<img src="images/8.jpg" width="250" height="47" />&ndash;&gt; </div>-->
+        <!--联系我们：020-12345-->
+        <div class="wenzi3">
+            总访问次数：58909419次 备案号：xxxxxx2号<br />
+            广州市番禺区便民服务平台 版权所有 xxx信息技术有限公司 技术支持</div>
+        <!--<div class="wenzi4"><img src="images/9.jpg" width="99" height="76" /></div>-->
+    </div>
+</form>
+</body>
+</html>

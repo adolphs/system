@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>情形引导-一件事一次办</title>
+    <link rel="stylesheet" href="/js/theme_matter/common.css"/>
+    <link rel="stylesheet" href="/js/theme_matter/item.css"/>
+    <script type="text/javascript" src="/js/theme_matter/jquery1.8.2.js"></script>
+    <script type="text/javascript" src="/js/theme_matter/common.js"></script>
+    <style type="text/css">
+        .content{width: 100%;}
+        .footer {
+            height: 120px;
+            background-color: #595959;
+        }
+        .wenzi2 {
+            text-align: center;
+            margin: auto;
+            padding-top: 30px;
+            color: #ffffff;
+            font-size: 13px;
+        }
+        .wenzi3 {
+            margin: auto;
+            width: 1024px;
+            text-align: center;
+            font-size: 13px;
+            color: #8b8e8e;
+            line-height: 26px;
+        }
+        .yjs-banner-pic .yjs-title {
+            top: 58px;
+        }
+
+        .yjs-banner-pic .yjs-title-pic li {
+            margin: 0 40px 20px 0;
+        }
+        /*zhu*/
+        .yjs-main .tabs li {
+            font-size: 24px;
+            margin-right: 30px;
+        }
+        .tempWrap{
+            width: 1024px;
+            margin-top: 20px;
+            margin-right: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+        }
+        .yjs-banner-pic .yjs-title-pic {
+            font-size: 16px;
+            color: #FFF;
+            position: absolute;
+            top: 62%;
+            left: 20%;
+            text-shadow: #888 0 0 10px;
+            width: 440px;
+        }
+        .yjs-banner-pic .yjs-title-pic li {
+            margin: 0 40px 20px 0;
+        }
+
+        .yjs-main .tabs li {
+            font-size: 24px;
+            margin-right: 30px;
+        }
+
+        .yjs-main .tabs a {
+            color: #0d1c28;
+            display: block;
+            padding: 0 6px;
+            height: 60px;
+            line-height: 60px;
+        }
+
+        /*一件事入欧*/
+        .xt_ztfw_list .fivc1 a {
+            height: auto;
+        }
+        /*图片设置*/
+        .fivc1 img {
+            border: none;
+            width: 232px;
+            height: 180px;
+        }
+        .fivc1:hover a {
+            color:#fff;
+        }
+        /* 用于选项卡tabPages */
+        .bars > li {
+            position:relative;  /* 让选项标签底边遮盖面板顶边一部分,看起来像连通一样 */
+            top:1px;
+        }
+
+        .bars > li.current {
+            /*background-color: #999999;*/
+            border-bottom: #f13939 solid 7px;
+        }
+
+        .panes > div {
+            height: 200px;
+            border: solid 0px #D8D8D8;
+            line-height:2;
+            padding:10px;
+        }
+        /*表单样式*/
+        /*奇数*/
+        table tr:nth-child(odd){
+            background: #f6f6f6;
+        }
+        /*偶数*/
+        table tr:nth-child(even){
+            background: #ffffff;
+        }
+        .tablecl tr:hover
+        {
+            background:#e7e7e7;
+            color: cornflowerblue;
+            border: 1px solid cornflowerblue;
+        }
+        /*搜索框*/
+        .search {
+            position: relative;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .fr {
+            float: right!important;
+        }
+        .search input {
+            width: 218px;
+            height: 36px;
+            font-size: 14px;
+            text-indent: 10px;
+            border: 1px solid #dfe1e2;
+        }
+        .search button {
+            width: 50px;
+            height: 38px;
+            color: #fff;
+            font-size: 14px;
+            margin-left: 10px;
+            vertical-align: top;
+            background-color: #5294f7;
+        }
+        .header-logo a{
+            padding-left: 42px;
+            background: url(http://static.gdzwfw.gov.cn/mhyy/20180827/6d4851fe-fdcd-406d-ae2e-5dd0e5f68929.png) no-repeat left center transparent;
+            background-size: 32px 32px;
+        }
+        /*情形样式*/
+        h4 {
+            font-size: 14px;
+            color: #666666;
+            margin-top: 10px;
+        }
+        .ul_box {
+            margin:0 auto;
+            padding:0;
+            list-style:none;
+            /*width:600px;*/
+            margin-top: 10px;
+        }
+        .ul_box>li {
+            /*padding:10px 10px 0 10px;*/
+            padding:2px 10px 0 10px;
+            overflow:hidden;
+            border-bottom:#e5e5e5 solid 1px;
+        }
+        .ul_box>li:last-child {
+            border-bottom:none;
+        }
+        .ul_box>li>div {
+            float:left;
+        }
+        .ul_box>li>div:nth-child(1) {
+            width:100px;
+        }
+        .ul_box>li>div:nth-child(2) {
+            width:480px;
+            overflow:hidden;
+        }
+        .label_box>label {
+            display:block;
+            float:left;
+            margin:0 10px 10px 0;
+            position:relative;
+            overflow:hidden;
+        }
+        .label_box>label>input {
+            position:absolute;
+            top:0;
+            left:-20px;
+        }
+        .label_box>label>div {
+            width:100px;
+            text-align:center;
+            border:#dddddd solid 1px;
+            height:30px;
+            line-height:30px;
+            color:#666666;
+            user-select:none;
+            overflow:hidden;
+            position:relative;
+            background-color: floralwhite;
+        }
+        .label_box>label>input:checked + div {
+            border:#d51917 solid 1px;
+            color:#d51917;
+        }
+        .label_box>label>input:checked + div:after {
+            content:'';
+            display:block;
+            width:20px;
+            height:20px;
+            background-color:#d51917;
+            transform:skewY(-45deg);
+            position:absolute;
+            bottom:-10px;
+            right:0;
+            z-index:1;
+        }
+        .label_box>label>input:checked + div:before {
+            content:'';
+            display:block;
+            width:3px;
+            height:8px;
+            border-right:#ffffff solid 2px;
+            border-bottom:#ffffff solid 2px;
+            transform:rotate(35deg);
+            position:absolute;
+            bottom:2px;
+            right:4px;
+            z-index:2;
+        }
+    </style>
+    <script>
+
+        $(function () {
+            $("#submit_button1").click(function () {
+                // var val=$(this).val();
+                // alert(val);
+                console.log("1111---")
+                $.ajax({
+                    type : "post",
+                    url : "/theme_matter/materialList",
+                    data : $('#inputForm').serialize(),
+                    cache:false,
+                    dataType: "json",
+                    success:function(data){
+                        console.log("==success==");
+                        console.log(data);
+                        // $('#workeDate').val(data);
+                        window.location.href = "/theme_matter/materialList";
+                    },
+                    error:function(data){
+                        console.log("--error---")
+                        console.log(data)
+                        window.location.href = "/theme_matter/materialList";
+                    }
+                })
+            })
+        });
+    </script>
+    <script type="text/javascript">
+        function myFunction(e){
+            var nae = "workeDate" + e.name;
+            var value = e.value;
+            console.log("nae="+ nae);
+            console.log("value="+ value);
+            $.ajax({
+                type : "post",
+                url : "/theme_matter/child_situation?ids=8989",
+                data : {sdid: e.id},
+                cache:false,
+                dataType: "json",
+                success:function(data){
+                    // console.log(data);
+                    // $('#workeDate').val(data);
+                    // $("#workeDate").append(data.responseText);
+                    // window.location.href = "/child_situation?ids=14572";
+                },
+                error:function(data){
+                    // console.log("error")
+                    // console.log(data)
+                    $("#" + nae).after(data.responseText);//after
+                    // $(data.responseText).after('#"'+nae+'"');
+                    $("#" + nae).listview("refresh");
+                }
+            })
+
+        }
+        //
+        $(function(){
+            $(".bars li").click(function(){
+                $(this).addClass("current").siblings().removeClass("current");
+                var index = $(".bars li").index($(this));
+                $(".panes div:eq("+index+")").show().siblings().hide();
+//                $("#bumenlist3").hide();
+//                $("#bumenlist4").hide();
+            });
+        });
+
+        /**点击后换色**/
+        $(function() {
+            $(".cur").click(function() {
+                // $(this).toggleClass("blue");
+                $(this).addClass("current").siblings().removeClass("current");
+
+            });
+        });
+        ;
+    </script>
+</head>
+<body>
+<form method="post" id="inputForm" action="../theme_matter/materialList">
+    <!-- 头部 -->
+    <div class="header">
+        <div class="width">
+            <!--<h1 class="header-logo fl">-->
+            <!--<img src="http://zsbs.zs.gov.cn/skin/oneThing/images/logo-1.png" alt="" />-->
+            <!--</h1>-->
+            <h1 class="header-logo"><a href="http://www.gdzwfw.gov.cn/">广东政务服务网</a></h1>
+            <div class="header-title">番禺区一件事主题式导办</div>
+
+        </div>
+    </div>
+    <!-- 中间内容-->
+    <div class="content">
+        <div class="content" style="min-height:680px;overflow:hidden;">
+            <div class="tempWrap" >
+                <span style="color: #0d1c28;line-height: 60px;font-size: 24px;width: 100%;background-color: #E7E7E7;">智能导服，为您提供准确办事引导</span>
+                <div class="materialSelf" style="background: rgb(255, 255, 255); margin-top: 18px;">
+                    <input type="hidden" name="did" th:value="${did}" id="sceneDid"/>
+                    <!--     mapList-->
+                    <span id="workeDate">
+                <h4 th:each="malt,maltStar:${situationList}" th:id="'workeDate' + ${malt.situationId}">
+                    <span th:text="${maltStar.index + 1} + '、' + ${malt.situationDescribe}" th:id="${malt.situationId}"></span>
+                    <ul class="ul_box">
+                        <li>
+                            <div></div><br/>
+                            <div class="label_box">
+                                <label th:each="mapS:${malt.situatDesList}">
+                                    <input type="radio" th:name="${mapS.situationId}" th:value="${mapS.situationDetailsId}" onclick="myFunction(this);" th:id="${mapS.situationDetailsId}"/>
+                                    <div th:text="${mapS.detailsDescribe}" th:title="${mapS.detailsDescribe}">
+                                    </div>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                    <!--                    <span th:if="${malt.situationLevel lt 1}" >-->
+                    <!--                            <span> 小于1</span>-->
+                    <!--                    </span>-->
+                    <!--                    <span th:if="${malt.situationLevel gt 1}" >-->
+                    <!--                            <span> 大于>1</span>-->
+                    <!--                    </span>-->
+                </h4>
+            </span><hr/>
+                </div>
+            </div>
+            <!--  button -->
+            <div style="margin-right: 10%;" class="search fr">
+                <button type="button" id="submit_button11" onclick="fbtncl();" style="width: 128px;">线下办理</button>
+                <button type="button" onclick="toSearch()" style="width: 128px;">网上办理</button>
+                <!--<input type="submit" class="button" value="下一步" style="float: right; margin-right: 10px; margin-bottom: 20px;"/>-->
+                <!--<input type="submit" class="button" value="返回" style="float: right; margin-right: 10px; margin-bottom: 20px;"/>-->
+            </div>
+        </div>
+        <!--  -->
+        <div class="mt80"></div>
+    </div>
+    <!-- footer -->
+    <div class="footer">
+        <div class="wenzi2">
+            主页 | 关于我们 | 联系我们 | 设为首页 | 加入收藏</div>
+        <div class="wenzi3">
+            总访问次数：58909419次 备案号：xxxxxx2号<br />
+            广州市番禺区便民服务平台 版权所有 xxx信息技术有限公司 技术支持</div>
+    </div>
+</form>
+</body>
+<script>
+    function fbtncl(){
+        document.getElementById("inputForm").submit();
+    }
+</script>
+</html>

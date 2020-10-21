@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<style>
+    .top{
+        margin-top:10px;
+        width: 100%;
+        /*background-color: #00B83F;*/
+    }
+    .top1{
+        width: 50%;
+
+        float: left;
+        /*background-color: #00b8b8;*/
+    }
+    .top2{
+        width: 50%;
+
+        float: left;
+        /*background-color: #6200b8;*/
+    }
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 116px">当前情形名称</label>
+                <div class="layui-input-inline">
+                    <input id="situationDescribe2" name="situationDescribe" th:value="${situation.situationDescribe}" autocomplete="off" class="layui-input" type="text" style="width: 300px"/>
+                </div>
+            </div>
+
+        </form>
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+        <button class="layui-btn layui-btn-normal" onclick="addUser()">新增子情形</button>
+
+        <div class="top">
+            <table class="layui-table" id="toolt">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>子情形名称</th>
+                    <th>子情形类型</th>
+                    <th>子情形形态</th>
+                    <th>子情形级别</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="datas,loopStatus:${situatios}" th:class="${loopStatus}">
+                        <td th:text="${loopStatus.count}" style="width: 80px;"></td>
+                        <td th:text="${datas.situationDescribe}"></td>
+                        <td th:text="${datas.type==1?'单选':'多选'}"></td>
+
+                        <td th:if="${datas.nodesType} eq 0">最终情形</td>
+                        <td th:if="${datas.nodesType} eq 1">节点情形</td>
+                        <td th:if="${datas.nodesType} eq 2">材料情形</td>
+                        <td th:text="${datas.situationLevel}"></td>
+                        <td>
+                            <a class="layui-btn layui-btn-xs" th:onclick="'sel('+ ${datas.situationId} + ')'">查看</a>
+<!--                            <a class="layui-btn layui-btn-xs" th:onclick="'edit('+ ${datas.situationId} + ')'">编辑</a>-->
+                            <a class="layui-btn layui-btn-xs" th:onclick="'edit('+ ${datas.situationId} + ','+ ${datas.type} +','+ ${datas.nodesType} +',\''+${datas.situationDescribe} +'\')'">编辑</a>
+                            <a class="layui-btn layui-btn-xs" th:onclick="'del('+ ${datas.situationId} + ')'">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-left: 47%">
+            <a onclick="fanhui()" class="layui-btn layui-btn-normal">返回</a>
+        </div>
+    </div>
+
+
+    <!--添加或编辑用户-->
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 600px">
+        <form id="doooForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input id="pid" type="hidden" th:value="${situation.situationId}" name="pid"/>
+            <input id="departmentId" type="hidden" th:value="${situation.departmentId}" name="departmentId"/>
+            <input id="doooId" type="hidden" th:value="${doooId}" name="doooId"/>
+            <input id="situationId" type="hidden" name="situationId"/>
+            <input id="situationLevel" type="hidden" th:value="${situation.situationLevel}+1" name="situationLevel"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">归属情形</label>
+                <div class="layui-input-inline">
+                    <input name="situationDescribe" lay-verify="required" th:value="${situation.situationDescribe}" autocomplete="off" class="layui-input" type="text" disabled ="disabled" style="width: 390px"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形名称</label>
+                <div class="layui-input-inline">
+                    <input id="situationDescribe" name="situationDescribe" lay-verify="required" autocomplete="off" class="layui-input" type="text" style="width: 390px;"/>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形类型</label>
+                <div class="layui-input-block">
+                    <select name="nodesType" lay-verify="required" id="nodesType">
+                        <option value=""></option>
+                        <option value="0">最终情形</option>
+                        <option value="1">节点情形</option>
+                        <option value="2">材料情形</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形状态</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-verify="required" id="type">
+                        <option value=""></option>
+                        <option value="1">单选</option>
+                        <option value="2">多选</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/situation/situationDetails.js"></script>
+    <script>
+        /*<![CDATA[*/
+        function fanhui() {
+            window.history.back();
+        }
+        layui.use('upload', function(){
+            var upload = layui.upload;
+
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#test1' //绑定元素
+                ,url: '/upload/' //上传接口
+                ,done: function(res){
+                    //上传完毕回调
+                }
+                ,error: function(){
+                    //请求异常回调
+                }
+            });
+        });
+
+        layui.use(['form', 'upload', 'layer'], function () {
+
+            var form = layui.form;
+            //检查项目添加到下拉框中
+            $.ajax({
+                url: '/department/getDepartments',
+                dataType: 'json',
+                type: 'get',
+                success: function (data) {
+                    $.each(data, function (index, item) {
+                        $('#departmentSearch').append(new Option(item.departmentName, item.departmentId));// 下拉菜单里添加元素
+                        $('#departmentInsert').append(new Option(item.departmentName, item.departmentId));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
+
+                    //重新渲染 固定写法
+                }
+            });
+
+            form.on('select(department)',function (data) {
+                $.ajax({
+                    url: '/dooo/getDoooList',
+                    dataType: 'json',
+                    data:{"departmentId":data.value},
+                    type: 'get',
+                    success: function (data) {
+                        var tmp='<option value="">请选择</option>';
+                        for (var i in data){
+                            tmp +='<option value="'+data[i].doooId+'">'+data[i].doooName+'</option>';
+                        }
+                        $("#doooInsert").html(tmp);
+                        layui.form.render("select");
+
+                        //重新渲染 固定写法
+                    }
+                });
+
+            });
+            form.on('select(department2)',function (data) {
+                $.ajax({
+                    url: '/dooo/getDoooList',
+                    dataType: 'json',
+                    data:{"departmentId":data.value},
+                    type: 'get',
+                    success: function (data) {
+                        var tmp='<option value="">请选择</option>';
+                        for (var i in data){
+                            tmp +='<option value="'+data[i].doooId+'">'+data[i].doooName+'</option>';
+                        }
+                        $("#doooSearch").html(tmp);
+                        layui.form.render("select");
+
+                        //重新渲染 固定写法
+                    }
+                });
+
+            });
+        });
+        function del(id) {
+            if (confirm("删除情形会导致对应的情形或情形材料同步删除或者取消关联")){
+                $.ajax({
+                    url: '/situation/delSituation',
+                    data:{'situationId':id},
+                    type: 'post',
+                    success: function (data) {
+                        console.log(data)
+                        if (data == "ok") {
+                            layer.alert("操作成功",function(){
+                                location.reload();
+                            });
+                        }else{
+                            layer.alert(data,function(){
+
+                            });
+                        }
+                        //重新渲染 固定写法
+                    }
+                });
+            }
+        }
+        function sel(id) {
+            window.location.href="/situation/situationDetails?situationId="+id;
+        }
+
+        function addWEB() {
+            var comboId = $("#id").val();
+            window.location.href="/combo/comboDetails?id="+comboId;
+        }
+
+        function edit(id,type,nodesType,name) {
+            $("#situationDescribe").val(name);
+            $("#situationId").val(id);
+            var htp='',hmp='';
+            if (nodesType == 1){
+                htp+= '  <option value="0">最终情形</option>' +
+                      '  <option value="1" selected>节点情形</option>'+
+                      '  <option value="2">材料情形</option>'  ;
+            }else if (nodesType == 0){
+                htp+= '  <option value="0" selected>最终情形</option>' +
+                    '  <option value="1" >节点情形</option>'+
+                    '  <option value="2">材料情形</option>'  ;
+            }else if(nodesType == 2){
+                htp+= '  <option value="0">最终情形</option>' +
+                    '  <option value="1" >节点情形</option>'+
+                    '  <option value="2"  selected>材料情形</option>'  ;
+            }
+            if (type == 1){
+                hmp += '<option value="1" selected>单选</option>' +
+                    ' <option value="2" >多选</option>';
+            }else{
+                hmp += '<option value="1" >单选</option>' +
+                    ' <option value="2" selected>多选</option>';
+            }
+            $("#nodesType").html(htp);
+            $("#type").html(hmp);
+            layui.form.render("select");
+            openUser(id,"修改情形");
+        }
+        /*]]>*/
+    </script>
+
+</div>
+</body>
+</html>

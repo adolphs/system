@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.dao.ComboMapper" >
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.Combo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dooo_id" property="doooId" jdbcType="INTEGER" />
+    <result column="combo_name" property="comboName" jdbcType="VARCHAR" />
+    <result column="new_time" property="newTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="approval_type" property="approvalType" jdbcType="INTEGER" />
+    <result column="put_text" property="putText" jdbcType="VARCHAR" />
+    <result column="approval_text" property="approvalText" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="flow_chart_url" property="flowChartUrl" jdbcType="VARCHAR" />
+  </resultMap>
+    <resultMap id="BaseResultMap2" type="com.wyait.manage.entity.ComboSituationVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="situation_describe" property="situationDescribe" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getCombos"  resultType="com.wyait.manage.entity.ComboVo">
+        select * from `combo`
+      <where>
+        1=1
+        <if test="combo.comboName!=null and combo.comboName!=''">
+          AND combo.combo_name like CONCAT(CONCAT('%',#{combo.comboName},'%'),
+          '%')
+        </if>
+        <if test="combo.approvalType != null and combo.approvalType != null">
+            and approval_type = #{combo.approvalType}
+        </if>
+      </where>
+      order by new_time desc
+  </select>
+
+  <select id="getDoooCount" resultType="com.wyait.manage.pojo.ComboDooo">
+        select * from combo_dooo where combo_id = #{comboId}
+  </select>
+
+    <select id="getDepartmentCount" resultType="int">
+        select count(DISTINCT dt.department_id) from combo_dooo cd inner join dooo d on d.dooo_id = cd.dooo_id
+        inner join department dt on d.department_id = dt.department_id
+        where cd.combo_id = #{comboId}
+    </select>
+
+    <insert id="insert" parameterType="com.wyait.manage.pojo.Combo">
+         insert into `combo` ( combo_name,new_time,update_time,approval_type,put_text,approval_text,type,flow_chart_url)
+		values (#{combo.comboName,jdbcType=VARCHAR},#{combo.newTime,jdbcType=TIMESTAMP},#{combo.updateTime,jdbcType=TIMESTAMP},
+		#{combo.approvalType,jdbcType=INTEGER},#{combo.putText,jdbcType=VARCHAR},#{combo.approvalText,jdbcType=VARCHAR},#{combo.type,jdbcType=INTEGER},#{combo.flowChartUrl,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getComboByTime" resultType="com.wyait.manage.pojo.Combo">
+        select id,combo_name,new_time,update_time from `combo` order by new_time DESC LIMIT 1
+    </select>
+
+    <insert id="insertComboDooo" parameterType="com.wyait.manage.pojo.ComboDooo">
+        insert into combo_dooo ( combo_id,dooo_id)
+		values (#{comboDooo.combo_id,jdbcType=INTEGER},#{comboDooo.dooo_id,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="delComboDooo" parameterType="int">
+         DELETE FROM combo_dooo WHERE combo_id = #{comboId}
+    </delete>
+
+    <delete id="delCombo" parameterType="int">
+         DELETE FROM `combo` WHERE id = #{comboId}
+    </delete>
+
+    <select id="getComboById" resultType="com.wyait.manage.pojo.Combo">
+        select * from `combo` where id = #{id}
+    </select>
+
+    <select id="getDoooByComboId" resultType="com.wyait.manage.pojo.Dooo">
+        select d.* from dooo d inner join combo_dooo cd on cd.dooo_id = d.dooo_id where cd.combo_id = #{id}
+        <if test="departmentId != null and departmentId != ''">
+            and d.department_id = #{departmentId}
+        </if>
+    </select>
+
+    <select id="getSituaionVObyDoooId" resultType="com.wyait.manage.pojo.Situation">
+        select * from situation where dooo_id in
+        <foreach item="ids" index="index" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </select>
+
+    <select id="getDepartmentByDoooId" resultType="com.wyait.manage.pojo.Department">
+        select DISTINCT d.* from department d inner join dooo d2 on d.department_id = d2.department_id where  dooo_id in
+        <foreach item="ids" index="index" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </select>
+
+    <select id="getComboDoooByComboId" resultType="map">
+        select combo_id,dooo_id from combo_dooo where combo_id = #{id} and dooo_id = #{doooId}
+    </select>
+
+    <delete id="delComboDoooByComboIdByDoooId" parameterType="int">
+       DELETE FROM combo_dooo WHERE combo_id = #{combo_id} and dooo_id = #{dooo_id}
+    </delete>
+
+    <update id="updateComboDooo" parameterType="com.wyait.manage.pojo.Combo">
+        update `combo`
+        <set>
+            <if test="combo.comboName != null and combo.comboName != ''">
+                combo_name = #{combo.comboName,jdbcType=VARCHAR},
+            </if>
+            <if test="combo.type != null and combo.type != ''">
+                type = #{combo.type},
+            </if>
+            <if test="combo.flowChartUrl != null">
+                flow_chart_url = #{combo.flowChartUrl},
+            </if>
+            update_time = #{combo.updateTime,jdbcType=TIMESTAMP}
+        </set>
+        where id = #{combo.id,jdbcType=INTEGER}
+    </update>
+
+    <select id="getSituationList" resultType="com.wyait.manage.entity.SituationVO">
+
+    </select>
+
+    <select id="getComboSituationList" resultType="com.wyait.manage.entity.ComboSituationVO">
+        select id,situation_describe as situationDescribe,new_time as newTime,type,nodes_type as nodesType from combo_situation where combo_id = #{comboSituation.comboId} and situation_level = 1
+    </select>
+
+    <select id="getComboSituationDetailsBySituationId" resultType="com.wyait.manage.pojo.ComboSituationDetails">
+        select * from combo_situation_details where combo_situation_id = #{id}
+    </select>
+
+    <insert id="addComboSituation" parameterType="com.wyait.manage.pojo.ComboSituation">
+        insert into combo_situation ( situation_describe,combo_id,new_time,update_time,type,pid)
+		values (#{comboSituation.situationDescribe},#{comboSituation.comboId},#{comboSituation.newTime},#{comboSituation.updateTime},#{comboSituation.type},#{comboSituation.pid})
+    </insert>
+
+    <select id="selectComboSituation" resultType="com.wyait.manage.pojo.ComboSituation">
+        select * from combo_situation order by new_time DESC LIMIT 1
+    </select>
+
+    <insert id="insestComboSituationDetails" parameterType="com.wyait.manage.pojo.ComboSituationDetails">
+        insert into combo_situation_details ( details_describe,combo_situation_id)
+		values (#{comboSituationDetails.detailsDescribe},#{comboSituationDetails.comboSituationId})
+    </insert>
+
+    <delete id="delComboSituationDetails" parameterType="int">
+        delete  from combo_situation_details where combo_situation_id = #{id}
+    </delete>
+
+    <update id="updateComboSituation">
+        update combo_situation set situation_describe = #{situationDescribe} where id = #{id}
+    </update>
+
+    <select id="getIdByNodesType" resultType="int">
+        select id from combo_situation where nodes_type in (0,2) and combo_id = #{comboId}
+    </select>
+
+    <select id="getSituationPid" resultType="com.wyait.manage.pojo.ComboSituation">
+        select * from combo_situation where pid = #{situationId} and situation_describe = #{situationDescribe}
+    </select>
+
+    <select id="getSituationId" resultType="com.wyait.manage.pojo.ComboSituation">
+        select * from combo_situation where id = #{situationId}
+    </select>
+
+    <select id="getSituationPidTow" resultType="com.wyait.manage.pojo.ComboSituation">
+        select * from combo_situation where pid = #{situationId} and situation_describe = #{situationDescribe} and id != #{situationIdTOW}
+    </select>
+
+    <update id="updateSituation" parameterType="com.wyait.manage.pojo.ComboSituation">
+        update combo_situation set
+        situation_describe = #{comboSituation.situationDescribe}
+        , type = #{comboSituation.type}
+        , update_time = #{comboSituation.updateTime}
+        where id = #{comboSituation.id}
+    </update>
+
+    <update id="sendBackApprovalType">
+        update `combo` set approval_type = #{approvalType} where id = #{comboId}
+    </update>
+
+    <update id="putApprovalType">
+        update `combo` set approval_type = #{approvalType},put_text = #{approvalText} where id = #{comboId}
+    </update>
+
+    <update id="passApprovalType">
+        update `combo` set approval_type = #{approvalType},approval_text = #{approvalText} where id = #{comboId}
+    </update>
+
+    <select id="findAllCombo" resultType="com.wyait.manage.pojo.Combo">
+        SELECT  id,combo_name,approval_type,put_text,approval_text,'onether'
+        FROM  combo
+        order by new_time desc
+    </select>
+    <!--    查一件事套餐情形    -->
+    <select id="findAllComboSituation" parameterType="Integer" resultType="com.wyait.manage.pojo.ComboSituation">
+        select * from combo_situation where situation_level=1 and combo_id = #{comboId}
+    </select>
+    <!-- 涉及到事项数量，入驻套餐数量   -->
+    <select id="fetchMattersNums" resultType="java.util.HashMap">
+        SELECT count(1) as involvedNum ,(SELECT count(1) FROM combo) as matters
+        FROM combo_dooo cdo
+        LEFT JOIN combo cm ON cdo.combo_id=cm.id
+    </select>
+
+    <select id="APIComboList" resultType="com.wyait.manage.pojo.Combo">
+        select * from combo
+    </select>
+
+    <!-- 查询套餐数量 -->
+    <select id="countCombo" resultType="int">
+        select count(*) from combo
+    </select>
+
+    <!-- 查询套餐涉及到的事项数量 -->
+    <select id="countDoooByCombo" resultType="int">
+        SELECT
+            count( DISTINCT dooo_id )
+        FROM
+            combo_dooo
+    </select>
+
+    <!-- 根据套餐id查询所有的情形 -->
+    <select id="querySituationByComboId" resultType="com.wyait.manage.pojo.ComboSituation">
+        SELECT
+            *
+        FROM
+            `combo_situation`
+        WHERE
+            combo_id = #{comboId}
+    </select>
+
+    <!-- 根据套餐ID查询涉及的所有部门 -->
+    <select id="getDepartmentByComboId" resultType="com.wyait.manage.pojo.Department">
+        SELECT
+            DISTINCT d.*
+        FROM
+            department d
+            INNER JOIN dooo d2 ON d2.department_id = d.department_id
+            INNER JOIN combo_dooo cd ON cd.dooo_id = d2.dooo_id
+        WHERE
+            cd.combo_id = #{comboId}
+    </select>
+
+    <select id="getComboByIds" resultType="com.wyait.manage.pojo.Combo">
+        select c.* from combo c inner join
+        (
+            SELECT
+                combo_id,
+                count(combo_id)
+                    FROM
+                            visit_count
+                    WHERE
+                            MONTH ( visit_time ) = MONTH ( curdate( ) )
+                            AND YEAR ( visit_time ) = YEAR ( curdate( ) )
+                            AND combo_id is not null
+                    GROUP BY
+                            combo_id
+                    ORDER BY
+                            count(combo_id) desc
+                    limit 10
+        ) m on m.combo_id = c.id
+    </select>
+</mapper>

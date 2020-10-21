@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">材料名称</label>
+                <div class="layui-input-inline">
+                    <input id="dataName1" name="dataName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+
+<!--            <div class="layui-form-item  layui-col-md4">-->
+<!--                <label class="layui-form-label">所属部门</label>-->
+<!--                <div class="layui-input-block">-->
+<!--                    <select name="departmentId" id="departmentSearch" autocomplete="off">-->
+<!--                        <option value=""></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">提交</button>
+<!--            </div>-->
+        </form>
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+        <button class="layui-btn layui-btn-normal" onclick="addUser()">新增材料</button>
+
+        <table id="uesrList" lay-filter="userTable"></table>
+        <div style="display:none;" id="currentUser"><shiro:principal property="id"></shiro:principal></div>
+
+        <script type="text/html" id="jobTpl">
+            {{#  if(!d.job){ }}
+            <input type="checkbox" name="{{d.username}}_{{d.version}}" value="{{d.id}}" lay-skin="switch" lay-text="在职|离职" lay-filter="isJobTpl" checked="checked" />
+            {{#  } else { }}
+            <input type="checkbox" name="{{d.username}}_{{d.version}}" value="{{d.id}}" lay-skin="switch" lay-text="在职|离职" lay-filter="isJobTpl"/>
+            {{#  } }}
+        </script>
+
+        <script type="text/html" id="optBar">
+            <a class="layui-btn layui-btn-xs" lay-event="select">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            {{#  if(d.del){ }}
+            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="recover">恢复</a>
+            {{#  } else { }}
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            {{#  } }}
+        </script>
+    </div>
+
+
+    <!--添加或编辑用户-->
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;">
+        <form id="doooForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input id="dataId" type="hidden" name="dataId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">材料名称</label>
+                <div class="layui-input-inline">
+                    <input id="dataName" name="dataName" lay-verify="required" autocomplete="off" class="layui-input" type="text" style="width: 390px" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">空表名称</label>
+                <div class="layui-input-inline">
+                    <input id="blankName" name="blankName"  autocomplete="off" class="layui-input" type="text" placeholder="地址来源政务服务网，如果没有不需要填写" style="width: 390px"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">空表地址</label>
+                <div class="layui-input-inline">
+                    <input id="blankUrl" name="blankUrl"  autocomplete="off" class="layui-input" type="text" placeholder="地址来源政务服务网，如果没有不需要填写" style="width: 390px"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">示例名称</label>
+                <div class="layui-input-inline">
+                    <input id="templateName" name="templateName"  autocomplete="off" class="layui-input" placeholder="地址来源政务服务网，如果没有不需要填写" type="text" style="width: 390px"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">示例地址</label>
+                <div class="layui-input-inline">
+                    <input id="templateUrl" name="templateUrl"  autocomplete="off" class="layui-input" placeholder="地址来源政务服务网，如果没有不需要填写" type="text" style="width: 390px"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">材料类型</label>
+                <div class="layui-input-block">
+                    <select name="dataType" lay-verify="required" id="departmentInsert">
+                        <option value=""></option>
+                        <option value="1">通用材料</option>
+                        <option value="2">情形材料</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">材料形式</label>
+                <div class="layui-input-block">
+                    <textarea name="dataForm"  lay-verify="required" placeholder="材料形式" class="layui-textarea" id="dataForm"></textarea>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">填表须知</label>
+                <div class="layui-input-block">
+                    <textarea name="remarks"  placeholder="填表须知" class="layui-textarea" id="remarks"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/data/dataList.js"></script>
+</div>
+</body>
+</html>

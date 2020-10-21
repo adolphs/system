@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.dao.VisitCountMapper" >
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.VisitCount" >
+    <id column="visit_count_id" property="visitCountId" jdbcType="VARCHAR" />
+    <result column="combo_id" property="comboId" jdbcType="INTEGER" />
+    <result column="visit_time" property="visitTime" jdbcType="TIMESTAMP" />
+    <result column="user_ip" property="userIp" jdbcType="VARCHAR" />
+    <result column="visit_type" property="visitType" jdbcType="INTEGER" />
+    <result column="dooo_id" property="doooId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.wyait.manage.pojo.LogSystem">
+       insert into visit_count (visit_count_id,combo_id,visit_time,user_ip,visit_type,dooo_id)
+		values (#{visitCountId},#{comboId},#{visitTime},#{userIp},#{visitType},#{doooId})
+  </insert>
+
+  <select id="countCombo" resultType="int">
+        select count(*) from visit_count where month(visit_time) = month(curdate()) and year(visit_time) = year(curdate()) and combo_id is not null
+  </select>
+
+  <select id="getHotComboIds" resultType="int">
+    SELECT
+	combo_id
+    FROM
+        visit_count
+    WHERE
+        MONTH ( visit_time ) = MONTH ( curdate( ) )
+        AND YEAR ( visit_time ) = YEAR ( curdate( ) )
+        AND combo_id is not null
+    GROUP BY
+        combo_id
+    ORDER BY
+        count(combo_id) desc
+    limit 10
+  </select>
+
+    <select id="getDoooCount" resultType="int">
+        select count(*) from visit_count where month(visit_time) = month(curdate()) and year(visit_time) = year(curdate()) and dooo_id is not null
+    </select>
+</mapper>

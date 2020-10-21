@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">套餐名称</label>
+                <div class="layui-input-inline">
+                    <input id="comboName" name="comboName" autocomplete="off" class="layui-input" type="text" style="width: 325px"/>
+                </div>
+            </div>
+
+<!--            <div class="layui-form-item" style="width: 435px">-->
+<!--                <label class="layui-form-label">所属部门</label>-->
+<!--                <div class="layui-input-block">-->
+<!--                    <select name="departmentId" lay-verify="required" id="departmentInsert" lay-filter="department">-->
+<!--                        <option value=""></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="layui-form-item" style="width: 435px">-->
+<!--                <label class="layui-form-label">所属事项</label>-->
+<!--                <div class="layui-input-block">-->
+<!--                    <select name="doooId" lay-verify="required" id="doooInsert">-->
+<!--                        <option value=""></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="layui-form-item" style="width: 435px">
+                <label class="layui-form-label">套餐类型</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-verify="required" id="type">
+                        <option value=""></option>
+                        <option value="商事经营">商事经营</option>
+                        <option value="建设工程">建设工程</option>
+                    </select>
+                </div>
+            </div>
+
+            <!--************这里是上传图片的代码***************-->
+            <!--************这里添加的隐藏的输入框，用来传递images的参数***************-->
+            <input type="hidden" name="flowChartUrl" id="flowChartUrl" class="image" />
+            <div class="layui-form-item">
+                <label class="layui-form-label ">流程图上传</label>
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="test1">上传文件</button>
+                    <div class="layui-upload-list">
+                        <p id="demoText1"></p>
+                        <img  id='imgg' src="" style="width: 1000px;height: 300px;display: none"/>
+                    </div>
+                </div>
+            </div>
+            <!--************上面里是上传图片的代码***************-->
+
+            <div class="layui-form-item  layui-col-md4">
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+<!--                <button class="layui-btn" onclick="add()">提交</button>-->
+                <input type="button" onclick="add()" class="layui-btn" value="提交" />
+            </div>
+
+        </form>
+
+    </div>
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+<!--    <script src="/js/combo/comboList.js"></script>-->
+    <script>
+        layui.use('upload', function(){
+            var $ = layui.jquery
+                ,upload = layui.upload;
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test1'
+                ,url: '/combo/upload'
+                ,accept:'file'
+                ,size:50000
+                ,before: function(obj){
+
+                    obj.preview(function(index, file, result){
+                        $('#demo1').attr('src', result);
+                    });
+                }
+                ,done: function(res){
+                    //如果上传失败
+                    if(res.code > 0){
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功
+                    var demoText = $('#demoText1');
+                    demoText.html('<span style="color: #4cae4c;">'+ res.data.jieshi +'上传成功</span>');
+                    var flowChartUrl = $("#flowChartUrl");
+                    flowChartUrl.val(res.data.src);
+                    $('img').attr('src', res.data.src);
+                    $('img').css('display', "block");
+                }
+                ,error: function(){
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText1');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+            });
+        });
+
+        function add() {
+            $.ajax({
+                type: "POST",
+                data: $("#userSearch").serialize(),
+                url: "/combo/setCombo",
+                success: function (data) {
+                    if (data == "ok") {
+                        layer.alert("操作成功",function(){
+                            window.location.href='/combo/comboList';
+                        });
+                    }else{
+                        layer.alert(data,function(){
+                            layer.closeAll();
+                            cleanUser();
+                            load(obj);
+                        });
+                    }
+                },
+                error: function () {
+                    layer.alert("操作请求错误，请您稍后再试",function(){
+                        layer.closeAll();
+                        //加载load方法
+                        load(obj);//自定义
+                    });
+                }
+            });
+            // console.log("开始")
+        }
+    </script>
+</div>
+</body>
+</html>

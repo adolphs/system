@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>材料清单 - 政务服务事项自助查询</title>
+    <link rel="shortcut icon" href="/images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/js/yjsfw/index.css"/>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            margin: 5px;
+            color: #333;
+            background-color: #fff;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        .sws{
+            margin-top: 10px;
+            line-height: 30px;
+            color: #fb6930;
+            background: #efefef;
+        }
+        .sws_1{
+            padding: 3px 10px;
+        }
+        .sws_2{
+            padding: 3px;
+        }
+    </style>
+
+
+</head>
+<body>
+<form method="post" action="../fagaiwei/progress_bar" id="form1">
+    <div class="zwtop">
+        <div class="zwtopLeft">
+            欢迎您进入政务服务事项自助查询！</div>
+        <div class="zwtopRight">
+            <a href="../yjsfw/matter_list">返回首页</a></div>
+    </div>
+
+    <!--banner结束-->
+    <div class="zwmain">
+        <div class="clear">
+            <h5 style="color: #545454;font-size: 14px;" class="materialSelf11">您的位置：<a href="#">网上办事</a> 》<a href="#"> 部门服务</a> 》<a href="#" th:text="${doooObject.doooName}"></a> </h5>
+            <div class="sws_2">
+                <dl>
+                    <dt class="sws">您浏览的主题：</dt>
+                    <dd th:text="${doooObject.doooName}"></dd>
+                </dl>
+                <dl>
+                    <dt class="sws">您已选择的具体条件如下：</dt>
+                    <dd class="sws_1" th:each="dast,memberStat:${dataSituation}">
+                        <span th:text="${memberStat.index + 1} + ${dast.situationDescribe} + '---------' + ${dast.detailsDescribe}"></span>
+                    </dd>
+<!--                    <dd class="sws_1">1.1是否经营网络订餐-&#45;&#45;&#45;&#45;&#45;&#45;选择答案：经营、</dd>-->
+<!--                    <dd class="sws_1">1.2是否设立仓库-&#45;&#45;&#45;&#45;&#45;&#45;选择答案：设立、</dd>-->
+<!--                    <dd class="sws_1">二、是否已完成建设项目环境影响评价备案-&#45;&#45;&#45;&#45;&#45;&#45;选择答案：未完成、</dd>-->
+<!--                    <dd class="sws_1">三、是否委托他人办理-&#45;&#45;&#45;&#45;&#45;&#45;选择答案：委托、</dd>-->
+                </dl>
+                <dl>
+                    <dt class="sws">根据您的条件，您需要提供以下材料：</dt>
+                    <dd class="sws_1" th:each="dtdol,memberStat:${dataDoooList}">
+                        <span th:text="${dtdol.dataName}"></span>
+                    </dd>
+                    <dd class="sws_1" th:each="dstl,memberStat:${dataSituationList}">
+                        <span th:text="${dstl.dataName}"></span>
+                    </dd>
+<!--                    <dd class="sws_1">2、营业执照</dd>-->
+<!--                    <dd class="sws_1">3、法定代表人、负责人、业主的身份证明</dd>-->
+                </dl>
+                <dl>
+                    <dt class="sws">办理地点和咨询电话：</dt>
+                    <dd class="sws_2">长宁区：长宁路1436号长宁区行政服务中心 徐汇区： 南宁路969号徐汇区行政服务中心 </dd>
+                    <dd class="sws_2">咨询电话：长宁区：021-22253000 徐汇区：021-24092222 </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--zwmain结束-->
+    <div class="footer">
+        <div class="wenzi2">
+            主页 | 关于我们 | 联系我们 | 设为首页 | 加入收藏</div>
+        <div class="wenzi3">
+            总访问次数：58909419次 备案号：xxxxxx2号<br />
+            广州市番禺区便民服务平台 版权所有 xxx信息技术有限公司 技术支持</div>
+    </div>
+</form>
+</body>
+</html>

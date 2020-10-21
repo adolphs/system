@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<style>
+    .top{
+        margin-top:10px;
+        width: 100%;
+        /*background-color: #00B83F;*/
+    }
+    .top1{
+        width: 50%;
+
+        float: left;
+        /*background-color: #00b8b8;*/
+    }
+    .top2{
+        width: 50%;
+
+        float: left;
+        /*background-color: #00b8b8;*/
+    }
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">套餐名称</label>
+                <div class="layui-input-inline">
+
+                    <input id="comboName" name="comboName" th:value="${comboName}" autocomplete="off" class="layui-input" type="text" style="width: 300px"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item  layui-col-md4">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-block">
+                    <select name="type" id="type5" autocomplete="off">
+                        <option value="营商环境" th:selected="${type == '营商环境'}">营商环境</option>
+                        <option value="商事经营" th:selected="${type == '商事经营'}">商事经营</option>
+                        <option value="建设工程" th:selected="${type == '建设工程'}">建设工程</option>
+                        <option value="个人事务" th:selected="${type == '个人事务'}">个人事务</option>
+                    </select>
+                </div>
+<!--                <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">修改</button>-->
+            </div>
+<!--                <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+
+
+        </form>
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+        <button class="layui-btn layui-btn-normal" onclick="addUser()">关联事项</button>
+        <button class="layui-btn layui-btn-normal" onclick="addCombo()">新增情形</button>
+        <button class="layui-btn layui-btn-normal" onclick="addData()">绑定通用材料</button>
+        <button class="layui-btn layui-btn-normal" onclick="addDataEnding()">绑定审批结果</button>
+
+        <div class="top">
+            <div class="top1">
+                <table class="layui-table" style="width: 90%;margin: 0 auto;">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>部门名称</th>
+                        <th>查看部门所涉及事项</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="department,loopStatus:${departments}" th:class="${loopStatus}">
+                        <td th:text="${loopStatus.count}" style="width: 80px;"></td>
+                        <td th:text="${department.departmentName}"></td>
+                    <td>
+                        <div class="layui-table-cell laytable-cell-1-5">
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="sel" th:onclick="'sel('+ ${department.departmentId} +')'">查看</a>
+                        </div>
+                    </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" style="margin-left: 47%;margin-top: 10px" onclick="addWEB()">查看全部事项</button>
+            </div>
+            <div class="top2">
+                <table class="layui-table" lay-filter="userTable" style="width: 90%;margin: 0 auto;">
+                    <thead>
+                    <tr>
+                        <th style="width: 80px;">序号</th>
+                        <th>事项名称</th>
+                        <th style="width: 80px;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="dooo,loopStatus:${dooos}" th:class="${loopStatus}">
+                        <td th:text="${loopStatus.count}"></td>
+                        <td th:text="${dooo.doooName}" th:name="${dooo.doooId}"></td>
+                        <td>
+                            <div class="layui-table-cell laytable-cell-1-5">
+                               <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" th:onclick="'del('+ ${dooo.doooId} +')'">删除</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr class="layui-bg-black"/>
+        <table id="uesrList" lay-filter="userTable"></table>
+
+
+        <hr class="layui-bg-black"/>
+        <span>审批结果</span>
+        <div class="top88">
+            <div class="top88">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>材料名称</th>
+                        <th>类型</th>
+                        <th>是否关联电子证照</th>
+                        <th>空表下载</th>
+                        <th>示例下载</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="dataEnding">
+
+                    </tbody>
+                </table>
+                <!--                <div style="margin-left: 47%;margin-top: 1%;">-->
+                <!--                    <a href="/data/dataList" class="layui-btn layui-btn-normal">返回</a>-->
+                <!--                </div>-->
+            </div>
+        </div>
+        <hr class="layui-bg-black"/>
+
+
+        <script type="text/html" id="optBar">
+            <a class="layui-btn layui-btn-xs" lay-event="sel">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+        <span>通用材料</span>
+        <div class="top11">
+            <div class="top112">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>材料名称</th>
+                        <th>填表须知</th>
+                        <th>材料形式</th>
+                        <th>空表下载</th>
+                        <th>示例下载</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="blankData">
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <hr class="layui-bg-black"/>
+        <span>情形材料</span>
+        <div class="top11">
+            <div class="top112">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>材料名称</th>
+                        <th>填表须知</th>
+                        <th>材料形式</th>
+                        <th>空表下载</th>
+                        <th>示例下载</th>
+                    </tr>
+                    </thead>
+                    <tbody id="templateData">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!--添加或编辑用户-->
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 600px">
+        <form id="doooForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input id="id" type="hidden" th:value="${id}" name="id"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形名称</label>
+                <div class="layui-input-inline">
+                    <input name="comboName" lay-verify="required" th:value="${comboName}" autocomplete="off" class="layui-input" type="text" disabled ="disabled" style="width: 390px"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-block">
+                    <select name="departmentId" lay-verify="required" id="departmentInsert" lay-filter="department">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属事项</label>
+                <div class="layui-input-block">
+                    <select name="doooId" lay-verify="required" id="doooInsert">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--添加或编辑情形-->
+    <div id="setComboDte" class="layer_self_wrap" style="width:500px;display:none;height: 300px">
+        <form id="doooForm2" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input id="comboId1" type="hidden" th:value="${id}" name="comboId"/>
+            <input id="id1" type="hidden" name="id"/>
+            <input id="situationLevel" type="hidden" value="1" name="situationLevel"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形名称</label>
+                <div class="layui-input-inline">
+                    <input id="situationDescribe" name="situationDescribe" lay-verify="required" autocomplete="off" class="layui-input" type="text" style="width: 390px;"/>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形类型</label>
+                <div class="layui-input-block">
+                    <select name="nodesType" lay-verify="required" id="nodesType">
+                        <option value=""></option>
+                        <option value="0">最终情形</option>
+                        <option value="1">节点情形</option>
+                        <option value="2">材料情形</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形状态</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-verify="required" id="type">
+                        <option value=""></option>
+                        <option value="1">单选</option>
+                        <option value="2">多选</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="comboSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 普通材料 -->
+    <div id="setData" class="layer_self_wrap" style="width:500px;display:none;height: 300px">
+        <form id="dataForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <!--            <input type="hidden" th:value="${dataId}" name="dataId"/>-->
+            <input id="comboId" type="hidden" th:value="${id}" name="doooId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">材料名称</label>
+                <div class="layui-input-inline" style="width: 350px">
+                    <select  id="dataSelect" name="dataId" lay-filter="test" lay-verify="" lay-search="" >
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="dataSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 哒哒哒哒 这是审批材料 -->
+    <div id="setUser2" class="layer_self_wrap" style="width:500px;display:none;height: 300px">
+        <form id="doooForm23" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <!--            <input type="hidden" th:value="${dataId}" name="dataId"/>-->
+            <input id="comboId2" type="hidden" th:value="${id}" name="comboId2"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">审批结果</label>
+                <div class="layui-input-inline" style="width: 350px">
+                    <select  id="dataSelect2" name="data_ending_id" lay-filter="test" lay-verify="" lay-search="" >
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit6">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/combo/comboDetails.js"></script>
+    <script>
+        /*<![CDATA[*/
+
+        layui.use('upload', function(){
+            var upload = layui.upload;
+
+            //执行实例
+            var uploadInst = upload.render({
+                elem: '#test1' //绑定元素
+                ,url: '/upload/' //上传接口
+                ,done: function(res){
+                    //上传完毕回调
+                }
+                ,error: function(){
+                    //请求异常回调
+                }
+            });
+        });
+
+        layui.use(['form', 'upload', 'layer'], function () {
+
+            var form = layui.form;
+            //检查项目添加到下拉框中
+            $.ajax({
+                url: '/department/getDepartments',
+                dataType: 'json',
+                type: 'get',
+                success: function (data) {
+                    $.each(data, function (index, item) {
+                        $('#departmentSearch').append(new Option(item.departmentName, item.departmentId));// 下拉菜单里添加元素
+                        $('#departmentInsert').append(new Option(item.departmentName, item.departmentId));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
+
+                    //重新渲染 固定写法
+                }
+            });
+
+            form.on('select(department)',function (data) {
+                $.ajax({
+                    url: '/dooo/getDoooList',
+                    dataType: 'json',
+                    data:{"departmentId":data.value},
+                    type: 'get',
+                    success: function (data) {
+                        var tmp='<option value="">请选择</option>';
+                        for (var i in data){
+                            tmp +='<option value="'+data[i].doooId+'">'+data[i].doooName+'</option>';
+                        }
+                        $("#doooInsert").html(tmp);
+                        layui.form.render("select");
+
+                        //重新渲染 固定写法
+                    }
+                });
+
+            });
+            form.on('select(department2)',function (data) {
+                $.ajax({
+                    url: '/dooo/getDoooList',
+                    dataType: 'json',
+                    data:{"departmentId":data.value},
+                    type: 'get',
+                    success: function (data) {
+                        var tmp='<option value="">请选择</option>';
+                        for (var i in data){
+                            tmp +='<option value="'+data[i].doooId+'">'+data[i].doooName+'</option>';
+                        }
+                        $("#doooSearch").html(tmp);
+                        layui.form.render("select");
+
+                        //重新渲染 固定写法
+                    }
+                });
+
+            });
+        });
+        function del(id) {
+            var comboId = $("#id").val();
+            $.ajax({
+                url: '/combo/delComboDooo',
+                data:{"dooo_id":id,"combo_id":comboId},
+                type: 'post',
+                success: function (data) {
+                    console.log(data)
+                    if (data == "ok") {
+                        layer.alert("操作成功",function(){
+                            location.reload();
+                        });
+                    }else{
+                        layer.alert(data,function(){
+
+                        });
+                    }
+                    //重新渲染 固定写法
+                }
+            });
+        }
+        function sel(id) {
+            var comboId = $("#id").val();
+            window.location.href="/combo/comboDetails?id="+comboId+"&departmentId="+id;
+        }
+
+        function addWEB() {
+            var comboId = $("#id").val();
+            window.location.href="/combo/comboDetails?id="+comboId;
+        }
+        /*]]>*/
+        dataAll();
+        function dataAll() {
+            $.ajax({
+                url: '/data/getDataAll',
+                type: 'post',
+                success: function (data) {
+                    var tmp='';
+                    tmp +='<option value=""></option>';
+                    for (var i in data){
+                        tmp +='<option value="'+data[i].dataId+'">'+data[i].dataName+'</option>';
+                    }
+                    $("#dataSelect").html(tmp);
+                    layui.form.render("select");
+                }
+            });
+        }
+    </script>
+    <script>
+        templateData();
+        blankData();
+        getDataEndingByComboId();
+        function templateData() {
+            $.ajax({
+                url: '/data/getTemplateDataByComboId',
+                data:{"comboId":$("#comboId").val()},
+                type: 'get',
+                success: function (data) {
+                    var tmp= '';
+                    for (var i in data){
+                        var j = parseInt(i)+parseInt(1);
+                        tmp += '<tr>';
+                        tmp += ' <td>'+ j +'</td>';
+                        tmp += ' <td>'+ data[i].dataName +'</td>';
+                        tmp += ' <td>'+ data[i].remarks +'</td>';
+                        tmp += ' <td>'+ data[i].dataForm +'</td>';
+                        tmp += ' <td><a href="'+ data[i].blankUrl +'">'+ data[i].blankName +'</a></td>';
+                        tmp += ' <td><a href="'+ data[i].templateUrl +'">'+ data[i].templateName +'</a></td>';
+                        tmp += '</tr>';
+                    }
+                    $("#templateData").html(tmp);
+                }
+            });
+        }
+        function blankData() {
+            $.ajax({
+                url: '/data/getDataByComboId',
+                data:{"comboId":$("#comboId").val()},
+                type: 'get',
+                success: function (data) {
+                    var tmp= '';
+                    for (var i in data){
+                        tmp += '<tr>';
+                        tmp += ' <td>'+ data[i].dataName +'</td>';
+                        tmp += ' <td>'+ data[i].remarks +'</td>';
+                        tmp += ' <td>'+ data[i].dataForm +'</td>';
+                        tmp += ' <td><a href="'+ data[i].blankUrl +'">'+ data[i].blankName +'</a></td>';
+                        tmp += ' <td><a href="'+ data[i].templateUrl +'">'+ data[i].templateName +'</a></td>';
+                        tmp += ' <td><button type="button" class="layui-btn layui-btn-xs" onclick="delBlankUrl('+ data[i].dataId +')">删除</button></td>';
+                        tmp += '</tr>';
+                    }
+                    $("#blankData").html(tmp);
+                }
+            });
+        }
+        function delBlankUrl(id) {
+            if (confirm("是否确定删除本项材料")){
+                $.ajax({
+                    url: '/data/delDataAndCombo',
+                    data:{"dataId":id,"comboId":$("#comboId").val()},
+                    type: 'post',
+                    success: function (data) {
+                        layer.alert("删除成功",function(){
+                            location.reload();
+                        });
+                    }
+                });
+            }
+        }
+        function getDataEndingByComboId() {
+            $.ajax({
+                url: '/dataEnding/getDataEndingByDoooId',
+                data:{"id":$("#comboId2").val(),"type":2},
+                type: 'get',
+                success: function (data) {
+                    var tmp= '';
+                    for (var i in data){
+                        tmp += '<tr>';
+                        tmp += ' <td>'+ data[i].data_ending_name +'</td>';
+                        tmp += ' <td>'+ data[i].dataTypeName +'</td>';
+                        tmp += ' <td>'+ data[i].isElectronicLicense +'</td>';
+                        tmp += ' <td><a href="'+ data[i].blank_url +'">'+ data[i].blank_name +'</a></td>';
+                        tmp += ' <td><a href="'+ data[i].template_name +'">'+ data[i].template_url +'</a></td>';
+                        tmp += ' <td><button type="button" class="layui-btn layui-btn-xs" onclick="delDataEnding('+ data[i].data_ending_id +')">删除</button></td>';
+                        tmp += '</tr>';
+                    }
+                    $("#dataEnding").html(tmp);
+                }
+            });
+        }
+        function delDataEnding(id) {
+            if (confirm("是否确定删除本项材料")){
+                $.ajax({
+                    url: '/dataEnding/delDataEndingAndCombo',
+                    data:{"dataEndId":id,"comboId":$("#comboId2").val()},
+                    type: 'post',
+                    success: function (data) {
+                        layer.alert("删除成功",function(){
+                            location.reload();
+                        });
+                    }
+                });
+            }
+
+        }
+    </script>
+</div>
+</body>
+</html>

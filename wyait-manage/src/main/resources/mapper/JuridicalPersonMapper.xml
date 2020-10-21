@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.dao.JuridicalPersonMapper" >
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.JuridicalPerson" >
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="telephonenumber" property="telephonenumber" jdbcType="VARCHAR" />
+    <result column="mail" property="mail" jdbcType="VARCHAR" />
+    <result column="cn" property="cn" jdbcType="VARCHAR" />
+    <result column="idcardtype" property="idcardtype" jdbcType="VARCHAR" />
+    <result column="idcardnumber" property="idcardnumber" jdbcType="VARCHAR" />
+    <result column="link_person_name" property="link_person_name" jdbcType="VARCHAR" />
+    <result column="link_person_type" property="link_person_type" jdbcType="VARCHAR" />
+    <result column="link_person_code" property="link_person_code" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="usertype" property="usertype" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="legal_person" property="legal_person" jdbcType="VARCHAR" />
+    <result column="legal_id_type" property="legal_id_type" jdbcType="VARCHAR" />
+    <result column="legal_code" property="legal_code" jdbcType="VARCHAR" />
+    <result column="parent_uidcode" property="parent_uidcode" jdbcType="VARCHAR" />
+    <result column="origin" property="origin" jdbcType="VARCHAR" />
+    <result column="accout_type" property="accout_type" jdbcType="VARCHAR" />
+    <result column="useridcode" property="useridcode" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+    <result column="uversion" property="uversion" jdbcType="VARCHAR" />
+    <result column="isreal" property="isreal" jdbcType="VARCHAR" />
+    <result column="realtype" property="realtype" jdbcType="VARCHAR" />
+    <result column="creditable_level_of_account" property="creditable_level_of_account" jdbcType="VARCHAR" />
+    <result column="creditable_level_of_account_way" property="creditable_level_of_account_way" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.wyait.manage.pojo.Person">
+        INSERT INTO `wyait`.`juridical_person` (
+          `uid`,
+          `telephonenumber`,
+          `mail`,
+          `cn`,
+          `idcardtype`,
+          `idcardnumber`,
+          `link_person_name`,
+          `link_person_type`,
+          `link_person_code`,
+          `address`,
+          `usertype`,
+          `area`,
+          `legal_person`,
+          `legal_id_type`,
+          `legal_code`,
+          `parent_uidcode`,
+          `origin`,
+          `accout_type`,
+          `useridcode`,
+          `createtime`,
+          `uversion`,
+          `isreal`,
+          `realtype`,
+          `creditable_level_of_account`,
+          `creditable_level_of_account_way`
+          )
+          VALUES
+              (
+              #{uid},
+              #{telephonenumber},
+              #{mail},
+              #{cn},
+              #{idcardtype},
+              #{idcardnumber},
+              #{link_person_name},
+              #{link_person_type},
+              #{link_person_code},
+              #{address},
+              #{usertype},
+              #{area},
+              #{legal_person},
+              #{legal_id_type},
+              #{legal_code},
+              #{parent_uidcode},
+              #{origin},
+              #{accout_type},
+              #{useridcode},
+              #{createtime},
+              #{uversion},
+              #{isreal},
+              #{realtype},
+              #{creditable_level_of_account},
+              #{creditable_level_of_account_way}
+              );
+  </insert>
+</mapper>

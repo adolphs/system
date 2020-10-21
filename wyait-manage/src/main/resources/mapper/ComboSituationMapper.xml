@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.dao.ComboSiuationMapper" >
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.ComboSituation" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="situation_describe" property="situationDescribe" jdbcType="VARCHAR" />
+    <result column="combo_id" property="comboId" jdbcType="INTEGER" />
+    <result column="situation_level" property="situationLevel" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="nodes_type" property="nodesType" jdbcType="INTEGER" />
+    <result column="new_time" property="newTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.wyait.manage.pojo.ComboSituationDetails" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="details_describe" property="detailsDescribe" jdbcType="VARCHAR" />
+    <result column="combo_situation_id" property="comboSituationId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="new_time" property="newTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+
+    <select id="selectComboSituationById" resultType="com.wyait.manage.pojo.ComboSituation">
+        select * from combo_situation where id = #{id}
+    </select>
+
+    <select id="selectPidByComboSituationId" resultType="com.wyait.manage.pojo.ComboSituation">
+        select * from combo_situation where pid = #{id}
+    </select>
+
+    <select id="selectNameAnId" resultType="com.wyait.manage.pojo.ComboSituation">
+        select * from combo_situation where pid = #{pid} and situation_describe = #{situationDescribe}
+    </select>
+
+
+  <insert id="addComboSituationV2" parameterType="com.wyait.manage.pojo.ComboSituation">
+         insert into combo_situation (situation_describe,combo_id,situation_level,pid,type,nodes_type,new_time,update_time)
+		values (#{situationDescribe,jdbcType=VARCHAR},#{comboId,jdbcType=INTEGER},#{situationLevel,jdbcType=INTEGER},#{pid,jdbcType=INTEGER},#{type,jdbcType=INTEGER},#{nodesType,jdbcType=INTEGER},#{newTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+
+    <select id="selectNameAnIdById" resultType="com.wyait.manage.pojo.ComboSituation">
+        select * from combo_situation where pid = #{pid }
+        and situation_describe = #{situationDescribe} and id != #{id}
+    </select>
+
+  <update id="update" parameterType="com.wyait.manage.pojo.ComboSituation">
+    update `combo_situation`
+    <set>
+      <if test="situationDescribe != null and situationDescribe != ''">
+        situation_describe = #{situationDescribe},
+      </if>
+      <if test="type != null and type != ''">
+        type = #{type},
+      </if>
+      <if test="nodesType != null and nodesType !=''">
+        nodes_type = #{nodesType},
+      </if>
+      update_time = #{updateTime}
+    </set>
+    where id = #{id}
+  </update>
+
+  <delete id="delComboSituation" parameterType="int">
+    DELETE FROM `combo_situation` WHERE id = #{id}
+  </delete>
+
+  <select id="selectSituationDetailsByComboSituationId" resultType="com.wyait.manage.pojo.ComboSituationDetails">
+        select * from combo_situation_details where combo_situation_id = #{id}
+  </select>
+
+  <insert id="setComboSituationDetails" parameterType="com.wyait.manage.pojo.ComboSituationDetails">
+         insert into combo_situation_details (details_describe,combo_situation_id,type)
+		values (#{detailsDescribe,jdbcType=VARCHAR},#{comboSituationId,jdbcType=INTEGER},#{type,jdbcType=INTEGER})
+  </insert>
+
+  <select id="queryComboSituationDetails" resultType="com.wyait.manage.pojo.ComboSituationDetails">
+        select * from combo_situation_details where details_describe = #{detailsDescribe} and combo_situation_id = #{comboSituationId}
+  </select>
+
+  <select id="queryComboSituationDetailsById" resultType="com.wyait.manage.pojo.ComboSituationDetails">
+        select * from combo_situation_details where details_describe = #{detailsDescribe} and combo_situation_id = #{comboSituationId}
+        and id != #{id}
+  </select>
+  <update id="editComboSituationDetails" parameterType="com.wyait.manage.pojo.ComboSituationDetails">
+    update `combo_situation_details` set
+        details_describe = #{detailsDescribe}
+        <if test="type != null">
+          ,type = #{type}
+        </if>
+    where id = #{id}
+  </update>
+
+  <delete id="delComboSituationDetails" parameterType="int">
+    DELETE FROM `combo_situation_details` WHERE id = #{id}
+  </delete>
+
+
+  <select id="getCmoboSituationDetails" resultType="com.wyait.manage.pojo.ComboSituationDetails">
+    select * from combo_situation_details where combo_situation_id = #{id}
+  </select>
+
+  <delete id="delComboSituationByPid" parameterType="int">
+    delete from combo_situation where pid = #{id}
+  </delete>
+
+  <select id="findSituationByPid" resultType="com.wyait.manage.pojo.ComboSituation">
+    select * from combo_situation where pid = #{situationDetailsId}
+  </select>
+
+  <delete id="delSituationByPidAndSituationId" parameterType="int">
+    delete from combo_situation where pid = #{pid} and id = #{situationId}
+  </delete>
+</mapper>

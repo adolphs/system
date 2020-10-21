@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='事项同步管理'"></head>
+<script>
+    // 为 btn-reset 样式的重置按钮绑定鼠标点击事件
+    // $(function(){
+    //     $('.layui-btn-primary').onclick(function(){
+    //         $('#programName').val(' ');
+    //     });
+    // })
+
+    //同步
+    $(function () {
+        $(".layui-btn-xs").click(function () {
+            console.log(this.id);
+            $.ajax({
+                type : "post",
+                url : "/sychronization/dasyci",
+                data : {programId :this.id},
+                cache:false,
+                dataType: "json",
+                success:function(data){
+                    console.log("==success==");
+                    alert(data.responseText);
+                },
+                error:function(data){
+                    console.log("--error---")
+                    alert(data.responseText);
+                }
+            })
+        })
+    })
+</script>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="dataSychronization" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">事项名称</label>
+                <div class="layui-input-inline">
+                    <input id="programName" name="programName" autocomplete="off" class="layui-input" type="text" th:value="${programName}"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button id="searchSubmit" class="layui-btn"  lay-submit="" lay-filter="searchSubmit">提交</button>
+            </div>
+
+
+
+            <!--<hr class="layui-bg-blue"/>-->
+            <hr class="layui-bg-black"/>
+
+            <!--        <table id="uesrList" lay-filter="userTable"></table>-->
+            <table class="layui-table" style="width: 100%;margin: 0 auto;">
+                <thead>
+                <tr>
+                    <th style="width: 35px;">序号</th>
+                    <th style="width: 350px;">目录名称</th>
+                    <th style="width: 120px;">实施编码</th>
+                    <th style="width: 180px;">实施机关</th>
+                    <th style="width: 100px;">办理对象</th>
+                    <th style="width: 180px;">创建时间</th>
+                    <th style="width: 180px;">最后修改时间</th>
+                    <th style="width: 50px;">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="prod,progdStatus:${programDefList}">
+                    <!--                <input type="hidden" name="programId" th:value="${prod.programId}"/>-->
+                    <td th:text="${progdStatus.index + 1}"></td>
+                    <td th:text="${prod.programName}"></td>
+                    <td th:text="${prod.programCode}"></td>
+                    <td th:text="${prod.adminDept}"></td>
+                    <td th:text="${prod.serviceObject}"></td>
+                    <td th:text="${prod.reportDate}"></td>
+                    <td th:text="${prod.latestUpdateDate}"></td>
+                    <td>
+                        <a class="layui-btn layui-btn-xs" th:id="${prod.programId}">同步</a>
+                        <!--                            <a class="layui-btn layui-btn-xs">详情</a>-->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--    分页-->
+            <div class="layui-table-page">
+                <div id="layui-table-page1">
+                    <div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-1">
+                        <a href="javascript:;" class="layui-laypage-prev layui-disabled" data-page="0">
+                            <i class="layui-icon"></i>
+                        </a>
+
+                        <span class="layui-laypage-skip">
+                        <a th:href="'dataSychronization?pageNum='+ ${pageNum+1}" class="layui-laypage-btn" >下一页</a>
+                            <!--                        <button type="button" class="layui-laypage-btn" onclick="javascript:window.location='dataSychronization?pageNum=' + [[${pageNum+1}]]">下一页</button>-->
+                    </span>
+
+                        <span class="layui-laypage-skip">
+<!--                        <button type="button" class="layui-laypage-btn" th:onclick="'javascript:window.location=' + ${pageNum +1}">上一页</button>-->
+                        <a th:href="'dataSychronization?pageNum='+ ${pageNum - 1}">上一页</a>
+                    </span>
+
+                        <span class="layui-laypage-count">
+                        <b th:text="'共' + ${totalPages} +'条，第' + ${pageNum} + '页'"></b>
+                    </span>
+                        <a href="javascript:;" class="layui-laypage-next" data-page="2">
+                            <i class="layui-icon"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <!--    <script src="/js/sychronization/dataSychronization.js"></script>-->
+</div>
+</body>
+</html>

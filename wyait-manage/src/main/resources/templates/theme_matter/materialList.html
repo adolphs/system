@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>材料告知-一件事一次办</title>
+    <link rel="stylesheet" href="/js/theme_matter/common.css"/>
+    <link rel="stylesheet" href="/js/theme_matter/item.css"/>
+    <script type="text/javascript" src="/js/theme_matter/jquery1.8.2.js"></script>
+    <script type="text/javascript" src="/js/theme_matter/common.js"></script>
+
+    <!-- dayin-->
+    <script src="/js/theme_matter/jquery.min.js" type="text/javascript"></script>
+    <script src="/js/theme_matter/jquery.jqprint-0.3.js" type="text/javascript"></script>
+    <style type="text/css">
+        .content{width: 100%;}
+        /* footer */
+        .footer {
+            height: 120px;
+            background-color: #595959;
+        }
+        .wenzi2 {
+            text-align: center;
+            margin: auto;
+            padding-top: 30px;
+            color: #ffffff;
+            font-size: 13px;
+        }
+        .wenzi3 {
+            margin: auto;
+            width: 1024px;
+            text-align: center;
+            font-size: 13px;
+            color: #8b8e8e;
+            line-height: 26px;
+        }
+        /*title*/
+        .yjs-banner {
+            /*background: url(static/images/yjs-banner.jpg) no-repeat center center;*/
+            position: relative;
+            height: 239px;
+            background: #013D7C;
+        }
+        .yjs-banner-pic .yjs-title {
+            top: 58px;
+        }
+        .yjs-title {
+            font-size: 50px;
+            color: #fff;
+            position: absolute;
+            top: 36%;
+            left: 20%;
+            text-shadow: #888 0 0 10px;
+        }
+        .yjs-banner-pic .yjs-title-pic {
+            font-size: 16px;
+            color: #FFF;
+            position: absolute;
+            top: 62%;
+            left: 20%;
+            text-shadow: #888 0 0 10px;
+            width: 440px;
+        }
+        .yjs-banner-pic .yjs-title-pic li {
+            margin: 0 40px 20px 0;
+        }
+        /*zhu*/
+        .yjs-main .tabs li {
+            font-size: 24px;
+            margin-right: 30px;
+        }
+        .tempWrap{
+            width: 1024px;
+            margin-top: 20px;
+            margin-right: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+        }
+        .left {
+            float: left;
+        }
+        .yjs-banner {
+            /*background: url(static/images/yjs-banner.jpg) no-repeat center center;*/
+            position: relative;
+            height: 239px;
+            background: #013D7C;
+        }
+        .yjs-banner-pic .yjs-title {
+            top: 50px;
+        }
+        .yjs-title {
+            font-size: 50px;
+            color: #fff;
+            position: absolute;
+            top: 36%;
+            left: 20%;
+            text-shadow: #888 0 0 10px;
+        }
+        .yjs-banner-pic .yjs-title-pic {
+            font-size: 16px;
+            color: #FFF;
+            position: absolute;
+            top: 62%;
+            left: 20%;
+            text-shadow: #888 0 0 10px;
+            width: 440px;
+        }
+        .yjs-banner-pic .yjs-title-pic li {
+            margin: 0 40px 20px 0;
+        }
+        .left {
+            float: left;
+        }
+
+        .yjs-main .tabs li {
+            font-size: 24px;
+            margin-right: 30px;
+        }
+
+        .left {
+            float: left;
+        }
+        .yjs-main .tabs a {
+            color: #0d1c28;
+            display: block;
+            padding: 0 6px;
+            height: 60px;
+            line-height: 60px;
+        }
+
+        /*一件事入欧*/
+        .fivc1 {
+            width: 21%;
+            float: left;
+            box-sizing: border-box;
+            -ms-box-sizing: border-box;
+            padding: 0 10px;
+            margin-bottom: 16px;
+        }
+        .xt_ztfw_list .fivc1 a {
+            height: auto;
+        }
+        /*图片设置*/
+        .fivc1 img {
+            border: none;
+            width: 232px;
+            height: 180px;
+        }
+        .fivc1:hover{
+            background:#4194F4;
+        }
+        .fivc1:hover a {
+            color:#fff;
+        }
+        /* 用于选项卡tabPages */
+        .bars > li {
+            position:relative;  /* 让选项标签底边遮盖面板顶边一部分,看起来像连通一样 */
+            top:1px;
+        }
+
+        .bars > li.current {
+            /*background-color: #999999;*/
+            border-bottom: #f13939 solid 7px;
+        }
+
+        .panes > div {
+            height: 200px;
+            border: solid 0px #D8D8D8;
+            line-height:2;
+            padding:10px;
+        }
+        /*表单样式*/
+        .tabs_wx{
+            /*line-height: 45px;*/
+            line-height: 29px;
+            font-size: 16px;
+            text-align: left;
+            padding: 0 0 0 5px;
+        }
+        /*奇数*/
+        table tr:nth-child(odd){
+            background: #f6f6f6;
+        }
+        /*偶数*/
+        table tr:nth-child(even){
+            background: #ffffff;
+        }
+        .tablecl tr:hover
+        {
+            background:#e7e7e7;
+            color: cornflowerblue;
+            border: 1px solid cornflowerblue;
+        }
+        /*搜索框*/
+        .search {
+            position: relative;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .fr {
+            float: right!important;
+        }
+        .search input {
+            width: 218px;
+            height: 36px;
+            font-size: 14px;
+            text-indent: 10px;
+            border: 1px solid #dfe1e2;
+        }
+        .search button {
+            width: 50px;
+            height: 38px;
+            color: #fff;
+            font-size: 14px;
+            margin-left: 10px;
+            vertical-align: top;
+            background-color: #5294f7;
+        }
+        /*内容外部样式*/
+        .yjs-main {
+            width: 1024px;
+            margin-top: 20px;
+            margin-right: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+        }
+        .header-logo a{
+            padding-left: 42px;
+            background: url(http://static.gdzwfw.gov.cn/mhyy/20180827/6d4851fe-fdcd-406d-ae2e-5dd0e5f68929.png) no-repeat left center transparent;
+            background-size: 32px 32px;
+        }
+        /*打印下载样式*/
+        /*表格样式*/
+        .wenzi6 {
+            /* line-height: 45px; */
+            height: 45px;
+            background-color: #FFF;
+            /* font-size: 14px; */
+            font-size: 16px;
+            color: #333;
+            padding-left: 10px;
+        }
+        .wenzi7 {
+            font-size: 13px;
+            color: #666;
+            background-color: #FFF;
+            padding-left: 10px;
+        }
+        table tr:nth-child(odd) {
+            background: #f6f6f6;
+        }
+        .dayin , .xiazai
+        {
+            background-color: #3d6dc5;
+            height: 30px;
+            width: 60px;
+            font-family: "微软雅黑";
+            font-size: 14px;
+            line-height: 30px;
+            color: #FFF;
+            text-align: center;
+            margin-right: 20px;
+            float: left;
+        }
+        .dayin a , .xiazai a
+        {
+            color: #FFF;
+            text-decoration: none;
+        }
+        .saomack
+        {
+            background-color: #3d6dc5;
+            height: 30px;
+            width: 80px;
+            font-family: "微软雅黑";
+            font-size: 14px;
+            line-height: 30px;
+            color: #FFF;
+            margin-right: 20px;
+            float: left;
+            text-align: center;
+        }
+        .saomack a
+        {
+            color: #FFF;
+            text-decoration: none;
+        }
+        .saomack a img {
+            display:none;
+        }
+        .saomack a:hover img {
+            display:block;
+        }
+        #sweep_code{
+            right: 2px;
+            top:2px;
+        }
+
+        /*主题名称*/
+        .tempWrap h4:after {
+            border-left: 10px solid #3e97df;
+        }
+        .tempWrap h4:after {
+            content: "";
+            display: block;
+            border: 0;
+            border-left: 10px solid #07274c;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            position: absolute;
+            right: -8px;
+            top: 7px;
+        }
+        .tempWrap h4 {
+            font-size: 14px;
+            background: #07274c;
+            color: #fff;
+            height: 28px;
+            width: 88px;
+            text-align: center;
+            border-radius: 3px;
+            line-height: 28px;
+            position: relative;
+            float: left;
+        }
+        /*办理地点样式*/
+        .step-title {
+            margin: 15px 0;
+            height: 30px;
+            line-height: 30px;
+            border-bottom: 1px solid rgba(0,0,0,.1);
+            position: relative;
+        }
+        .step-title span {
+            display: block;
+            height: 30px;
+            width: 90px;
+            line-height: 30px;
+            font-size: 14px;
+            box-sizing: border-box;
+            position: relative;
+            padding-left: 32px;
+        }
+        .step-title span:before {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: url("/js/theme_matter/timg.jpg");
+            /*background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIW…mttJculil4W2rTcjW0T2iy6srMyYMenCplrPr/B20U/AESk5y8bGd4DQAAAABJRU5ErkJggg==) no-repeat 0 0;*/
+            background-size: cover;
+            left: 0;
+            top: 0;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var type='KCKD';//开店开厂
+            reLoadText();
+            //	toItems(type);
+
+        })
+        //type='KCKD' 开店开厂 type='BZSQ' 办证申请
+        function toItems(type){
+            var rmd = new Date().getTime();
+            $('.affix-menu').empty();
+            $('.town-div').empty();
+            $('.link-item-box').empty();
+            $.ajax({
+                url : 'http://113.106.13.192:8080/api/interface/oneThing/getTopLst.action',
+                data : {type : type,rmd:rmd},
+                type : 'post',
+                dataType : 'json',
+                success : function (data) {
+                    if(data.status=='SUCCESS'){
+                        var results=data.data;
+                        var json=eval(results);
+                        $('.affix-menu').empty();
+                        $('.link-item-box').empty();
+                        var html='';
+                        var html1='<div class="empty-div"></div>';
+                        // reLoadText();
+                    }
+                }
+            })
+        }
+        //查看详情
+        function toItem(id){
+            window.open("/zsonline/oneThing/guides/toParticulars.action?id=" + id);
+        }
+        //搜索事项
+        function toSearch(){
+            var name = $("#item_name").val();
+            window.open("/zsonline/oneThing/guides/itemsSearchList.action?name=" + name);
+        }
+        //dayin
+        function printTable() { $(".slwenzi3").jqprint(); }
+        function excelExport() {
+            window.location.href = "http://121.36.143.47/gzpy/static/files/template/blcl2-b2c34f9.docx";
+        };
+    </script>
+</head>
+<body>
+<!-- 头部 -->
+
+
+
+<script type="text/javascript">
+    $(function(){
+        $(".bars li").click(function(){
+            $(this).addClass("current").siblings().removeClass("current");
+            var index = $(".bars li").index($(this));
+            $(".panes div:eq("+index+")").show().siblings().hide();
+//                $("#bumenlist3").hide();
+//                $("#bumenlist4").hide();
+        });
+    });
+
+    /**点击后换色**/
+    $(function() {
+        $(".cur").click(function() {
+            // $(this).toggleClass("blue");
+            $(this).addClass("current").siblings().removeClass("current");
+
+        });
+    });
+    //相应子面板
+    function showDes1(){
+        var ossitems1 =document.getElementById("radio-item1").style.display;
+        if(ossitems1 == "none"){
+            alert("111");
+            $("#bumenlist2").hide();
+        } else {
+//                alert("222");
+            $(this).addClass("current").siblings().removeClass("current");
+            $("#bumenlist1").show();
+            $("#bumenlist2").hide();
+        }
+    };
+    //-->
+</script>
+
+<div class="header">
+    <div class="width">
+        <!--<h1 class="header-logo fl">-->
+        <!--<img src="http://zsbs.zs.gov.cn/skin/oneThing/images/logo-1.png" alt="" />-->
+        <!--</h1>-->
+        <h1 class="header-logo"><a href="http://www.gdzwfw.gov.cn/">广东政务服务网</a></h1>
+        <div class="header-title">番禺区一件事主题式导办</div>
+
+    </div>
+</div>
+<div class="content">
+
+    <!-- 中间内容-->
+    <div class="content" style="min-height:680px;overflow:hidden;">
+        <div class="tempWrap" >
+            <p><h4 style="    background: #3e97df;">主题名称</h4><span style="margin-left: 20px;" th:text="${onetheName}"></span></p>
+
+            <!--<span style="color: #0d1c28;line-height: 60px;font-size: 24px;width: 100%;background-color: #E7E7E7;">智能导服，为您提供准确办事引导</span>-->
+            <p style="margin-top: 15px;margin-left: 2%">
+            <div style="float: left;margin-left: 2%" class="wenzi5">
+                <a href="#">以上选择情形，需要带以下材料进行办理 </a></div>
+            <div class="saomack" style="float: right; margin-bottom: 20px;">
+                <a href="javascript:void(0);">扫码查看
+                    <!--<div style="position: absolute; width: 160px; height: 160px; right: 110px; top: 0px; background: rgb(255, 255, 255); z-index: 10; border-radius: 3px; display: none;"><div id="qrcode" title="https://zwdt.sh.gov.cn/smzy/shell_pc/qrcode?id=44704e30720742f0a860c324029cc9ee" style="margin: 5px;"><canvas width="150" height="150" style="display: none;"></canvas><img alt="Scan me!" src="data:image/png;base64,iVBORw0K=" style="display: block;"></div></div>-->
+                    <div id="sweep_code">
+                        <!--  qrcode-->
+                        <img th:src="${qrcode}" alt="" id="img" width="100" height="100" ></img>
+                    </div>
+                </a>
+            </div>
+            <div class="dayin"  style="float: right; margin-right: 10px; margin-bottom: 20px;">
+                <a href="JavaScript:printTable();">打印</a></div>
+            <div class="xiazai"  style="float: right; margin-right: 10px; margin-bottom: 20px;">
+                <a href="JavaScript:excelExport();">下载</a></div>
+            </p>
+            <div class="materialSelf" style="background: rgb(255, 255, 255); margin-top: 18px;">
+                <span class="slwenzi3">
+                <table class="tablecl" width="100%" style="border-collapse: collapse;border: 1px solid #e5e5e5;">
+                    <thead>
+                    <tr class="left1" style="border-bottom: 1px solid #e5e5e5;background: aliceblue">
+                        <th class="tabs_wx" width="4%" align='center'>序号</th>
+                        <th class="tabs_wx" width="39%">您需要准备的材料</th>
+                        <th class="tabs_wx" width="18%">备注</th>
+                        <th class="tabs_wx" width="32%">材料要求</th>
+                        <th class="tabs_wx" width="5%" align='center'>范本</th>
+                        <th class="tabs_wx" width="5%" align='center'>表格</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+<!--                    <tr class="left1">-->
+<!--                        <td class="tabs_wx">-->
+<!--                            <span class="tabs_tit"><img src=""/>1</span>-->
+<!--                        </td>-->
+<!--                        <td class="tabs_wx"><a>22222 </a></td>-->
+<!--                        <td class="tabs_wx">202022 </td>-->
+<!--                        <td class="tabs_wx">202022 </td>-->
+<!--                        <td class="tabs_wx"></td>-->
+<!--                        <td class="tabs_wx"><a>下载 </a></td>-->
+<!--                    </tr>-->
+<!--                    <tr class="left1">-->
+<!--                        <td class="tabs_wx" colspan="3">2</td>-->
+<!--                        <td class="tabs_wx">202022 </td>-->
+<!--                        <td class="tabs_wx"><a>下载 </a></td>-->
+<!--                        <td class="tabs_wx"></td>-->
+<!--                    </tr>-->
+<!--                    <tr class="left1">-->
+<!--                        <td class="tabs_wx">32</td>-->
+<!--                        <td class="tabs_wx">44</td>-->
+<!--                        <td class="tabs_wx">44444</td>-->
+<!--                        <td class="tabs_wx">202022 </td>-->
+<!--                        <td class="tabs_wx"></td>-->
+<!--                        <td class="tabs_wx"></td>-->
+<!--                    </tr>-->
+                    <!-- -->
+                    <tr th:each="malt,maltStar:${dataDoooList}" class="left1">
+                        <td class="tabs_wx" th:text="${maltStar.index + 1}"></td>
+                        <td class="tabs_wx" th:text="${malt.dataName}"></td>
+                        <td class="tabs_wx" th:text="${malt.remarks}"></td>
+                        <td class="tabs_wx" th:text="${malt.dataForm}"></td>
+                        <td align='center'><a href='javascriot:;' th:href="${malt.templateUrl}">下载</a></td>
+                        <td class="tabs_wx"  align='center'>
+                            <a href='javascriot:;' th:href="${malt.blankUrl}">下载</a>
+                        </td>
+                    </tr>
+                    <!-- 情形材料-->
+                    <tr th:each="dastl,maltStar:${dataSituationList}" class="left1">
+                        <td class="tabs_wx" th:text="${maltStar.index} + ${xuhl}"></td>
+                        <td class="tabs_wx" th:text="${dastl.dataName}"></td>
+                        <td class="tabs_wx" th:text="${dastl.remarks}"></td>
+                        <td class="tabs_wx" th:text="${dastl.dataForm}"></td>
+                        <td><a href='javascriot:;' th:href="${dastl.templateUrl}">下载</a></td>
+                        <td class="tabs_wx"  align='center'>
+                            <a href='javascriot:;' th:href="${dastl.blankUrl}">下载</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="step-title"><span class="address">办理地点</span></div>
+                <!-- 咨询方式-->
+                <table width='100%' border='0' cellspacing='1' cellpadding='0' class='tablecl2' style="font-size: 14px;color: #666666;line-height: 26px;">
+                    <tr><td rowspan="2"><span>咨询方式</span></td>
+                        <td colspan="4"><span>咨询电话：（021）84690912</span>&nbsp;&nbsp;、&nbsp;&nbsp;<span>（021）12345</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><span>电子邮箱：pywjjts@126.com</span></td>
+                    </tr>
+                    <tr><td rowspan="2"><span>办理时间、地点</span></td>
+                        <td colspan="4"><span>办公时间：周一至周五：上午8:30-12:00 下午2:00-5:00（国家法定节假日除外）</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><span>办理地点：广州市番禺区亚运大道550号番禺区政务服务中心三楼建设工程大厅C58-C60号窗口</span></td>
+                    </tr>
+                </table>
+                </span>
+            </div>
+            <div id="container1" style="height: 90%;width: 90%;margin-top: 30px;">
+                <iframe style="height: 590px;width: 98%;" src="https://www.amap.com/place/B0FFL6C5IK"></iframe>
+            </div>
+
+        </div>
+
+        <!--<div style="margin-right: 10%;" class="search fr">-->
+            <!--<button type="button" onclick="toSearch()" style="width: 128px;">线下办理</button>-->
+            <!--<button type="button" onclick="toSearch()" style="width: 128px;">网上办理</button>-->
+        <!--</div>-->
+
+    </div>
+
+    <div class="mt80"></div>
+</div>
+    <!-- footer -->
+    <div class="footer">
+        <div class="wenzi2">
+            主页 | 关于我们 | 联系我们 | 设为首页 | 加入收藏</div>
+        <div class="wenzi3">
+            总访问次数：58909419次 备案号：xxxxxx2号<br />
+            广州市番禺区便民服务平台 版权所有 xxx信息技术有限公司 技术支持</div>
+    </div>
+
+
+</body>
+<script>
+    function reLoadText(){
+        $(".link-item-box a").each(function (){
+            var _in_height = $(this).find('span').innerHeight();
+            var initHeight = (68 - _in_height) / 2;
+            $(this).find('span').css('margin-top', initHeight + 'px');
+        });
+    }
+</script>
+</html>

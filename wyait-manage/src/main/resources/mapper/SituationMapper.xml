@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wyait.manage.dao.SituationMapper" >
+    <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.Situation" >
+        <id column="situation_id" property="situationId" jdbcType="INTEGER" />
+        <result column="dooo_id" property="doooId" jdbcType="INTEGER" />
+        <result column="department_id" property="departmentId" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="situation_level" property="situationLevel" jdbcType="INTEGER" />
+        <result column="nodes_type" property="nodesType" jdbcType="INTEGER" />
+        <result column="pid" property="pid" jdbcType="INTEGER" />
+        <result column="situation_describe" property="situationDescribe" jdbcType="VARCHAR" />
+        <result column="new_time" property="newTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="getSituationList" resultType="com.wyait.manage.entity.SituationVO">
+        select s.situation_id as situationId,
+        s.dooo_id as doooId,
+        s.department_id as departmentId,
+        s.situation_describe as situationDescribe,
+        s.new_time as newTime,
+        s.update_time as updateTime,
+        d1.dooo_name as doooName,
+        d2.department_name as departmentName
+        from situation s inner join dooo d1 on d1.dooo_id = s.dooo_id
+        inner join department d2 on d2.department_id = s.department_id
+        <where>
+            s.situation_level = 1
+            <if test="situation.departmentId!=null and situation.departmentId!=''">
+                AND s.department_id =#{situation.departmentId}
+            </if>
+            <if test="situation.doooId!=null and situation.doooId!=''">
+                AND s.dooo_id =#{situation.doooId}
+            </if>
+            <if test="situation.situationDescribe and situation.situationDescribe != ''">
+                AND s.situation_describe like CONCAT(CONCAT('%',#{situation.situationDescribe}),
+                '%')
+            </if>
+        </where>
+        order by s.new_time desc
+    </select>
+
+    <select id="getSituationByNameAndId" resultType="com.wyait.manage.pojo.Situation">
+        select * from situation where situation_describe = #{situationDescribe} and situation_id != #{situationId}
+  </select>
+
+    <select id="getSituationByName" resultType="com.wyait.manage.pojo.Situation">
+        select * from situation where situation_describe = #{situationDescribe} and pid = #{pid}
+  </select>
+
+    <select id="getOrderBy" resultType="com.wyait.manage.pojo.Situation">
+        select * from situation order by new_time DESC LIMIT 1
+  </select>
+
+    <update id="updateSituation" parameterType="com.wyait.manage.pojo.Situation">
+        update situation
+        <set>
+            <if test="doooId != null and doooId != ''">
+                dooo_id = #{doooId,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="situationDescribe != null and situationDescribe != ''">
+                situation_describe = #{situationDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="situationLevel != null and situationLevel != ''">
+                situation_level = #{situationLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="nodesType != null and nodesType != ''">
+                nodes_type = #{nodesType,jdbcType=VARCHAR},
+            </if>
+
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </set>
+        where situation_id = #{situationId,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insert" parameterType="com.wyait.manage.pojo.Situation">
+       insert into situation ( dooo_id,department_id,situation_describe,situation_level,type,nodes_type,pid,new_time,update_time)
+		values (#{doooId,jdbcType=INTEGER},#{departmentId,jdbcType=INTEGER},#{situationDescribe,jdbcType=VARCHAR},#{situationLevel,jdbcType=INTEGER},#{type,jdbcType=INTEGER},#{nodesType,jdbcType=INTEGER},#{pid,jdbcType=INTEGER},#{newTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+    <delete id="delSituation" parameterType="int">
+        DELETE FROM situation WHERE situation_id = #{situationId}
+  </delete>
+    <delete id="delSituationByGoooId" parameterType="int">
+        DELETE FROM situation WHERE dooo_id = #{doooId}
+  </delete>
+
+    <select id="getSituationById" resultType="com.wyait.manage.pojo.Situation">
+        select * from  situation where dooo_id = #{doooId}
+    </select>
+
+    <select id="getSituationId" resultType="com.wyait.manage.pojo.Situation">
+        select * from  situation where situation_id = #{situationId}
+    </select>
+
+    <select id="selectPidBySituationId" resultType="com.wyait.manage.pojo.Situation">
+      select * from situation where pid = #{situationId}
+  </select>
+
+    <delete id="delDataAndSituation" parameterType="int">
+        DELETE FROM data_situation WHERE situation_id = #{situationId}
+    </delete>
+
+    <select id="getSituationByIdAndNodesType" resultType="com.wyait.manage.pojo.Situation">
+        select * from situation where dooo_id = #{doooId} and nodes_type in (0,2)
+    </select>
+
+    <!-- 查询选项关联的情形 -->
+    <select id="findSituationByPid" resultMap="BaseResultMap">
+        select * from situation where pid = #{situationDetailsId}
+    </select>
+
+    <!-- 根据ID与Pid删除 -->
+    <delete id="delSituationByPidAndSituationId" parameterType="int">
+        delete from situation where situation_id = #{situationId} and pid = #{pid}
+    </delete>
+
+    <select id="getSituationPid" resultMap="BaseResultMap">
+        select * from situation where pid = #{situationId} and situation_describe = #{situationDescribe}
+    </select>
+
+    <select id="getSituationPidTow" resultMap="BaseResultMap">
+        select * from situation where pid = #{situationId} and situation_describe = #{situationDescribe} and situation_id != #{situationIdTOW}
+    </select>
+
+    <!--  事项查询  -->
+    <select id="findByDepartmentId" parameterType="int" resultType="com.wyait.manage.pojo.SituationDetails">
+       select sd.situation_details_id,sd.situation_id,sd.details_describe
+       from situation st,situation_details sd
+       where st.situation_id = sd.situation_id
+       and st.situation_id = #{departmentId}
+   </select>
+    <select id="findBySituationId" parameterType="int" resultType="com.wyait.manage.pojo.Situation">
+       select st.situation_id,st.dooo_id,st.department_id,st.situation_describe,st.new_time,st.situation_level
+       from situation st
+       where st.dooo_id = #{departmentId}
+   </select>
+
+    <!-- 查询选择的情形-->
+    <select id="findByDoooSituation" resultType="Map">
+        select st.situation_id,st.dooo_id,st.department_id,st.situation_describe,st.new_time,
+                sd.situation_details_id,sd.details_describe
+       from situation st,situation_details sd
+       where st.situation_id = sd.situation_id
+			 and st.dooo_id = #{did}  and sd.situation_details_id in ( #{sdis} )
+    </select>
+
+    <!-- 子表ID查询主表情形 SituationDetailsId-->
+    <select id="findchildSituation" parameterType="int" resultType="com.wyait.manage.pojo.Situation">
+        select st.situation_id,st.dooo_id,st.department_id,st.situation_describe,st.new_time
+        from situation st
+        where st.pid = #{pid}
+    </select>
+
+    <!-- 根据事项ID查询一级情形问题和答案 -->
+    <select id="queryDoooSituationList" resultType="com.wyait.manage.pojo.Situation">
+        select * from situation where situation_level = 1 and dooo_id = #{doooId}
+    </select>
+
+    <!-- 根据事项ID查询一级情形问题和答案 -->
+    <select id="querySituationDetailsByPid" resultType="com.wyait.manage.pojo.Situation">
+        select * from situation where pid = #{situationDetailsId}
+    </select>
+</mapper>

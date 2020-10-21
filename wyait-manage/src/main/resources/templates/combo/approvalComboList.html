@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">套餐名称</label>
+                <div class="layui-input-inline">
+                    <input id="comboName" name="comboName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+
+<!--            <div class="layui-form-item  layui-col-md4">-->
+<!--                <label class="layui-form-label">审批状态</label>-->
+<!--                <div class="layui-input-block">-->
+<!--                    <select name="approvalType" id="approvalType" autocomplete="off">-->
+<!--                        <option value=""></option>-->
+<!--                        <option value="1">待审批</option>-->
+<!--                        <option value="2">审批中</option>-->
+<!--                        <option value="3">审批通过</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">提交</button>
+<!--            </div>-->
+        </form>
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+        <button class="layui-btn layui-btn-normal" onclick="addUser()">新增套餐</button>
+
+        <table id="uesrList" lay-filter="userTable"></table>
+        <div style="display:none;" id="currentUser"><shiro:principal property="id"></shiro:principal></div>
+
+        <script type="text/html" id="optBar">
+            <a class="layui-btn layui-btn-xs" lay-event="select">详情</a>
+            <a class="layui-btn layui-btn-xs" lay-event="recover">通过</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="put">驳回</a>
+        </script>
+
+
+
+    </div>
+
+
+    <!--添加或编辑用户-->
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 600px">
+        <form id="doooForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input id="newTime" type="hidden" name="roleIds"/>
+            <input id="updateTime" type="hidden" name="roleIds"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形名称</label>
+                <div class="layui-input-inline">
+                    <input id="doooName" name="comboName" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-block">
+                    <select name="departmentId" lay-verify="required" id="departmentInsert" lay-filter="department">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属事项</label>
+                <div class="layui-input-block">
+                    <select name="doooId" lay-verify="required" id="doooInsert">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属事项</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-verify="required" id="type">
+                        <option value=""></option>
+                        <option value="营商环境">营商环境</option>
+                        <option value="商事经营">商事经营</option>
+                        <option value="建设工程">建设工程</option>
+                        <option value="个人事务">个人事务</option>
+                    </select>
+                </div>
+            </div>
+<!--            <div class="layui-form-item layui-form-text">-->
+<!--                <label class="layui-form-label">受理条件</label>-->
+<!--                <div class="layui-input-block">-->
+<!--                    <textarea name="condition" placeholder="请输入内容" class="layui-textarea" id="condition"></textarea>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <!--提交审批-->
+    <div id="setUser2" class="layer_self_wrap" style="width:500px;display:none;">
+        <form id="doooForm2" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input type="hidden" id="comboId" name="comboId" />
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">提交说明</label>
+                <div class="layui-input-block">
+                    <textarea name="approval_type" placeholder="请输入内容" class="layui-textarea" id="approval_type"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" onclick="put()">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/combo/comboList2.js"></script>
+    <script>
+        layui.use(['form', 'upload', 'layer'], function () {
+
+            var form = layui.form;
+            //检查项目添加到下拉框中
+            $.ajax({
+                url: '/department/getDepartments',
+                dataType: 'json',
+                type: 'get',
+                success: function (data) {
+                    $.each(data, function (index, item) {
+                        $('#departmentSearch').append(new Option(item.departmentName, item.departmentId));// 下拉菜单里添加元素
+                        $('#departmentInsert').append(new Option(item.departmentName, item.departmentId));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
+
+                    //重新渲染 固定写法
+                }
+            });
+
+            form.on('select(department)',function (data) {
+                $.ajax({
+                    url: '/dooo/getDoooList',
+                    dataType: 'json',
+                    data:{"departmentId":data.value},
+                    type: 'get',
+                    success: function (data) {
+                        var tmp='<option value="">请选择</option>';
+                        for (var i in data){
+                            tmp +='<option value="'+data[i].doooId+'">'+data[i].doooName+'</option>';
+                        }
+                        $("#doooInsert").html(tmp);
+                        layui.form.render("select");
+
+                        //重新渲染 固定写法
+                    }
+                });
+
+            });
+            form.on('select(department2)',function (data) {
+                $.ajax({
+                    url: '/dooo/getDoooList',
+                    dataType: 'json',
+                    data:{"departmentId":data.value},
+                    type: 'get',
+                    success: function (data) {
+                        var tmp='<option value="">请选择</option>';
+                        for (var i in data){
+                            tmp +='<option value="'+data[i].doooId+'">'+data[i].doooName+'</option>';
+                        }
+                        $("#doooSearch").html(tmp);
+                        layui.form.render("select");
+
+                        //重新渲染 固定写法
+                    }
+                });
+
+            });
+        });
+
+    </script>
+</div>
+</body>
+</html>
