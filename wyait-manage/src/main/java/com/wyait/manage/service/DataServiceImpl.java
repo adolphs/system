@@ -56,7 +56,7 @@ public class DataServiceImpl extends ServiceImpl<DataMapper, Data> implements Da
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 30000, rollbackFor = {
-            RuntimeException.class, Exception.class },transactionManager = "testTransactionManager")
+            RuntimeException.class, Exception.class })
     public String addData(Data data) {
         if (data.getDataId() != null){
             //判断是否存在相同名称
@@ -101,7 +101,7 @@ public class DataServiceImpl extends ServiceImpl<DataMapper, Data> implements Da
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 30000, rollbackFor = {
-            RuntimeException.class, Exception.class },transactionManager = "testTransactionManager")
+            RuntimeException.class, Exception.class })
     public String addBlankUrl(Integer dataId, String blankUrl, String blankName) {
         Data data = new Data();
         data.setDataId(dataId);
@@ -114,7 +114,7 @@ public class DataServiceImpl extends ServiceImpl<DataMapper, Data> implements Da
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 30000, rollbackFor = {
-            RuntimeException.class, Exception.class },transactionManager = "testTransactionManager")
+            RuntimeException.class, Exception.class })
     public String addTemplateUrl(Integer dataId, String templateUrl, String templateName) {
         Data data = new Data();
         data.setDataId(dataId);

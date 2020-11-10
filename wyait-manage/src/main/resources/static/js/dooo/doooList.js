@@ -257,14 +257,14 @@ function getUserAndRoles(obj,id) {
     });
     //处理复选框
     var htm = '';
-    if(obj.type == '1,2' || obj.type == '2,1'){
-        htm = '<input type="checkbox" name="type" title="个人" value="2" checked="checked" />' +
+    if(obj.type == '0,1' || obj.type == '1,0'){
+        htm = '<input type="checkbox" name="type" title="个人" value="0" checked="checked" />' +
             '  <input type="checkbox" name="type" title="法人" value="1" checked="checked" />';
     }else if (obj.type == '1'){
-        htm = '<input type="checkbox" name="type" title="个人" value="2"  />' +
+        htm = '<input type="checkbox" name="type" title="个人" value="0"  />' +
             '  <input type="checkbox" name="type" title="法人" value="1" checked="checked" />';
-    }else if (obj.type == '2'){
-        htm = '<input type="checkbox" name="type" title="个人" value="2" checked="checked" />' +
+    }else if (obj.type == '0'){
+        htm = '<input type="checkbox" name="type" title="个人" value="0" checked="checked" />' +
             '  <input type="checkbox" name="type" title="法人" value="1" />';
     }
 

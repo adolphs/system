@@ -58,7 +58,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 30000, rollbackFor = {
-            RuntimeException.class, Exception.class },transactionManager = "testTransactionManager")
+            RuntimeException.class, Exception.class })
     public String setDepartment(Department department) {
         if (department.getDepartmentId() != null){
             //判断是否存在相同名称
@@ -85,7 +85,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 30000, rollbackFor = {
-            RuntimeException.class, Exception.class },transactionManager = "testTransactionManager")
+            RuntimeException.class, Exception.class })
     public String delDepartment(Integer departmentId) {
         List<Dooo> doooList = doooMapper.getDoooList(departmentId);
         if(doooList.size()!=0){

@@ -58,7 +58,7 @@ public class SituationServiceImpl extends ServiceImpl<SituationMapper, Situation
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 30000, rollbackFor = {
-            RuntimeException.class, Exception.class },transactionManager = "testTransactionManager")
+            RuntimeException.class, Exception.class })
     public String setSituation(Situation situation) {
         if (situation.getSituationId() != null){
             //判断是否存在相同名称
@@ -85,7 +85,7 @@ public class SituationServiceImpl extends ServiceImpl<SituationMapper, Situation
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 30000, rollbackFor = {
-            RuntimeException.class, Exception.class },transactionManager = "testTransactionManager")
+            RuntimeException.class, Exception.class })
     public String delSituation(Integer situationId) {
         //查询所有以这个情形为父ID的子情形
         List<Situation> situations =  situationMapper.selectPidBySituationId(situationId);
@@ -119,7 +119,7 @@ public class SituationServiceImpl extends ServiceImpl<SituationMapper, Situation
     }
 
     @Override
-    @Transactional(transactionManager = "testTransactionManager")
+    @Transactional
     public String setSituationDetails(SituationDetails situationDetails) {
         if (situationDetails.getSituationDetailsId() != null){
             //判断是否存在相同名称
@@ -144,7 +144,7 @@ public class SituationServiceImpl extends ServiceImpl<SituationMapper, Situation
     }
 
     @Override
-    @Transactional(transactionManager = "testTransactionManager")
+    @Transactional
     public String delSituationDetails(Integer situationDetailsId) {
         //删除本身
         situationDetailsMapper.delSituationDetail(situationDetailsId);

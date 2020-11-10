@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+        <h4>表单详情</h4>
+        <form id="userSearch" class="layui-form" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">表单名称：</label>
+                <div class="layui-input-inline">
+                    <input  name="doooName" autocomplete="off" class="layui-input" type="text" value="开办便利单综合表单模板" />
+                </div>
+                <label class="layui-form-label">类型：</label>
+                <div class="layui-input-inline">
+                    <input  name="doooName" autocomplete="off" class="layui-input" type="text" value="套餐"/>
+                </div>
+            </div>
+        </form>
+
+        <hr class="layui-bg-black"/>
+        <h4>新增参数</h4>
+        <form class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">参数ID</label>
+                <div class="layui-input-inline">
+                    <input  name="doooName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+                <label class="layui-form-label">参数名称</label>
+                <div class="layui-input-inline">
+                    <input  name="doooName" autocomplete="off" class="layui-input" type="text" value="姓名"/>
+                </div>
+                <label class="layui-form-label">参数类型</label>
+                <div class="layui-input-inline">
+                    <select name="departmentId" id="departmentSearch" autocomplete="off">
+                        <option value=""></option>
+                        <option value="3">文本</option>
+                        <option value="1">下拉</option>
+                        <option value="2">多选</option>
+                        <option value="4">单选</option>
+                    </select>
+                </div>
+                <label class="layui-form-label">默认值</label>
+                <div class="layui-input-inline">
+                    <input  name="doooName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <button type="reset" style="margin-left: 25%" class="layui-btn layui-btn-primary">重置</button>
+            <button class="layui-btn"  lay-submit=""  lay-filter="searchSubmit">提交</button>
+        </form>
+        <hr class="layui-bg-black"/>
+        <h4>参数列表</h4>
+        <div class="top">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>参数ID</th>
+                    <th>参数名称</th>
+                    <th>参数类型</th>
+                    <th>默认参数</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>mingzi</td>
+                    <td>名字</td>
+                    <td>文本</td>
+                    <td>请输入您的名字</td>
+                    <td><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel">编辑</a><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel">删除</a></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>fubenwenjian</td>
+                    <td>副本文件数量</td>
+                    <td>下拉</td>
+                    <td>1,2,3,4</td>
+                    <td><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel">编辑</a><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel">删除</a></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>gongshangbaoxian</td>
+                    <td>是否缴纳工伤保险</td>
+                    <td>单选</td>
+                    <td>1.是/2.否</td>
+                    <td><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel">编辑</a><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel">删除</a></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>qiyemingcheng</td>
+                    <td>企业名字</td>
+                    <td>文本</td>
+                    <td>请输入企业名称</td>
+                    <td><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel">编辑</a><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel">删除</a></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>fadingdaibiaoren</td>
+                    <td>法定代表人</td>
+                    <td>文本</td>
+                    <td>请输入法定代表人的名字</td>
+                    <td><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel">编辑</a><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel">删除</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div style="margin-left: 47%">
+            <a class="layui-btn layui-btn-normal" >返回</a>
+        </div>
+    </div>
+
+
+
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/online/formSetUp.js"></script>
+
+</div>
+</body>
+</html>

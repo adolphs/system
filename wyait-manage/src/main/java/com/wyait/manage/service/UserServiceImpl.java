@@ -121,7 +121,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 30000, rollbackFor = {
-			RuntimeException.class, Exception.class },transactionManager = "testTransactionManager")
+			RuntimeException.class, Exception.class })
 	public String setUser(User user, String roleIds) {
 		int userId;
 		if (user.getId() != null) {

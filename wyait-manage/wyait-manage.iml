@@ -22,6 +22,7 @@
         <datasource-mapping>
           <factory-entry name="Entities" />
           <factory-entry name="entityManagerFactory" />
+          <factory-entry name="wyait-manage" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
@@ -99,7 +100,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.alibaba:jconsole:1.8.0">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../java/1..8.0.112/jdk/lib/jconsole.jar!/" />
+          <root url="jar://C:/Program Files/Java/jdk1.8.0_152/lib/jconsole.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -108,7 +109,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.alibaba:tools:1.8.0">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../java/1..8.0.112/jdk/lib/tools.jar!/" />
+          <root url="jar://C:/Program Files/Java/jdk1.8.0_152/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

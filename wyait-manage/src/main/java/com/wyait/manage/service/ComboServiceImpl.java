@@ -84,7 +84,7 @@ public class ComboServiceImpl extends ServiceImpl<ComboMapper, Combo> implements
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 30000, rollbackFor = {
-            RuntimeException.class, Exception.class },transactionManager = "testTransactionManager")
+            RuntimeException.class, Exception.class })
     public String setCombo(Combo combo) {
         combo.setNewTime(new Date());
         combo.setUpdateTime(new Date());
@@ -96,7 +96,7 @@ public class ComboServiceImpl extends ServiceImpl<ComboMapper, Combo> implements
             i = comboMapper.insertComboDooo(comboDooo);
         }
         //删除redis缓存
-        redisUtils.remove("comboList");
+        redisUtils.remove("combos");
         if (i != 0){
             return "ok";
         }else{
@@ -108,7 +108,7 @@ public class ComboServiceImpl extends ServiceImpl<ComboMapper, Combo> implements
     @Override
     public String delCombo(Integer comboId) {
         //删除缓存
-        redisUtils.remove("comboList");
+        redisUtils.remove("combos");
         //先删除其他东西
         comboMapper.delComboDooo(comboId);
         //在删除本体
@@ -336,7 +336,7 @@ public class ComboServiceImpl extends ServiceImpl<ComboMapper, Combo> implements
     }
 
     @Override
-    @Transactional(transactionManager = "testTransactionManager")
+    @Transactional
     public String delComboSituationDetails(Integer id) {
         //删除所有的与选项关联的事情
         dataMapper.delComboSituationDetails(id);

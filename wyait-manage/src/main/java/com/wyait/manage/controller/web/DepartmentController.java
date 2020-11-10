@@ -115,8 +115,8 @@ public class DepartmentController {
 
     @ResponseBody
     @GetMapping("/getDepartments")
-    public List<User> getDepartments(){
-        System.out.println("---------getDepartments------------" + userService.selectById(30));
-        return userService.selectList(null);
+    public List<Department> getDepartments(){
+//        System.out.println("---------getDepartments------------" + userService.selectById(30));
+        return departmentService.selectList(null);
     }
 }

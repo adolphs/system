@@ -118,7 +118,7 @@ public class LogSystemServiceImpl extends ServiceImpl<LogSystemMapper, LogSystem
             logSystem.setUserName(existUser.getUsername());
             logSystem.setNewTime(new Date());
             logSystem.setType(3);
-            logSystem.setContent("用户（"+logSystem.getUserName()+"）修改了一个情形，原名："+ situation1.getSituationDescribe() +",现更名命名为："+situation.getSituationDescribe() );
+//            logSystem.setContent("用户（"+logSystem.getUserName()+"）修改了一个情形，原名："+ situation1.getSituationDescribe() +",现更名命名为："+situation.getSituationDescribe() );
             logSystemMapper.insert(logSystem);
         }
         return null;
