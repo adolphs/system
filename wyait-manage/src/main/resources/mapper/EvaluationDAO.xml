@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.EvaluationDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.Evaluation">
+    <id column="evaluation_id" jdbcType="VARCHAR" property="evaluationId" />
+    <result column="useridcode" jdbcType="VARCHAR" property="useridcode" />
+    <result column="evaluation_level" jdbcType="VARCHAR" property="evaluationLevel" />
+    <result column="evaluation_content" jdbcType="VARCHAR" property="evaluationContent" />
+    <result column="is_upload" jdbcType="INTEGER" property="isUpload" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    evaluation_id, useridcode, evaluation_level, evaluation_content, is_upload
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from evaluation
+    where evaluation_id = #{evaluationId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from evaluation
+    where evaluation_id = #{evaluationId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.Evaluation">
+    insert into evaluation (evaluation_id, useridcode, evaluation_level, 
+      evaluation_content, is_upload)
+    values (#{evaluationId,jdbcType=VARCHAR}, #{useridcode,jdbcType=VARCHAR}, #{evaluationLevel,jdbcType=VARCHAR}, 
+      #{evaluationContent,jdbcType=VARCHAR}, #{isUpload,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.Evaluation">
+    insert into evaluation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="evaluationId != null">
+        evaluation_id,
+      </if>
+      <if test="useridcode != null">
+        useridcode,
+      </if>
+      <if test="evaluationLevel != null">
+        evaluation_level,
+      </if>
+      <if test="evaluationContent != null">
+        evaluation_content,
+      </if>
+      <if test="isUpload != null">
+        is_upload,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="evaluationId != null">
+        #{evaluationId,jdbcType=VARCHAR},
+      </if>
+      <if test="useridcode != null">
+        #{useridcode,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluationLevel != null">
+        #{evaluationLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluationContent != null">
+        #{evaluationContent,jdbcType=VARCHAR},
+      </if>
+      <if test="isUpload != null">
+        #{isUpload,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.Evaluation">
+    update evaluation
+    <set>
+      <if test="useridcode != null">
+        useridcode = #{useridcode,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluationLevel != null">
+        evaluation_level = #{evaluationLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluationContent != null">
+        evaluation_content = #{evaluationContent,jdbcType=VARCHAR},
+      </if>
+      <if test="isUpload != null">
+        is_upload = #{isUpload,jdbcType=INTEGER},
+      </if>
+    </set>
+    where evaluation_id = #{evaluationId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.Evaluation">
+    update evaluation
+    set useridcode = #{useridcode,jdbcType=VARCHAR},
+      evaluation_level = #{evaluationLevel,jdbcType=VARCHAR},
+      evaluation_content = #{evaluationContent,jdbcType=VARCHAR},
+      is_upload = #{isUpload,jdbcType=INTEGER}
+    where evaluation_id = #{evaluationId,jdbcType=VARCHAR}
+  </update>
+</mapper>

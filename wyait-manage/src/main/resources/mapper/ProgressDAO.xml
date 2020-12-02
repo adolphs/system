@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.ProgressDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.Progress">
+    <result column="progress_id" jdbcType="VARCHAR" property="progressId" />
+    <result column="useridcode" jdbcType="VARCHAR" property="useridcode" />
+    <result column="progress_query" jdbcType="VARCHAR" property="progressQuery" />
+  </resultMap>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.Progress">
+    insert into progress (progress_id, useridcode, progress_query
+      )
+    values (#{progressId,jdbcType=VARCHAR}, #{useridcode,jdbcType=VARCHAR}, #{progressQuery,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.Progress">
+    insert into progress
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="progressId != null">
+        progress_id,
+      </if>
+      <if test="useridcode != null">
+        useridcode,
+      </if>
+      <if test="progressQuery != null">
+        progress_query,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="progressId != null">
+        #{progressId,jdbcType=VARCHAR},
+      </if>
+      <if test="useridcode != null">
+        #{useridcode,jdbcType=VARCHAR},
+      </if>
+      <if test="progressQuery != null">
+        #{progressQuery,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

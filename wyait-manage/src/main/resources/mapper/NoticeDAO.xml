@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.NoticeDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.Notice">
+    <id column="notice_id" jdbcType="VARCHAR" property="noticeId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="new_time" jdbcType="TIMESTAMP" property="newTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    notice_id, content, new_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from notice
+    where notice_id = #{noticeId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from notice
+    where notice_id = #{noticeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.Notice">
+    insert into notice (notice_id, content, new_time
+      )
+    values (#{noticeId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{newTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.Notice">
+    insert into notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="noticeId != null">
+        notice_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="newTime != null">
+        new_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="noticeId != null">
+        #{noticeId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="newTime != null">
+        #{newTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.Notice">
+    update notice
+    <set>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="newTime != null">
+        new_time = #{newTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where notice_id = #{noticeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.Notice">
+    update notice
+    set content = #{content,jdbcType=VARCHAR},
+      new_time = #{newTime,jdbcType=TIMESTAMP}
+    where notice_id = #{noticeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

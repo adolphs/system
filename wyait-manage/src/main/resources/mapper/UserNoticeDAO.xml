@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.UserNoticeDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.UserNotice">
+    <result column="useridcode" jdbcType="VARCHAR" property="useridcode" />
+    <result column="notice_id" jdbcType="VARCHAR" property="noticeId" />
+    <result column="is_type" jdbcType="INTEGER" property="isType" />
+    <result column="new_time" jdbcType="TIMESTAMP" property="newTime" />
+  </resultMap>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.UserNotice">
+    insert into user_notice (useridcode, notice_id, is_type, 
+      new_time)
+    values (#{useridcode,jdbcType=VARCHAR}, #{noticeId,jdbcType=VARCHAR}, #{isType,jdbcType=INTEGER}, 
+      #{newTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.UserNotice">
+    insert into user_notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="useridcode != null">
+        useridcode,
+      </if>
+      <if test="noticeId != null">
+        notice_id,
+      </if>
+      <if test="isType != null">
+        is_type,
+      </if>
+      <if test="newTime != null">
+        new_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="useridcode != null">
+        #{useridcode,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeId != null">
+        #{noticeId,jdbcType=VARCHAR},
+      </if>
+      <if test="isType != null">
+        #{isType,jdbcType=INTEGER},
+      </if>
+      <if test="newTime != null">
+        #{newTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

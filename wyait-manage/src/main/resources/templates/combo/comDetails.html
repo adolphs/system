@@ -61,6 +61,7 @@
         <button class="layui-btn layui-btn-normal" onclick="addCombo()">新增情形</button>
         <button class="layui-btn layui-btn-normal" onclick="addData()">绑定通用材料</button>
         <button class="layui-btn layui-btn-normal" onclick="addDataEnding()">绑定审批结果</button>
+        <button class="layui-btn layui-btn-normal" onclick="selectForm()">查看表单</button>
 
         <div class="top">
             <div class="top1">
@@ -541,6 +542,10 @@
                 });
             }
 
+        }
+        function selectForm() {
+            var comboId = $("#id").val();
+            window.location.href="/"+comboId;
         }
     </script>
 </div>

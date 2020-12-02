@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.SourceFromDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.SourceFrom">
+    <id column="form_id" jdbcType="VARCHAR" property="formId" />
+    <result column="source_id" jdbcType="INTEGER" property="sourceId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="new_time" jdbcType="TIMESTAMP" property="newTime" />
+    <result column="is_status" jdbcType="INTEGER" property="isStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    form_id, source_id, `type`, new_time, is_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from source_from
+    where form_id = #{formId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from source_from
+    where form_id = #{formId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.SourceFrom">
+    insert into source_from (form_id, source_id, `type`, 
+      new_time, is_status)
+    values (#{formId,jdbcType=VARCHAR}, #{sourceId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{newTime,jdbcType=TIMESTAMP}, #{isStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.SourceFrom">
+    insert into source_from
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="formId != null">
+        form_id,
+      </if>
+      <if test="sourceId != null">
+        source_id,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="newTime != null">
+        new_time,
+      </if>
+      <if test="isStatus != null">
+        is_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="formId != null">
+        #{formId,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceId != null">
+        #{sourceId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="newTime != null">
+        #{newTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStatus != null">
+        #{isStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.SourceFrom">
+    update source_from
+    <set>
+      <if test="sourceId != null">
+        source_id = #{sourceId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="newTime != null">
+        new_time = #{newTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStatus != null">
+        is_status = #{isStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where form_id = #{formId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.SourceFrom">
+    update source_from
+    set source_id = #{sourceId,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER},
+      new_time = #{newTime,jdbcType=TIMESTAMP},
+      is_status = #{isStatus,jdbcType=INTEGER}
+    where form_id = #{formId,jdbcType=VARCHAR}
+  </update>
+</mapper>

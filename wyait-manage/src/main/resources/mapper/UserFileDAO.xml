@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.UserFileDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.UserFile">
+    <id column="useridcode" jdbcType="VARCHAR" property="useridcode" />
+    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    useridcode, file_id, file_name, file_url, upload_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_file
+    where useridcode = #{useridcode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user_file
+    where useridcode = #{useridcode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.UserFile">
+    insert into user_file (useridcode, file_id, file_name, 
+      file_url, upload_time)
+    values (#{useridcode,jdbcType=VARCHAR}, #{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
+      #{fileUrl,jdbcType=VARCHAR}, #{uploadTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.UserFile">
+    insert into user_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="useridcode != null">
+        useridcode,
+      </if>
+      <if test="fileId != null">
+        file_id,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="fileUrl != null">
+        file_url,
+      </if>
+      <if test="uploadTime != null">
+        upload_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="useridcode != null">
+        #{useridcode,jdbcType=VARCHAR},
+      </if>
+      <if test="fileId != null">
+        #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null">
+        #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.UserFile">
+    update user_file
+    <set>
+      <if test="fileId != null">
+        file_id = #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null">
+        upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where useridcode = #{useridcode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.UserFile">
+    update user_file
+    set file_id = #{fileId,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      file_url = #{fileUrl,jdbcType=VARCHAR},
+      upload_time = #{uploadTime,jdbcType=TIMESTAMP}
+    where useridcode = #{useridcode,jdbcType=VARCHAR}
+  </update>
+</mapper>

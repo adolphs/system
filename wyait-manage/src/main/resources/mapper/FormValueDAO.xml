@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.FormValueDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.FormValue">
+    <id column="form_value_id" jdbcType="VARCHAR" property="formValueId" />
+    <result column="form_value_combo_id" jdbcType="VARCHAR" property="formValueComboId" />
+    <result column="form_field_id" jdbcType="VARCHAR" property="formFieldId" />
+    <result column="form_value" jdbcType="VARCHAR" property="formValue" />
+    <result column="form_business_id" jdbcType="VARCHAR" property="formBusinessId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    form_value_id, form_value_combo_id, form_field_id, form_value, form_business_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from form_value
+    where form_value_id = #{formValueId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from form_value
+    where form_value_id = #{formValueId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.FormValue">
+    insert into form_value (form_value_id, form_value_combo_id, form_field_id, 
+      form_value, form_business_id)
+    values (#{formValueId,jdbcType=VARCHAR}, #{formValueComboId,jdbcType=VARCHAR}, #{formFieldId,jdbcType=VARCHAR}, 
+      #{formValue,jdbcType=VARCHAR}, #{formBusinessId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.FormValue">
+    insert into form_value
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="formValueId != null">
+        form_value_id,
+      </if>
+      <if test="formValueComboId != null">
+        form_value_combo_id,
+      </if>
+      <if test="formFieldId != null">
+        form_field_id,
+      </if>
+      <if test="formValue != null">
+        form_value,
+      </if>
+      <if test="formBusinessId != null">
+        form_business_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="formValueId != null">
+        #{formValueId,jdbcType=VARCHAR},
+      </if>
+      <if test="formValueComboId != null">
+        #{formValueComboId,jdbcType=VARCHAR},
+      </if>
+      <if test="formFieldId != null">
+        #{formFieldId,jdbcType=VARCHAR},
+      </if>
+      <if test="formValue != null">
+        #{formValue,jdbcType=VARCHAR},
+      </if>
+      <if test="formBusinessId != null">
+        #{formBusinessId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.FormValue">
+    update form_value
+    <set>
+      <if test="formValueComboId != null">
+        form_value_combo_id = #{formValueComboId,jdbcType=VARCHAR},
+      </if>
+      <if test="formFieldId != null">
+        form_field_id = #{formFieldId,jdbcType=VARCHAR},
+      </if>
+      <if test="formValue != null">
+        form_value = #{formValue,jdbcType=VARCHAR},
+      </if>
+      <if test="formBusinessId != null">
+        form_business_id = #{formBusinessId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where form_value_id = #{formValueId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.FormValue">
+    update form_value
+    set form_value_combo_id = #{formValueComboId,jdbcType=VARCHAR},
+      form_field_id = #{formFieldId,jdbcType=VARCHAR},
+      form_value = #{formValue,jdbcType=VARCHAR},
+      form_business_id = #{formBusinessId,jdbcType=VARCHAR}
+    where form_value_id = #{formValueId,jdbcType=VARCHAR}
+  </update>
+</mapper>

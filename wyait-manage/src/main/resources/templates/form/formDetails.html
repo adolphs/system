@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<style>
+    .top{
+        margin-top:10px;
+        width: 100%;
+        /*background-color: #00B83F;*/
+    }
+    .top1{
+        width: 100%;
+
+        float: left;
+        /*background-color: #00b8b8;*/
+    }
+
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+    <input id="dataId" type="hidden" th:value="${dataId}" name="dataId"/>
+    <div class="layui-body" style="margin: 1%">
+
+
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+<!--        <button class="layui-btn layui-btn-normal" onclick="addUser()">绑定通用材料</button>-->
+<!--        <button class="layui-btn layui-btn-normal" onclick="addCombo()">绑定情形材料</button>-->
+
+
+        <div class="top">
+            <div class="top1">
+                <table class="layui-table" style="width: 90%;margin: 0 auto;">
+                    <thead>
+                    <tr>
+                        <th>材料名称</th>
+                        <th>材料类型</th>
+                        <th>填表须知</th>
+                        <th>材料形式</th>
+                        <th>通用材料</th>
+                        <th>情形材料</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${data.dataName}" style="width: 80px;"></td>
+                        <td th:text="${data.dataType==1?'通用材料':'情形材料'}"></td>
+                        <td th:text="${data.remarks}"></td>
+                        <td th:text="${data.dataForm}"></td>
+                        <td><a th:href="@{${data.blankUrl}}" th:text="${data.blankName}" target="_blank"></a></td>
+                        <td><a th:href="@{${data.templateUrl}}" th:text="${data.templateName}" target="_blank"></a></td>
+<!--                        <td><a href='#' onclick="window.location.href='http://static.gdzwfw.gov.cn/guide/files/9092b92e-48a9-492d-80ec-57d95363efbc'">显示内容</a></td>-->
+<!--                        <td><a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="sel" th:onclick="'delTemplateUrl('+ ${dataId} +')'">删除</a></td>-->
+                    </tr>
+                    </tbody>
+                </table>
+                <div style="margin-left: 47%;margin-top: 1%;">
+                    <a href="/data/dataList" class="layui-btn layui-btn-normal">返回</a>
+                </div>
+            </div>
+        </div>
+<!--        </script>-->
+
+        <script type="text/html" id="optBar">
+
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+
+
+    </div>
+
+
+    <!--添加或编辑用户-->
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 300px">
+        <form id="doooForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input type="hidden" th:value="${dataId}" name="dataId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">材料名称</label>
+                <div class="layui-input-inline">
+                    <input id="blankUrl" name="blankUrl" autocomplete="off" class="layui-input" type="hidden" disabled="disabled"/>
+                    <input id="blankName" name="blankName" autocomplete="off" class="layui-input" type="text" disabled="disabled"/>
+                </div>
+            </div>
+            <!--************这里是上传图片的代码***************-->
+            <!--************这里添加的隐藏的输入框，用来传递images的参数***************-->
+<!--            <input type="hidden" name="blankUrl" id="blankUrl" class="image" />-->
+            <div class="layui-form-item">
+                <label class="layui-form-label ">空表上传</label>
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="test1">上传文件</button>
+                    <div class="layui-upload-list">
+                        <p id="demoText"></p>
+                    </div>
+                </div>
+            </div>
+            <!--************上面里是上传图片的代码***************-->
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--添加或编辑情形-->
+    <div id="setComboDte" class="layer_self_wrap" style="width:500px;display:none;height: 300px">
+        <form id="ComboDteForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input type="hidden" th:value="${dataId}" name="dataId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">材料名称</label>
+                <div class="layui-input-inline">
+                    <input id="templateUrl" name="templateUrl" autocomplete="off" class="layui-input" type="hidden" disabled="disabled"/>
+                    <input id="templateName" name="templateName" autocomplete="off" class="layui-input" type="text" disabled="disabled"/>
+                </div>
+            </div>
+
+            <!--************这里是上传图片的代码***************-->
+            <!--************这里添加的隐藏的输入框，用来传递images的参数***************-->
+<!--            <input type="hidden" name="templateUrl" id="templateUrl" class="image" />-->
+            <div class="layui-form-item">
+                <label class="layui-form-label ">示例上传</label>
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="test2">上传文件</button>
+                    <div class="layui-upload-list">
+                        <p id="demoText1"></p>
+                    </div>
+                </div>
+            </div>
+            <!--************上面里是上传图片的代码***************-->
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="comboSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/data/dataDetails.js"></script>
+    <script>
+        /*<![CDATA[*/
+
+        function sel(id) {
+            var comboId = $("#id").val();
+            window.location.href="/combo/comboDetails?id="+comboId+"&departmentId="+id;
+        }
+
+        function addWEB() {
+            var comboId = $("#id").val();
+            window.location.href="/combo/comboDetails?id="+comboId;
+        }
+        /*]]>*/
+    </script>
+    <script>
+        layui.use('upload', function(){
+            var $ = layui.jquery
+                ,upload = layui.upload;
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test1'
+                ,url: '/data/upload'
+                ,accept:'file'
+                ,size:50000
+                ,before: function(obj){
+
+                    obj.preview(function(index, file, result){
+                        $('#demo1').attr('src', result);
+                    });
+                }
+                ,done: function(res){
+                    //如果上传失败
+                    if(res.code > 0){
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #4cae4c;">'+ res.data.jieshi +'上传成功</span>');
+                    var blankUrl = $("#blankUrl");
+                    blankUrl.val(res.data.src);
+                    var blankName = $("#blankName");
+                    blankName.val(res.data.jieshi);
+
+                }
+                ,error: function(){
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+
+        });
+        layui.use('upload', function(){
+            var $ = layui.jquery
+                ,upload = layui.upload;
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test2'
+                ,url: '/data/upload'
+                ,accept:'file'
+                ,size:50000
+                ,before: function(obj){
+
+                    obj.preview(function(index, file, result){
+
+                        $('#demo1').attr('src', result);
+                    });
+                }
+                ,done: function(res){
+                    //如果上传失败
+                    if(res.code > 0){
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功
+                    var demoText1 = $('#demoText1');
+                    demoText1.html('<span style="color: #4cae4c;">'+ res.data.jieshi +'上传成功</span>');
+                    var templateUrl = $("#templateUrl");
+                    templateUrl.val(res.data.src);
+                    var templateName = $("#templateName");
+                    templateName.val(res.data.jieshi);
+                }
+                ,error: function(){
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+            });
+        });
+
+        //删除通用材料
+        function delBlankUrl(dataId) {
+            if (confirm("您确定要删除通用材料吗？"))
+            $.ajax({
+                type: "POST",
+                data: {'dataId':dataId},
+                url: "/data/delBlankUrl",
+                success: function (data) {
+                    if (data == "ok") {
+                        layer.alert("操作成功",function(){
+                            location.reload();
+                        });
+                    }else{
+                        layer.alert(data,function(){
+                            layer.closeAll();
+                            cleanUser();
+                            load(obj);
+                        });
+                    }
+                },
+                error: function () {
+                    layer.alert("操作请求错误，请您稍后再试",function(){
+                        layer.closeAll();
+                        //加载load方法
+                        load(obj);//自定义
+                    });
+                }
+            });
+        }
+
+        //删除情形材料
+        function delTemplateUrl(dataId) {
+            if (confirm("您确定要删除通用材料吗？"))
+                $.ajax({
+                    type: "POST",
+                    data: {'dataId':dataId},
+                    url: "/data/delTemplateUrl",
+                    success: function (data) {
+                        if (data == "ok") {
+                            layer.alert("操作成功",function(){
+                                location.reload();
+                            });
+                        }else{
+                            layer.alert(data,function(){
+                                layer.closeAll();
+                                cleanUser();
+                                load(obj);
+                            });
+                        }
+                    },
+                    error: function () {
+                        layer.alert("操作请求错误，请您稍后再试",function(){
+                            layer.closeAll();
+                            //加载load方法
+                            load(obj);//自定义
+                        });
+                    }
+                });
+        }
+
+        function rap() {
+            window.open('http://static.gdzwfw.gov.cn/guide/files/9092b92e-48a9-492d-80ec-57d95363efbc');
+        }
+    </script>
+</div>
+</body>
+</html>

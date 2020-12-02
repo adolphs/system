@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.UploadFileDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.UploadFile">
+    <id column="file_id" jdbcType="VARCHAR" property="fileId" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="department_ids" jdbcType="VARCHAR" property="departmentIds" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    file_id, file_name, department_ids
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from upload_file
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from upload_file
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.UploadFile">
+    insert into upload_file (file_id, file_name, department_ids
+      )
+    values (#{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{departmentIds,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.UploadFile">
+    insert into upload_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fileId != null">
+        file_id,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="departmentIds != null">
+        department_ids,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fileId != null">
+        #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentIds != null">
+        #{departmentIds,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.UploadFile">
+    update upload_file
+    <set>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentIds != null">
+        department_ids = #{departmentIds,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.UploadFile">
+    update upload_file
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      department_ids = #{departmentIds,jdbcType=VARCHAR}
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </update>
+</mapper>
