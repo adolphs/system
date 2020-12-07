@@ -9,121 +9,85 @@
     <result column="form_field_content" jdbcType="VARCHAR" property="formFieldContent" />
     <result column="form_field_combo_id" jdbcType="INTEGER" property="formFieldComboId" />
     <result column="form_field_options" jdbcType="VARCHAR" property="formFieldOptions" />
-    <result column="combo_form_id" jdbcType="VARCHAR" property="comboFormId" />
+    <result column="form_field_is_basis" jdbcType="INTEGER" property="formFieldIsBasis" />
+    <result column="form_field_annotation" jdbcType="VARCHAR" property="formFieldAnnotation" />
   </resultMap>
   <sql id="Base_Column_List">
     form_field_id, form_field_name, form_field_name_value, form_field_type, form_field_content, 
-    form_field_combo_id, form_field_options, combo_form_id
+    form_field_combo_id, form_field_options, form_field_is_basis, form_field_annotation
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from form_field
-    where form_field_id = #{formFieldId,jdbcType=VARCHAR}
+
+  <select id="getFormList" resultType="com.wyait.manage.pojo.FormField">
+    select
+     form_field_id,
+     form_field_name,
+     form_field_name_value,
+     form_field_type,
+     form_field_content,
+     form_field_combo_id,
+     form_field_options,
+     form_field_is_basis,
+     form_field_annotation
+    from
+    form_field
+    where
+    form_field_combo_id = #{formField.formFieldComboId}
+    <if test="formField.formFieldName != null and formField.formFieldName != ''">
+      and form_field_name like CONCAT(CONCAT('%',#{formField.formFieldName}),'%')
+    </if>
+    <if test="formField.formFieldType != null and formField.formFieldType != ''">
+      and form_field_type = #{formField.formFieldType}
+    </if>
+    <if test="formField.formFieldNameValue != null and formField.formFieldNameValue != ''">
+      and form_field_name_value like CONCAT(CONCAT('%',#{formField.formFieldNameValue}),'%')
+    </if>
+    <if test="formField.formFieldIsBasis != null and formField.formFieldIsBasis != ''">
+      and form_field_is_basis = #{formField.formFieldIsBasis}
+    </if>
+
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from form_field
-    where form_field_id = #{formFieldId,jdbcType=VARCHAR}
-  </delete>
+
   <insert id="insert" parameterType="com.wyait.manage.pojo.FormField">
     insert into form_field (form_field_id, form_field_name, form_field_name_value, 
       form_field_type, form_field_content, form_field_combo_id, 
-      form_field_options, combo_form_id)
+      form_field_options,form_field_is_basis,form_field_annotation)
     values (#{formFieldId,jdbcType=VARCHAR}, #{formFieldName,jdbcType=VARCHAR}, #{formFieldNameValue,jdbcType=VARCHAR}, 
       #{formFieldType,jdbcType=VARCHAR}, #{formFieldContent,jdbcType=VARCHAR}, #{formFieldComboId,jdbcType=INTEGER}, 
-      #{formFieldOptions,jdbcType=VARCHAR}, #{comboFormId,jdbcType=VARCHAR})
+      #{formFieldOptions,jdbcType=VARCHAR},#{formFieldIsBasis,jdbcType=INTEGER},#{formFieldAnnotation,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.FormField">
-    insert into form_field
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="formFieldId != null">
-        form_field_id,
-      </if>
-      <if test="formFieldName != null">
-        form_field_name,
-      </if>
-      <if test="formFieldNameValue != null">
-        form_field_name_value,
-      </if>
-      <if test="formFieldType != null">
-        form_field_type,
-      </if>
-      <if test="formFieldContent != null">
-        form_field_content,
-      </if>
-      <if test="formFieldComboId != null">
-        form_field_combo_id,
-      </if>
-      <if test="formFieldOptions != null">
-        form_field_options,
-      </if>
-      <if test="comboFormId != null">
-        combo_form_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="formFieldId != null">
-        #{formFieldId,jdbcType=VARCHAR},
-      </if>
-      <if test="formFieldName != null">
-        #{formFieldName,jdbcType=VARCHAR},
-      </if>
-      <if test="formFieldNameValue != null">
-        #{formFieldNameValue,jdbcType=VARCHAR},
-      </if>
-      <if test="formFieldType != null">
-        #{formFieldType,jdbcType=VARCHAR},
-      </if>
-      <if test="formFieldContent != null">
-        #{formFieldContent,jdbcType=VARCHAR},
-      </if>
-      <if test="formFieldComboId != null">
-        #{formFieldComboId,jdbcType=INTEGER},
-      </if>
-      <if test="formFieldOptions != null">
-        #{formFieldOptions,jdbcType=VARCHAR},
-      </if>
-      <if test="comboFormId != null">
-        #{comboFormId,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.FormField">
+
+  <update id="updateByFormFieldId" parameterType="com.wyait.manage.pojo.FormField">
     update form_field
     <set>
-      <if test="formFieldName != null">
-        form_field_name = #{formFieldName,jdbcType=VARCHAR},
+      <if test="formField.formFieldName != null">
+        form_field_name = #{formField.formFieldName},
       </if>
-      <if test="formFieldNameValue != null">
-        form_field_name_value = #{formFieldNameValue,jdbcType=VARCHAR},
+      <if test="formField.formFieldNameValue != null">
+        form_field_name_value = #{formField.formFieldNameValue},
       </if>
-      <if test="formFieldType != null">
-        form_field_type = #{formFieldType,jdbcType=VARCHAR},
+      <if test="formField.formFieldType != null">
+        form_field_type = #{formField.formFieldType},
       </if>
-      <if test="formFieldContent != null">
-        form_field_content = #{formFieldContent,jdbcType=VARCHAR},
+      <if test="formField.formFieldContent != null">
+        form_field_content = #{formField.formFieldContent},
       </if>
-      <if test="formFieldComboId != null">
-        form_field_combo_id = #{formFieldComboId,jdbcType=INTEGER},
+      <if test="formField.formFieldComboId != null">
+        form_field_combo_id = #{formField.formFieldComboId},
       </if>
-      <if test="formFieldOptions != null">
-        form_field_options = #{formFieldOptions,jdbcType=VARCHAR},
+      <if test="formField.formFieldOptions != null">
+        form_field_options = #{formField.formFieldOptions},
       </if>
-      <if test="comboFormId != null">
-        combo_form_id = #{comboFormId,jdbcType=VARCHAR},
+      <if test="formField.formFieldIsBasis != null">
+        form_field_is_basis = #{formField.formFieldIsBasis},
+      </if>
+      <if test="formField.formFieldOptions != null">
+        form_field_annotation = #{formField.formFieldOptions}
       </if>
     </set>
-    where form_field_id = #{formFieldId,jdbcType=VARCHAR}
+    where form_field_id = #{formField.formFieldId}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.FormField">
-    update form_field
-    set form_field_name = #{formFieldName,jdbcType=VARCHAR},
-      form_field_name_value = #{formFieldNameValue,jdbcType=VARCHAR},
-      form_field_type = #{formFieldType,jdbcType=VARCHAR},
-      form_field_content = #{formFieldContent,jdbcType=VARCHAR},
-      form_field_combo_id = #{formFieldComboId,jdbcType=INTEGER},
-      form_field_options = #{formFieldOptions,jdbcType=VARCHAR},
-      combo_form_id = #{comboFormId,jdbcType=VARCHAR}
-    where form_field_id = #{formFieldId,jdbcType=VARCHAR}
-  </update>
+
+  <delete id="delFormFieldByFormFieldId" parameterType="string">
+    DELETE FROM form_field WHERE form_field_id = #{formFieldId}
+  </delete>
 </mapper>

@@ -1,11 +1,23 @@
 package com.wyait.manage.dao;
 
 import com.wyait.manage.pojo.FormField;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * FormFieldDAO继承基类
  */
-@Repository
-public interface FormFieldDAO extends MyBatisBaseDao<FormField, String> {
+@Mapper
+public interface FormFieldDAO{
+
+    List<FormField> getFormList(@Param("formField") FormField formField);
+
+    int insert(FormField formField);
+
+    int updateByFormFieldId(@Param("formField")FormField formField);
+
+    int delFormFieldByFormFieldId(String formFieldId);
 }

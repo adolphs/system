@@ -45,9 +45,14 @@ public class FormField implements Serializable {
     private String formFieldOptions;
 
     /**
-     * 套餐表单ID
+     * 是否是基础项  1、是 2、否
      */
-    private String comboFormId;
+    private Integer formFieldIsBasis;
+
+    /**
+     * 注释
+     */
+    private Integer formFieldAnnotation;
 
     private static final long serialVersionUID = 1L;
 
@@ -107,12 +112,20 @@ public class FormField implements Serializable {
         this.formFieldOptions = formFieldOptions;
     }
 
-    public String getComboFormId() {
-        return comboFormId;
+    public Integer getFormFieldIsBasis() {
+        return formFieldIsBasis;
     }
 
-    public void setComboFormId(String comboFormId) {
-        this.comboFormId = comboFormId;
+    public void setFormFieldIsBasis(Integer formFieldIsBasis) {
+        this.formFieldIsBasis = formFieldIsBasis;
+    }
+
+    public Integer getFormFieldAnnotation() {
+        return formFieldAnnotation;
+    }
+
+    public void setFormFieldAnnotation(Integer formFieldAnnotation) {
+        this.formFieldAnnotation = formFieldAnnotation;
     }
 
     @Override
@@ -133,8 +146,7 @@ public class FormField implements Serializable {
             && (this.getFormFieldType() == null ? other.getFormFieldType() == null : this.getFormFieldType().equals(other.getFormFieldType()))
             && (this.getFormFieldContent() == null ? other.getFormFieldContent() == null : this.getFormFieldContent().equals(other.getFormFieldContent()))
             && (this.getFormFieldComboId() == null ? other.getFormFieldComboId() == null : this.getFormFieldComboId().equals(other.getFormFieldComboId()))
-            && (this.getFormFieldOptions() == null ? other.getFormFieldOptions() == null : this.getFormFieldOptions().equals(other.getFormFieldOptions()))
-            && (this.getComboFormId() == null ? other.getComboFormId() == null : this.getComboFormId().equals(other.getComboFormId()));
+            && (this.getFormFieldOptions() == null ? other.getFormFieldOptions() == null : this.getFormFieldOptions().equals(other.getFormFieldOptions()));
     }
 
     @Override
@@ -148,7 +160,6 @@ public class FormField implements Serializable {
         result = prime * result + ((getFormFieldContent() == null) ? 0 : getFormFieldContent().hashCode());
         result = prime * result + ((getFormFieldComboId() == null) ? 0 : getFormFieldComboId().hashCode());
         result = prime * result + ((getFormFieldOptions() == null) ? 0 : getFormFieldOptions().hashCode());
-        result = prime * result + ((getComboFormId() == null) ? 0 : getComboFormId().hashCode());
         return result;
     }
 
@@ -165,7 +176,6 @@ public class FormField implements Serializable {
         sb.append(", formFieldContent=").append(formFieldContent);
         sb.append(", formFieldComboId=").append(formFieldComboId);
         sb.append(", formFieldOptions=").append(formFieldOptions);
-        sb.append(", comboFormId=").append(comboFormId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
