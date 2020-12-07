@@ -186,9 +186,6 @@ function addUser(){
     openUser(null,"新增事项");
 }
 function openUser(id,title){
-    if(id==null || id==""){
-        $("#doooId").val("");
-    }
     layer.open({
         type:1,
         title: title,
@@ -259,17 +256,17 @@ function getUserAndRoles(obj,id) {
             ' <option value="5" selected="selected">上传</option>';
     }
     $("#formFieldType2").html(htm);
-    if (obj.formFieldIsBasis == 0){
+    if (obj.formFieldIsBasis == 1){
        htm2 = '<option value="1" selected="selected">基础数据</option>' +
-           '   <option value="2">其他</option>'
+           '   <option value="2">情形数据</option>'
     }else{
         htm2 = '<option value="1" >基础数据</option>' +
-            '   <option value="2" selected="selected">其他</option>'
+            '   <option value="2" selected="selected">情形数据</option>'
     }
     $("#formFieldIsBasis2").html(htm2);
     layui.form.render("select");
     //回显数据
-    openUser(obj.doooId,"修改事项");
+    openUser(null,"修改表单项");
 }
 function delUser(obj,id) {
     if(null!=id){

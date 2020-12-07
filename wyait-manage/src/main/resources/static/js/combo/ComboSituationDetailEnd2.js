@@ -94,38 +94,30 @@ $(function() {
             });
             return false;
         });
+
         form.on('submit(userSubmit3)',function (data) {
             console.log(data);
-                // var pid = $("#situationId5").val();
-                // var situationIdTOW = $("#situationId6").val();
-                // var situationId = $("#situationId99").val();
-                // var type = $("#type").val();
-                // var situationDescribe = $("#situationDescribe").val();
-                //
-                // console.log(pid);
-                // console.log(situationIdTOW);
-                // console.log(situationId);
-                // console.log(type);
-                // console.log(situationDescribe);
-                //
-                // $.ajax({
-                //     url: '/combo/setSituationTOW',
-                //     data: {"pid":pid,"situationId":situationId,"type":type,"situationDescribe":situationDescribe,'situationIdTOW':situationIdTOW},
-                //     // dataType: 'json',
-                //     type: 'post',
-                //     success: function (data) {
-                //         if (data == "ok") {
-                //             layer.alert("操作成功", function () {
-                //                 selSituation(situationId);
-                //                 layer.closeAll('dialog'); //关闭信息框
-                //             });
-                //         } else {
-                //             layer.alert("操作异常", function () {
-                //                 layer.closeAll();
-                //             });
-                //         }
-                //     }
-                // });
+            var formFieldId = data.field.formFieldId;
+            var situationDetailsId = data.field.situationDetailsId;
+            $.ajax({
+                url: '/form/updateSituationDetailsIdByFormFieldId',
+                data:{'formFieldId':formFieldId,"situationDetailsId":situationDetailsId,'type':1},
+                type: 'post',
+                success: function (data) {
+                    if (data == "ok") {
+                        layer.alert("操作成功",function(){
+                            selFROM(situationDetailsId);
+                            layer.closeAll();
+                        });
+                    }else{
+                        layer.alert(data,function(){
+
+                        });
+                    }
+                }
+            });
+            layer.closeAll();
+            return false;
         })
     });
     //搜索框
@@ -285,6 +277,22 @@ function openUser2(id,title){
         }
     });
 }
+
+function openUser3(id,title){
+    layer.open({
+        type:1,
+        title: title,
+        fixed:false,
+        resize :false,
+        shadeClose: true,
+        area: ['550px'],
+        content:$('#setUser3'),
+        end:function(){
+            cleanUser();
+        }
+    });
+}
+
 
 function openCombo(id,title) {
 

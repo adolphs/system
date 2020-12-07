@@ -10,6 +10,7 @@ import com.wyait.manage.utils.PageDataResult;
 import com.wyait.manage.utils.SnowflakeIdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -50,6 +51,20 @@ public class FormServiceImpl implements FormService{
     @Override
     public String delFormField(String formFieldId) {
         formFieldDAO.delFormFieldByFormFieldId(formFieldId);
+        return "ok";
+    }
+
+    @Override
+    @Transactional
+    public String updateSituationDetailsIdByFormFieldId(String formFieldId, String situationDetailsId,Integer type) {
+        formFieldDAO.updateSituationDetailsIdByFormFieldId(formFieldId,situationDetailsId);
+        return "ok";
+    }
+
+    @Override
+    public String deleteSituationDetailsIdByFormFieldId(String formFieldId) {
+
+        formFieldDAO.updateSituationDetailsIdByFormFieldId2(Long.parseLong(formFieldId));
         return "ok";
     }
 

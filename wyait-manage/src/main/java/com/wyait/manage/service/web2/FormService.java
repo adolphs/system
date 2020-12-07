@@ -12,4 +12,14 @@ public interface FormService {
     String addFormField(FormField formField);
 
     String delFormField(String formFieldId);
+
+    /**
+     * 关联表单项
+     * @param formFieldId  表单项id
+     * @param situationDetailsId  情形id
+     * @return
+     */
+    String updateSituationDetailsIdByFormFieldId(String formFieldId, String situationDetailsId,Integer type);
+
+    String deleteSituationDetailsIdByFormFieldId(String formFieldId);
 }

@@ -27,7 +27,7 @@
     <div th:replace="fragments/head :: header"></div>
 
     <div class="layui-body" style="margin: 1%">
-
+        <input type="hidden" id="comboId" th:value="${comboId}" />
         <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
             <div class="layui-form-item">
                 <label class="layui-form-label" style="width: 116px">当前情形名称</label>
@@ -65,9 +65,11 @@
 <!--                        <td th:text="${situationDetail.type}"></td>-->
                         <td>
                             <div class="layui-table-cell laytable-cell-1-5" th:if="${situationDetail.type} == 1">
-                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'sel('+ ${situationDetail.id} +')'">查看</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'sel('+ ${situationDetail.id} +')'">查看材料</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selFROM('+ ${situationDetail.id} +')'">查看表单</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+')'">编辑</a>
-                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'add('+ ${situationDetail.id} +')'">关联</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'add('+ ${situationDetail.id} +')'">关联材料</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addFROM('+ ${situationDetail.id} +')'">动态表单</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'del('+ ${situationDetail.id} +')'">删除</a>
                             </div>
                             <div class="layui-table-cell laytable-cell-1-5" th:if="${situationDetail.type} == 2">
@@ -79,9 +81,11 @@
                             <div class="layui-table-cell laytable-cell-1-5" th:if="${situationDetail.type} == 3">
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selSituation('+ ${situationDetail.id} +')'">查看情形</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'sel('+ ${situationDetail.id} +')'">查看材料</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selFROM('+ ${situationDetail.id} +')'">查看表单</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+')'">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addSituation('+ ${situationDetail.id} +')'">添加情形</a>
-                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'add('+ ${situationDetail.id} +')'">关联</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'add('+ ${situationDetail.id} +')'">关联材料</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addFROM('+ ${situationDetail.id} +')'">动态表单</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'del('+ ${situationDetail.id} +')'">删除</a>
                             </div>
                         </td>
@@ -132,32 +136,6 @@
 
         <hr style="background-color:#FFF"/>
         <div style="height: 20px;border-top:1px solid black" ></div>
-<!--        <div class="top">-->
-<!--            <table class="layui-table">-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                    <th>序号</th>-->
-<!--                    <th>材料名称</th>-->
-<!--                    <th>填表须知</th>-->
-<!--                    <th>材料形式</th>-->
-<!--                    <th>空表下载</th>-->
-<!--                    <th>示例下载</th>-->
-<!--                    <th>所属选项</th>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                <tr th:each="DataAndSiutationVO,loopStatus:${DataAndSiutationVOs}" th:class="${loopStatus}">-->
-<!--                    <td th:text="${loopStatus.count}"></td>-->
-<!--                    <td th:text="${DataAndSiutationVO.dataName}" th:name="${DataAndSiutationVO.dataId}"></td>-->
-<!--                    <td th:text="${DataAndSiutationVO.remarks}"></td>-->
-<!--                    <td th:text="${DataAndSiutationVO.dataForm}"></td>-->
-<!--                    <td><a th:text="${DataAndSiutationVO.blankName}" th:href="@{${DataAndSiutationVO.blankUrl}}"></a></td>-->
-<!--                    <td><a th:text="${DataAndSiutationVO.templateName}" th:href="@{${DataAndSiutationVO.templateUrl}}"></a></td>-->
-<!--                    <td th:text="${DataAndSiutationVO.detailsDescribe}"></td>-->
-<!--                </tr>-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--        </div>-->
         <div style="margin-left: 47%">
             <a class="layui-btn layui-btn-normal" onclick="fanhui()">返回</a>
             <input id="situationId99" type="hidden" th:value="${id}" name="situationId"/>
@@ -227,6 +205,28 @@
         </form>
     </div>
 
+    <!--动态表单-->
+    <div id="setUser3" class="layer_self_wrap" style="width:500px;display:none;height: 300px">
+        <form id="doooForm3" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <!--            <input type="hidden" th:value="${dataId}" name="dataId"/>-->
+            <input id="situationDetailsId3" type="hidden" name="situationDetailsId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">表单名称</label>
+                <div class="layui-input-inline" style="width: 350px">
+                    <select  id="formSelect" name="formFieldId" lay-filter="test" lay-verify="" lay-search="" >
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit3">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
     <!--添加或编辑用户-->
     <div id="setUser5" class="layer_self_wrap" style="width:500px;display:none;height: 400px">
         <form id="situationForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
@@ -278,6 +278,71 @@
                 }
             });
             openUser2(null,"绑定通用材料");
+        }
+        <!-- 动态表单 -->
+        function addFROM(id) {
+            $("#situationDetailsId3").val(id);
+            $.ajax({
+                url: '/form/getFormList?&page=1&limit=999&formFieldIsBasis=2&formFieldComboId='+$("#comboId").val(),
+                type: 'post',
+                success: function (data) {
+                    var tmp='';
+                    tmp +='<option value=""></option>';
+                    for (var i = 0 ; i<data.list.length;i++){
+                        tmp +='<option value="'+data.list[i].formFieldId+'">'+data.list[i].formFieldNameValue+'</option>';
+                    }
+                    $("#formSelect").html(tmp);
+                    layui.form.render("select");
+                }
+            });
+            openUser3(null,"绑定材料");
+        }
+        <!-- 查看动态表单 -->
+        function selFROM(id) {
+            $.ajax({
+                url: '/form/getFormList',
+                data:{"page":1,"limit":999,"formFieldIsBasis":2,"formFieldOptions":id},
+                type: 'get',
+                success: function (data) {
+                    console.log(data.list);
+                    $("#dataAll").html("");
+                    var htm='';
+                    for(var i=0;i<data.list.length;i++){
+                        var formFieldId = data.list[i].formFieldId;
+                        var formFieldNameValue = data.list[i].formFieldNameValue;
+                        var j = i+1;
+                        htm+=' <tr>';
+                        htm+=' <td>'+ j +'</td>';
+                        htm+=' <td>'+ formFieldNameValue +'</td>';
+                        htm+=' <td>表单</td>';
+                        htm+=' <td><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" onclick="dellFORM('+ formFieldId +','+ id +')">删除</a></td>';
+                        htm+='</tr>';
+                    }
+                    $("#dataAll").html(htm);
+                }
+            });
+        }
+        <!-- 删除 -->
+        function dellFORM(formFieldId,situationDetailsId) {
+            if (confirm("是否确定删除？")) {
+                $.ajax({
+                    url: '/form/deleteSituationDetailsIdByFormFieldId',
+                    data: {'formFieldId': formFieldId},
+                    type: 'post',
+                    success: function (data) {
+                        if (data == "ok") {
+                            layer.alert("操作成功", function () {
+                                selFROM(situationDetailsId);
+                                layer.closeAll();
+                            });
+                        } else {
+                            layer.alert(data, function () {
+
+                            });
+                        }
+                    }
+                });
+            }
         }
         function edit(id,name,type) {
             $("#situationDetailsId").val(id);

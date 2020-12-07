@@ -110,6 +110,42 @@ public class FormController {
             logger.error("设置表单项[删除]异常！", e);
             return "操作异常，请您稍后再试";
         }
+    }
 
+    /**
+     * 关联表单项
+     * @param formFieldId  表单项id
+     * @param situationDetailsId  情形id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateSituationDetailsIdByFormFieldId")
+    public String updateSituationDetailsIdByFormFieldId(@RequestParam String formFieldId,@RequestParam String situationDetailsId,Integer type){
+        logger.debug("关联表单项！formFieldId:" + formFieldId + " 情形选项! : situationDetailsId" + situationDetailsId);
+        try{
+            return formService.updateSituationDetailsIdByFormFieldId(formFieldId,situationDetailsId,type);
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.error("关联表单项[删除]异常！", e);
+            return "操作异常，请您稍后再试";
+        }
+    }
+
+    /**
+     * 删除表单项
+     * @param formFieldId  表单项id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/deleteSituationDetailsIdByFormFieldId")
+    public String deleteSituationDetailsIdByFormFieldId(@RequestParam String formFieldId){
+        logger.debug("删除表单项！formFieldId:" + formFieldId);
+        try{
+            return formService.deleteSituationDetailsIdByFormFieldId(formFieldId);
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.error("删除表单项[删除]异常！", e);
+            return "操作异常，请您稍后再试";
+        }
     }
 }

@@ -44,7 +44,7 @@
                     <select name="formFieldIsBasis" id="formFieldIsBasis" autocomplete="off">
                         <option value="">请选择</option>
                         <option value="1">基础数据</option>
-                        <option value="2">其他</option>
+                        <option value="2">情形数据</option>
                     </select>
                 </div>
                 <label class="layui-form-label">备注</label>
@@ -86,7 +86,7 @@
                             <select name="formFieldIsBasis" id="formFieldIsBasis1" autocomplete="off">
                                 <option value="">请选择</option>
                                 <option value="1">基础数据</option>
-                                <option value="2">其他</option>
+                                <option value="2">情形数据</option>
                             </select>
                         </div>
                     </div>
@@ -104,8 +104,8 @@
         <script type="text/html" id="jobTpl2">
             {{#  if(d.formFieldIsBasis == 1){ }}
             <span>基础数据</span>
-            {{#  } else { }}
-            <span>其他</span>
+            {{#  } else if(d.formFieldIsBasis == 2) { }}
+            <span>情形数据</span>
             {{#  } }}
         </script>
 
@@ -176,7 +176,7 @@
                     <select name="formFieldIsBasis" id="formFieldIsBasis2" autocomplete="off">
                         <option value="">请选择</option>
                         <option value="1">基础数据</option>
-                        <option value="2">其他</option>
+                        <option value="2">情形数据</option>
                     </select>
                 </div>
             </div>

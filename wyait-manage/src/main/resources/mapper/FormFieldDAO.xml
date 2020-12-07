@@ -31,7 +31,10 @@
     from
     form_field
     where
-    form_field_combo_id = #{formField.formFieldComboId}
+    1=1
+    <if test="formField.formFieldComboId != null and formField.formFieldComboId != ''">
+      and form_field_combo_id = #{formField.formFieldComboId}
+    </if>
     <if test="formField.formFieldName != null and formField.formFieldName != ''">
       and form_field_name like CONCAT(CONCAT('%',#{formField.formFieldName}),'%')
     </if>
@@ -43,6 +46,9 @@
     </if>
     <if test="formField.formFieldIsBasis != null and formField.formFieldIsBasis != ''">
       and form_field_is_basis = #{formField.formFieldIsBasis}
+    </if>
+    <if test="formField.formFieldOptions != null and formField.formFieldOptions != ''">
+      and form_field_options = #{formField.formFieldOptions}
     </if>
 
   </select>
@@ -90,4 +96,16 @@
   <delete id="delFormFieldByFormFieldId" parameterType="string">
     DELETE FROM form_field WHERE form_field_id = #{formFieldId}
   </delete>
+
+  <update id="updateSituationDetailsIdByFormFieldId">
+        update form_field set
+          form_field_options = #{situationDetailsId}
+        where form_field_id = #{formFieldId}
+  </update>
+
+  <update id="updateSituationDetailsIdByFormFieldId2">
+        update form_field set
+          form_field_options = null
+        where form_field_id = #{formFieldId}
+  </update>
 </mapper>

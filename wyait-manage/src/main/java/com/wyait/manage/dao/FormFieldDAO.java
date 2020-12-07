@@ -20,4 +20,8 @@ public interface FormFieldDAO{
     int updateByFormFieldId(@Param("formField")FormField formField);
 
     int delFormFieldByFormFieldId(String formFieldId);
+
+    int updateSituationDetailsIdByFormFieldId(@Param("formFieldId") String formFieldId,@Param("situationDetailsId") String situationDetailsId);
+
+    int updateSituationDetailsIdByFormFieldId2(Long formFieldId);
 }
