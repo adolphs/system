@@ -1,6 +1,9 @@
 package com.wyait.manage.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author 
@@ -18,9 +21,25 @@ public class UploadFile implements Serializable {
     private String fileName;
 
     /**
-     * 部门名称（多部门）
+     * 所属部门ID
      */
-    private String departmentIds;
+    private String departmentId;
+
+    /**
+     * 部门名称
+     */
+    private String departmentName;
+
+    /**
+     * 上传系统
+     */
+    private String uploadSystem;
+
+    /**
+     * 创建时间
+     */
+    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -40,12 +59,36 @@ public class UploadFile implements Serializable {
         this.fileName = fileName;
     }
 
-    public String getDepartmentIds() {
-        return departmentIds;
+    public String getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartmentIds(String departmentIds) {
-        this.departmentIds = departmentIds;
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getUploadSystem() {
+        return uploadSystem;
+    }
+
+    public void setUploadSystem(String uploadSystem) {
+        this.uploadSystem = uploadSystem;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     @Override
@@ -62,7 +105,10 @@ public class UploadFile implements Serializable {
         UploadFile other = (UploadFile) that;
         return (this.getFileId() == null ? other.getFileId() == null : this.getFileId().equals(other.getFileId()))
             && (this.getFileName() == null ? other.getFileName() == null : this.getFileName().equals(other.getFileName()))
-            && (this.getDepartmentIds() == null ? other.getDepartmentIds() == null : this.getDepartmentIds().equals(other.getDepartmentIds()));
+            && (this.getDepartmentId() == null ? other.getDepartmentId() == null : this.getDepartmentId().equals(other.getDepartmentId()))
+            && (this.getDepartmentName() == null ? other.getDepartmentName() == null : this.getDepartmentName().equals(other.getDepartmentName()))
+            && (this.getUploadSystem() == null ? other.getUploadSystem() == null : this.getUploadSystem().equals(other.getUploadSystem()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()));
     }
 
     @Override
@@ -71,7 +117,10 @@ public class UploadFile implements Serializable {
         int result = 1;
         result = prime * result + ((getFileId() == null) ? 0 : getFileId().hashCode());
         result = prime * result + ((getFileName() == null) ? 0 : getFileName().hashCode());
-        result = prime * result + ((getDepartmentIds() == null) ? 0 : getDepartmentIds().hashCode());
+        result = prime * result + ((getDepartmentId() == null) ? 0 : getDepartmentId().hashCode());
+        result = prime * result + ((getDepartmentName() == null) ? 0 : getDepartmentName().hashCode());
+        result = prime * result + ((getUploadSystem() == null) ? 0 : getUploadSystem().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         return result;
     }
 
@@ -83,7 +132,10 @@ public class UploadFile implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", fileId=").append(fileId);
         sb.append(", fileName=").append(fileName);
-        sb.append(", departmentIds=").append(departmentIds);
+        sb.append(", departmentId=").append(departmentId);
+        sb.append(", departmentName=").append(departmentName);
+        sb.append(", uploadSystem=").append(uploadSystem);
+        sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

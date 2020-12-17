@@ -63,10 +63,8 @@ public class FormServiceImpl implements FormService{
 
     @Override
     public String deleteSituationDetailsIdByFormFieldId(String formFieldId) {
-
         formFieldDAO.updateSituationDetailsIdByFormFieldId2(Long.parseLong(formFieldId));
         return "ok";
     }
-
 
 }

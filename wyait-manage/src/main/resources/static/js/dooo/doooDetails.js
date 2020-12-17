@@ -76,6 +76,10 @@ $(function() {
             formSubmit2(data);
             return false;
         })
+        form.on('submit(userSubmit4)',function () {
+            formSubmit5();
+            return false;
+        })
 
     });
     //搜索框
@@ -125,6 +129,33 @@ function formSubmit(obj){
 //提交表单
 function formSubmit2(obj){
     submitAjax2(obj);
+}
+function formSubmit5(){
+    $.ajax({
+        type: "POST",
+        data: $("#programindow").serialize(),
+        url: "/dooo/operatingProgramWindow",
+        success: function (data) {
+            if (data == "ok") {
+                layer.alert("操作成功",function(){
+                    location.reload();
+                });
+            }else{
+                layer.alert(data,function(){
+                    layer.closeAll();
+                    cleanUser();
+                    load(obj);
+                });
+            }
+        },
+        error: function () {
+            layer.alert("操作请求错误，请您稍后再试",function(){
+                layer.closeAll();
+                //加载load方法
+                load(obj);//自定义
+            });
+        }
+    });
 }
 function submitAjax(obj){
 
@@ -276,6 +307,49 @@ function openUser2(id,title){
         shadeClose: true,
         area: ['550px'],
         content:$('#setUser2'),
+        end:function(){
+            cleanUser();
+        }
+    });
+}
+function windows() {
+    $.ajax({
+        type: "GET",
+        url: "/dooo/getProgramWindowList?doooId="+$("#winId").val(),
+        success: function (data) {
+            if (data != null) {
+                $("#id").val(data[0].id);
+                $("#tel").val(data[0].tel);
+                $("#address").val(data[0].address);
+                $("#worktime").val(data[0].worktime);
+                $("#trafficGuide").val(data[0].trafficGuide);
+            }else{
+                layer.alert(data,function(){
+                    layer.closeAll();
+                    cleanUser();
+                    load(obj);
+                });
+            }
+        },
+        error: function () {
+            layer.alert("操作请求错误，请您稍后再试",function(){
+                layer.closeAll();
+                //加载load方法
+                load(obj);//自定义
+            });
+        }
+    });
+    openUser3();
+}
+function openUser3(){
+    layer.open({
+        type:1,
+        title: "咨询方式",
+        fixed:false,
+        resize :false,
+        shadeClose: true,
+        area: ['550px'],
+        content:$('#openWindow'),
         end:function(){
             cleanUser();
         }

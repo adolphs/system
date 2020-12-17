@@ -30,6 +30,11 @@ public class UserBusiness implements Serializable {
      */
     private String departmentIds;
 
+    /**
+     * 提交内容留底
+     */
+    private String formBackup;
+
     private static final long serialVersionUID = 1L;
 
     public String getBusinessId() {
@@ -70,6 +75,14 @@ public class UserBusiness implements Serializable {
 
     public void setDepartmentIds(String departmentIds) {
         this.departmentIds = departmentIds;
+    }
+
+    public String getFormBackup() {
+        return formBackup;
+    }
+
+    public void setFormBackup(String formBackup) {
+        this.formBackup = formBackup;
     }
 
     @Override

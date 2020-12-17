@@ -5,13 +5,22 @@ import java.util.Date;
 
 /**
  * @author 
- * （用户文件关联表）
+ * 用户文件关联表
  */
 public class UserFile implements Serializable {
-    private String useridcode;
+    /**
+     * id
+     */
+    private String userFileId;
 
+    /**
+     * 文件id
+     */
     private String fileId;
 
+    /**
+     * 文件名称
+     */
     private String fileName;
 
     /**
@@ -24,14 +33,19 @@ public class UserFile implements Serializable {
      */
     private Date uploadTime;
 
+    /**
+     * 业务id
+     */
+    private String businessId;
+
     private static final long serialVersionUID = 1L;
 
-    public String getUseridcode() {
-        return useridcode;
+    public String getUserFileId() {
+        return userFileId;
     }
 
-    public void setUseridcode(String useridcode) {
-        this.useridcode = useridcode;
+    public void setUserFileId(String userFileId) {
+        this.userFileId = userFileId;
     }
 
     public String getFileId() {
@@ -66,6 +80,14 @@ public class UserFile implements Serializable {
         this.uploadTime = uploadTime;
     }
 
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -78,22 +100,24 @@ public class UserFile implements Serializable {
             return false;
         }
         UserFile other = (UserFile) that;
-        return (this.getUseridcode() == null ? other.getUseridcode() == null : this.getUseridcode().equals(other.getUseridcode()))
+        return (this.getUserFileId() == null ? other.getUserFileId() == null : this.getUserFileId().equals(other.getUserFileId()))
             && (this.getFileId() == null ? other.getFileId() == null : this.getFileId().equals(other.getFileId()))
             && (this.getFileName() == null ? other.getFileName() == null : this.getFileName().equals(other.getFileName()))
             && (this.getFileUrl() == null ? other.getFileUrl() == null : this.getFileUrl().equals(other.getFileUrl()))
-            && (this.getUploadTime() == null ? other.getUploadTime() == null : this.getUploadTime().equals(other.getUploadTime()));
+            && (this.getUploadTime() == null ? other.getUploadTime() == null : this.getUploadTime().equals(other.getUploadTime()))
+            && (this.getBusinessId() == null ? other.getBusinessId() == null : this.getBusinessId().equals(other.getBusinessId()));
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getUseridcode() == null) ? 0 : getUseridcode().hashCode());
+        result = prime * result + ((getUserFileId() == null) ? 0 : getUserFileId().hashCode());
         result = prime * result + ((getFileId() == null) ? 0 : getFileId().hashCode());
         result = prime * result + ((getFileName() == null) ? 0 : getFileName().hashCode());
         result = prime * result + ((getFileUrl() == null) ? 0 : getFileUrl().hashCode());
         result = prime * result + ((getUploadTime() == null) ? 0 : getUploadTime().hashCode());
+        result = prime * result + ((getBusinessId() == null) ? 0 : getBusinessId().hashCode());
         return result;
     }
 
@@ -103,11 +127,12 @@ public class UserFile implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", useridcode=").append(useridcode);
+        sb.append(", userFileId=").append(userFileId);
         sb.append(", fileId=").append(fileId);
         sb.append(", fileName=").append(fileName);
         sb.append(", fileUrl=").append(fileUrl);
         sb.append(", uploadTime=").append(uploadTime);
+        sb.append(", businessId=").append(businessId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

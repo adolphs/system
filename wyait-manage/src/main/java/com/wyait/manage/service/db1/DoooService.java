@@ -2,6 +2,7 @@ package com.wyait.manage.service.db1;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.wyait.manage.pojo.Dooo;
+import com.wyait.manage.pojo.ProgramWindow;
 import com.wyait.manage.pojo.result.ResponseResult;
 import com.wyait.manage.utils.PageDataResult;
 
@@ -58,4 +59,8 @@ public interface DoooService extends IService<Dooo> {
     ResponseResult queryDoooDataList(String situationDetailsIds, Integer doooId);
 
     ResponseResult getHotDooo(Integer number);
+
+    List<ProgramWindow> getProgramWindowList(String doooId);
+
+    String operatingProgramWindow(ProgramWindow programWindow);
 }

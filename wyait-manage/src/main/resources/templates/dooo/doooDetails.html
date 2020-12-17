@@ -27,6 +27,7 @@
 
         <button class="layui-btn layui-btn-normal" onclick="addUser()">绑定通用材料</button>
         <button class="layui-btn layui-btn-normal" onclick="addDataEnding()">绑定审批结果</button>
+        <button class="layui-btn layui-btn-normal" onclick="windows()">办理窗口</button>
         <!--<hr class="layui-bg-blue"/>-->
         <hr class="layui-bg-black"/>
 
@@ -190,6 +191,46 @@
             <div class="layui-form-item">
                 <div class="layui-input-block" style="margin-left: 10px;">
                     <button class="layui-btn"  lay-submit="" lay-filter="userSubmit2">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 窗口 -->
+    <div id="openWindow" class="layer_self_wrap" style="width:500px;display:none;height: 400px">
+        <form id="programindow" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <!--            <input type="hidden" th:value="${dataId}" name="dataId"/>-->
+            <input id="winId" type="hidden" th:value="${doooId}" name="winId"/>
+            <input id="id" type="hidden" name="id"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">咨询方式</label>
+                <div class="layui-input-block">
+                    <input type="text" value="" lay-verify="required" autocomplete="off" class="layui-input" placeholder="请输入咨询电话：xxxxx" name="tel" id="tel" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">窗口地址</label>
+                <div class="layui-input-block">
+                    <input type="text" value="" lay-verify="required" autocomplete="off" class="layui-input" placeholder="请输入窗口地址" name="address" id="address" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">办公时间</label>
+                <div class="layui-input-block">
+                    <input type="text" value="" lay-verify="required" autocomplete="off" class="layui-input" placeholder="请输入工作时间" name="worktime" id="worktime" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">交通指引</label>
+                <div class="layui-input-block">
+                    <textarea name="trafficGuide" placeholder="请输入交通指引" class="layui-textarea" id="trafficGuide"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit4">提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>

@@ -161,7 +161,7 @@ function formSubmit3(obj){
 function submitAjax(obj){
     $.ajax({
         type: "POST",
-        data: $("#doooForm").serialize(),
+        data: $("#programindow").serialize(),
         url: "/combo/addDooo",
         success: function (data) {
             if (data == "ok") {

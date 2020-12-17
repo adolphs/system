@@ -272,4 +272,22 @@ public class DoooServiceImpl extends ServiceImpl<DoooMapper, Dooo> implements Do
         return result;
     }
 
+    @Override
+    public List<ProgramWindow> getProgramWindowList(String doooId) {
+        return doooMapper.getProgramWindowList(doooId);
+    }
+
+    @Override
+    public String operatingProgramWindow(ProgramWindow programWindow) {
+        if (programWindow.getId() != null && !"".equals(programWindow.getId())){
+            //修改
+            doooMapper.updateProgramWindow(programWindow);
+        }else{
+            //新增
+            doooMapper.insertProgramWindow(programWindow);
+        }
+        return "ok";
+    }
+
+
 }

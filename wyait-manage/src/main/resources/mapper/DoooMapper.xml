@@ -200,4 +200,31 @@
                     limit #{number}
         ) m on m.dooo_id = d.dooo_id
     </select>
+
+    <select id="getProgramWindowList" resultType="com.wyait.manage.pojo.ProgramWindow">
+        select
+            id,
+            win_id as winId,
+            win_name as winName,
+            tel,
+            address,
+            worktime,
+            traffic_guide as trafficGuide
+        from program_window where win_id = #{doooId}
+    </select>
+
+    <update id="updateProgramWindow" parameterType="com.wyait.manage.pojo.ProgramWindow">
+        update program_window
+        set
+        tel = #{programWindow.tel},
+        address = #{programWindow.address},
+        worktime = #{programWindow.worktime},
+        traffic_guide = #{programWindow.trafficGuide}
+        where id = #{programWindow.id}
+    </update>
+
+    <insert id="insertProgramWindow" parameterType="com.wyait.manage.pojo.ProgramWindow">
+         insert into program_window (win_id,win_name,tel,address,worktime,traffic_guide)
+		values (#{programWindow.winId},#{programWindow.winName},#{programWindow.tel},#{programWindow.address},#{programWindow.worktime},#{programWindow.trafficGuide})
+    </insert>
 </mapper>

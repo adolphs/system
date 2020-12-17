@@ -7,9 +7,10 @@
     <result column="new_time" jdbcType="TIMESTAMP" property="newTime" />
     <result column="submit" jdbcType="TIMESTAMP" property="submit" />
     <result column="department_ids" jdbcType="VARCHAR" property="departmentIds" />
+    <result column="form_backup" jdbcType="VARCHAR" property="formBackup" />
   </resultMap>
   <sql id="Base_Column_List">
-    business_id, useridcode, new_time, submit, department_ids
+    business_id, useridcode, new_time, submit, department_ids,form_backup
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 

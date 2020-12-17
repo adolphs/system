@@ -1,6 +1,7 @@
 package com.wyait.manage.controller.web;
 
 import com.wyait.manage.pojo.Dooo;
+import com.wyait.manage.pojo.ProgramWindow;
 import com.wyait.manage.pojo.User;
 import com.wyait.manage.service.db1.DepartmentService;
 import com.wyait.manage.service.db1.DoooService;
@@ -177,11 +178,59 @@ public class DoooController {
     @RequestMapping("/putApprovalType")
     public String putApprovalType(Integer doooId,Integer approvalType,String approvalText){
         try{
-        return doooService.putApprovalType(doooId,approvalType,approvalText);
+            return doooService.putApprovalType(doooId,approvalType,approvalText);
         }catch (Exception e) {
             e.printStackTrace();
             logger.error("设置事项[删除]异常！", e);
             return "操作异常，请您稍后再试";
         }
     }
+
+    /**
+     * 根据事项ID查询窗口
+     * @param doooId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getProgramWindowList")
+    public List<ProgramWindow> getProgramWindowList(String doooId){
+        try{
+            return doooService.getProgramWindowList(doooId);
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.error("设置事项[删除]异常！", e);
+            return null;
+        }
+    }
+
+    /**
+     * 新增窗口
+     * @param programWindow
+     * @return
+     */
+    @PostMapping("/operatingProgramWindow")
+    @ResponseBody
+    public String operatingProgramWindow(ProgramWindow programWindow){
+        logger.debug("窗口[新增或更新]！ProgramWindow:" + programWindow );
+        try {
+            if (null == programWindow) {
+                logger.debug("窗口[新增或更新]，结果=请您填写事项信息");
+                return "您填写事项信息";
+            }
+            User existUser = (User) SecurityUtils.getSubject().getPrincipal();
+
+            if (null == existUser) {
+                logger.debug("置事项[新增或更新]，结果=您未登录或登录超时，请您登录后再试");
+                return "您未登录或登录超时，请您登录后再试";
+            }
+            // 设置用户[新增或更新]
+            logger.info("窗口[新增或更新]成功！programWindow=" + programWindow + "，操作的用户ID=" + existUser.getId());
+            return doooService.operatingProgramWindow(programWindow);
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.error("设置事项[新增或更新]异常！", e);
+            return "操作异常，请您稍后再试";
+        }
+    }
+
 }

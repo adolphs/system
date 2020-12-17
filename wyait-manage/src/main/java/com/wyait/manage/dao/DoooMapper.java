@@ -3,6 +3,7 @@ package com.wyait.manage.dao;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.wyait.manage.pojo.DataDooo;
 import com.wyait.manage.pojo.Dooo;
+import com.wyait.manage.pojo.ProgramWindow;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -49,4 +50,10 @@ public interface DoooMapper extends BaseMapper<Dooo> {
     int getDoooCount();
 
     List<Dooo> getHotDooo(Integer number);
+
+    List<ProgramWindow> getProgramWindowList(String doooId);
+
+    int updateProgramWindow(@Param("programWindow") ProgramWindow programWindow);
+
+    int insertProgramWindow(@Param("programWindow") ProgramWindow programWindow);
 }

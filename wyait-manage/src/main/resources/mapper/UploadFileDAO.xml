@@ -4,68 +4,128 @@
   <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.UploadFile">
     <id column="file_id" jdbcType="VARCHAR" property="fileId" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
-    <result column="department_ids" jdbcType="VARCHAR" property="departmentIds" />
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="upload_system" jdbcType="VARCHAR" property="uploadSystem" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    file_id, file_name, department_ids
+    file_id, file_name, department_id, department_name, upload_system, create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from upload_file
-    where file_id = #{fileId,jdbcType=VARCHAR}
+
+  <select id="getUploadFileList" resultType="com.wyait.manage.pojo.UploadFile">
+    select
+        file_id,file_name,department_id,department_name,upload_system,create_time
+    from
+        upload_file
+    where
+        1=1
+    <if test="uploadFile.departmentId != null and uploadFile.departmentId != ''">
+        and department_id = #{uploadFile.departmentId}
+    </if>
+    <if test="uploadFile.fileName != null and uploadFile.fileName != ''">
+        and file_name like CONCAT(CONCAT('%',#{uploadFile.fileName}),'%')
+    </if>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from upload_file
-    where file_id = #{fileId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.wyait.manage.pojo.UploadFile">
-    insert into upload_file (file_id, file_name, department_ids
-      )
-    values (#{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{departmentIds,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.UploadFile">
-    insert into upload_file
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="fileId != null">
-        file_id,
-      </if>
-      <if test="fileName != null">
-        file_name,
-      </if>
-      <if test="departmentIds != null">
-        department_ids,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="fileId != null">
-        #{fileId,jdbcType=VARCHAR},
-      </if>
-      <if test="fileName != null">
-        #{fileName,jdbcType=VARCHAR},
-      </if>
-      <if test="departmentIds != null">
-        #{departmentIds,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.UploadFile">
-    update upload_file
-    <set>
-      <if test="fileName != null">
-        file_name = #{fileName,jdbcType=VARCHAR},
-      </if>
-      <if test="departmentIds != null">
-        department_ids = #{departmentIds,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where file_id = #{fileId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.UploadFile">
-    update upload_file
-    set file_name = #{fileName,jdbcType=VARCHAR},
-      department_ids = #{departmentIds,jdbcType=VARCHAR}
-    where file_id = #{fileId,jdbcType=VARCHAR}
-  </update>
+
+    <insert id="insert" parameterType="com.wyait.manage.pojo.UploadFile">
+        insert into upload_file (file_id, file_name, department_id,
+          department_name, upload_system, create_time
+          )
+        values (#{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR},
+          #{departmentName,jdbcType=VARCHAR}, #{uploadSystem,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+          )
+    </insert>
+
+    <update id="update" parameterType="com.wyait.manage.pojo.UploadFile">
+        update upload_file
+            set file_name = #{fileName,jdbcType=VARCHAR},
+              department_id = #{departmentId,jdbcType=VARCHAR},
+              department_name = #{departmentName,jdbcType=VARCHAR},
+              upload_system = #{uploadSystem,jdbcType=VARCHAR},
+              create_time = #{createTime,jdbcType=TIMESTAMP}
+            where file_id = #{fileId,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        delete from upload_file where file_id = #{fileId,jdbcType=VARCHAR}
+    </delete>
+<!--  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+<!--    select -->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from upload_file-->
+<!--    where file_id = #{fileId,jdbcType=VARCHAR}-->
+<!--  </select>-->
+<!--  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">-->
+<!--    delete from upload_file-->
+<!--    where file_id = #{fileId,jdbcType=VARCHAR}-->
+<!--  </delete>-->
+
+<!--  <insert id="insertSelective" parameterType="com.yjs.api.entity.UploadFile">-->
+<!--    insert into upload_file-->
+<!--    <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--      <if test="fileId != null">-->
+<!--        file_id,-->
+<!--      </if>-->
+<!--      <if test="fileName != null">-->
+<!--        file_name,-->
+<!--      </if>-->
+<!--      <if test="departmentId != null">-->
+<!--        department_id,-->
+<!--      </if>-->
+<!--      <if test="departmentName != null">-->
+<!--        department_name,-->
+<!--      </if>-->
+<!--      <if test="uploadSystem != null">-->
+<!--        upload_system,-->
+<!--      </if>-->
+<!--      <if test="createTime != null">-->
+<!--        create_time,-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--      <if test="fileId != null">-->
+<!--        #{fileId,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="fileName != null">-->
+<!--        #{fileName,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="departmentId != null">-->
+<!--        #{departmentId,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="departmentName != null">-->
+<!--        #{departmentName,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="uploadSystem != null">-->
+<!--        #{uploadSystem,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="createTime != null">-->
+<!--        #{createTime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </insert>-->
+<!--  <update id="updateByPrimaryKeySelective" parameterType="com.yjs.api.entity.UploadFile">-->
+<!--    update upload_file-->
+<!--    <set>-->
+<!--      <if test="fileName != null">-->
+<!--        file_name = #{fileName,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="departmentId != null">-->
+<!--        department_id = #{departmentId,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="departmentName != null">-->
+<!--        department_name = #{departmentName,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="uploadSystem != null">-->
+<!--        upload_system = #{uploadSystem,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="createTime != null">-->
+<!--        create_time = #{createTime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where file_id = #{fileId,jdbcType=VARCHAR}-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKey" parameterType="com.yjs.api.entity.UploadFile">-->
+
+<!--  </update>-->
 </mapper>

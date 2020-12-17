@@ -94,7 +94,7 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/api/**","anon"); //提供前端API
 		filterChainDefinitionMap.put("/user/sendMsg", "anon");
 		filterChainDefinitionMap.put("/user/login", "anon");
-		filterChainDefinitionMap.put("/home", "anon");
+//		filterChainDefinitionMap.put("/home", "anon");
 		filterChainDefinitionMap.put("/材料/**", "anon");
 		filterChainDefinitionMap.put("/liuchengtu/**", "anon");
 		// /*filterChainDefinitionMap.put("/page", "anon");

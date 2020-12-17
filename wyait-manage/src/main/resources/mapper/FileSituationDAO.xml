@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.FileSituationDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.FileSituation">
+    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
+    <result column="combo_id" jdbcType="VARCHAR" property="comboId" />
+    <result column="situation_id" jdbcType="VARCHAR" property="situationId" />
+  </resultMap>
+<!--  <insert id="insert" parameterType="com.yjs.api.entity.FileSituation">-->
+<!--    insert into file_situation (file_id, combo_id, situation_id-->
+<!--      )-->
+<!--    values (#{fileId,jdbcType=VARCHAR}, #{comboId,jdbcType=VARCHAR}, #{situationId,jdbcType=VARCHAR}-->
+<!--      )-->
+<!--  </insert>-->
+<!--  <insert id="insertSelective" parameterType="com.yjs.api.entity.FileSituation">-->
+<!--    insert into file_situation-->
+<!--    <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--      <if test="fileId != null">-->
+<!--        file_id,-->
+<!--      </if>-->
+<!--      <if test="comboId != null">-->
+<!--        combo_id,-->
+<!--      </if>-->
+<!--      <if test="situationId != null">-->
+<!--        situation_id,-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--      <if test="fileId != null">-->
+<!--        #{fileId,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="comboId != null">-->
+<!--        #{comboId,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="situationId != null">-->
+<!--        #{situationId,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </insert>-->
+</mapper>

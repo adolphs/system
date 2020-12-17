@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">文件名称</label>
+                <div class="layui-input-inline">
+                    <input id="fileName1" name="fileName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-inline">
+                    <select name="departmentId" id="departmentSearch" autocomplete="off">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">提交</button>
+        </form>
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+        <button class="layui-btn layui-btn-normal" onclick="addUser()">新增文件</button>
+<!--        <button class="layui-btn layui-btn-normal" onclick="nolockUser()">解锁</button>-->
+
+        <table id="uploadFile" lay-filter="departmentList"></table>
+        <div style="display:none;" id="currentUser"><shiro:principal property="id"></shiro:principal></div>
+
+<!--        <script type="text/html" id="jobTpl">-->
+<!--            {{#  if(!d.job){ }}-->
+<!--            <input type="checkbox" name="{{d.username}}_{{d.version}}" value="{{d.id}}" lay-skin="switch" lay-text="在职|离职" lay-filter="isJobTpl" checked="checked" />-->
+<!--            {{#  } else { }}-->
+<!--            <input type="checkbox" name="{{d.username}}_{{d.version}}" value="{{d.id}}" lay-skin="switch" lay-text="在职|离职" lay-filter="isJobTpl"/>-->
+<!--            {{#  } }}-->
+<!--        </script>-->
+
+        <script type="text/html" id="optBar">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            {{#  if(d.del){ }}
+            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="recover">恢复</a>
+            {{#  } else { }}
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            {{#  } }}
+        </script>
+    </div>
+
+
+    <!--添加或编辑用户-->
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 550px">
+        <form id="departmentForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input id="fileId" type="hidden" name="fileId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">文件名称</label>
+                <div class="layui-input-inline">
+                    <input id="fileName" name="fileName" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">关联系统</label>
+                <div class="layui-input-inline">
+                    <select name="uploadSystem" lay-verify="required" id="uploadSystem">
+                        <option value="">请选择</option>
+                        <option value="一网通办">一网通办</option>
+                        <option value="建设工程">建设工程</option>
+                        <option value="番禺区一站式审批系统">番禺区一站式审批系统</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-block">
+                    <select name="departmentId" lay-verify="required" id="departmentInsert">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">手机号</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <input id="mobile" name="mobile" lay-verify="required" autocomplete="off" class="layui-input" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')"-->
+<!--                           onafterpaste="this.value=this.value.replace(/\D/g,'')"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">邮箱</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <input id="email" name="email" lay-verify="required | email" autocomplete="off" class="layui-input" type="text"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">密码</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <input id="password" name="password" autocomplete="off" class="layui-input" type="password"  placeholder="默认密码：654321" />-->
+<!--                </div>-->
+<!--                <div class="layui-form-mid layui-word-aux">请填写6位以上的密码</div>-->
+<!--            </div>-->
+
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">授予角色</label>-->
+<!--                <div class="layui-input-block" id="roleDiv">-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/form/uploadFileList.js"></script>
+<!--    <script src="/js/auth/userList.js"></script>-->
+    <script>
+        layui.use(['form', 'upload', 'layer'], function () {
+            var form = layui.form;
+            //检查项目添加到下拉框中
+            $.ajax({
+                url: '/department/getDepartments',
+                dataType: 'json',
+                type: 'get',
+                success: function (data) {
+                    $.each(data, function (index, item) {
+                        $('#departmentSearch').append(new Option(item.departmentName, item.departmentId));// 下拉菜单里添加元素
+                        $('#departmentInsert').append(new Option(item.departmentName, item.departmentId));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
+                    //重新渲染 固定写法
+                }
+            })
+
+        });
+    </script>
+</div>
+</body>
+</html>
