@@ -1,6 +1,7 @@
 package com.wyait.manage.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.wyait.manage.pojo.Combo;
 import com.wyait.manage.pojo.SituationDetails;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,4 +28,6 @@ public interface SituationDetailsMapper extends BaseMapper<SituationDetails> {
     int delSituationDetailAndData(Integer situationDetailsId);
 
     int delSituationByPid(Integer situationDetailsId);
+
+    Combo selectComboIdBySituationDetailsId(Integer situationDetailsId);
 }

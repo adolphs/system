@@ -20,4 +20,6 @@ public interface UploadFileDAO{
     int update(UploadFile uploadFile);
 
     int delete(String fileId);
+
+    List<UploadFile> queryUploadFiles(Integer situationDetailsId);
 }

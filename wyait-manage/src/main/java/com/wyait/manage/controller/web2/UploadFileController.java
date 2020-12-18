@@ -1,8 +1,10 @@
 package com.wyait.manage.controller.web2;
 
+import com.wyait.manage.pojo.FileSituation;
 import com.wyait.manage.pojo.FormField;
 import com.wyait.manage.pojo.UploadFile;
 import com.wyait.manage.pojo.User;
+import com.wyait.manage.service.web2.FileSituationService;
 import com.wyait.manage.service.web2.UploadFileService;
 import com.wyait.manage.utils.PageDataResult;
 import org.apache.shiro.SecurityUtils;
@@ -15,12 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/uploadFile")
 public class UploadFileController {
     private static final Logger logger = LoggerFactory.getLogger(UploadFileController.class);
     @Autowired
     private UploadFileService uploadFileService;
+    @Autowired
+    private FileSituationService fileSituationService;
     @RequestMapping("/list")
     public String uploadFileList(){
         logger.info("进入文件管理页面");
@@ -99,6 +105,56 @@ public class UploadFileController {
             e.printStackTrace();
             logger.error("删除附件文件[删除]异常！", e);
             return "操作异常，请您稍后再试";
+        }
+    }
+
+    /**
+     * 根据文件id和情形ID 关联文件
+     * @param fileId  文件id
+     * @param situationDetailsId  情形id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addFileSituation")
+    public String addFileSituation(String fileId,Integer situationDetailsId){
+        logger.debug("关联附件文件！fileId:" + fileId);
+        try{
+            return fileSituationService.addFileSituation(fileId,situationDetailsId);
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.error("关联附件文件[删除]异常！", e);
+            return "操作异常，请您稍后再试";
+        }
+    }
+
+    /**
+     * 根据套餐情形ID查看附件列表
+     * @param situationDetailsId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/queryUploadFiles")
+    public List<UploadFile> queryUploadFiles(Integer situationDetailsId){
+        logger.debug("查看关联附件文件！situationDetailsId:" + situationDetailsId);
+        try{
+            return uploadFileService.queryUploadFiles(situationDetailsId);
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.error("查看关联附件文件[删除]异常！", e);
+            return null;
+        }
+    }
+
+    @RequestMapping("/deleteuploadByFieldIdAndId")
+    @ResponseBody
+    public String deleteuploadByFieldIdAndId(Long fileId,Integer situationDetailsId){
+        logger.debug("删除关联附件文件！fileId:" + fileId + ",situationDetailsId = " + situationDetailsId);
+        try{
+            return fileSituationService.deleteuploadByFieldIdAndId(fileId,situationDetailsId);
+        }catch (Exception e) {
+            e.printStackTrace();
+            logger.error("查看关联附件文件[删除]异常！", e);
+            return null;
         }
     }
 }

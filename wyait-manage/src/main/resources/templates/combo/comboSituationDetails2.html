@@ -9,13 +9,13 @@
         /*background-color: #00B83F;*/
     }
     .top1{
-        width: 60%;
+        width: 65%;
 
         float: left;
         /*background-color: #00b8b8;*/
     }
     .top2{
-        width: 40%;
+        width: 35%;
 
         float: left;
         /*background-color: #6200b8;*/
@@ -66,10 +66,12 @@
                         <td>
                             <div class="layui-table-cell laytable-cell-1-5" th:if="${situationDetail.type} == 1">
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'sel('+ ${situationDetail.id} +')'">查看材料</a>
-                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selFROM('+ ${situationDetail.id} +')'">查看表单</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+')'">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'add('+ ${situationDetail.id} +')'">关联材料</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selFROM('+ ${situationDetail.id} +')'">查看表单</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addFROM('+ ${situationDetail.id} +')'">动态表单</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'queryUpload('+ ${situationDetail.id} +')'">附件绑定</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addUpload('+ ${situationDetail.id} +')'">附件查看</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'del('+ ${situationDetail.id} +')'">删除</a>
                             </div>
                             <div class="layui-table-cell laytable-cell-1-5" th:if="${situationDetail.type} == 2">
@@ -81,11 +83,13 @@
                             <div class="layui-table-cell laytable-cell-1-5" th:if="${situationDetail.type} == 3">
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selSituation('+ ${situationDetail.id} +')'">查看情形</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'sel('+ ${situationDetail.id} +')'">查看材料</a>
-                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selFROM('+ ${situationDetail.id} +')'">查看表单</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+')'">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addSituation('+ ${situationDetail.id} +')'">添加情形</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'add('+ ${situationDetail.id} +')'">关联材料</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selFROM('+ ${situationDetail.id} +')'">查看表单</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addFROM('+ ${situationDetail.id} +')'">动态表单</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'queryUpload('+ ${situationDetail.id} +')'">附件绑定</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addUpload('+ ${situationDetail.id} +')'">附件查看</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'del('+ ${situationDetail.id} +')'">删除</a>
                             </div>
                         </td>
@@ -227,6 +231,28 @@
             </div>
         </form>
     </div>
+    <!--附件关联-->
+    <div id="setUser4" class="layer_self_wrap" style="width:500px;display:none;height: 300px">
+        <form id="doooForm4" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <!--            <input type="hidden" th:value="${dataId}" name="dataId"/>-->
+            <input id="situationDetailsId4" type="hidden" name="situationDetailsId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">表单名称</label>
+                <div class="layui-input-inline" style="width: 350px">
+                    <select  id="file_id" name="fileId" lay-filter="test" lay-verify="" lay-search="" >
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit4">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
     <!--添加或编辑用户-->
     <div id="setUser5" class="layer_self_wrap" style="width:500px;display:none;height: 400px">
         <form id="situationForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
@@ -295,7 +321,7 @@
                     layui.form.render("select");
                 }
             });
-            openUser3(null,"绑定材料");
+            openUser3(null,"附件列表");
         }
         <!-- 查看动态表单 -->
         function selFROM(id) {
@@ -322,7 +348,7 @@
                 }
             });
         }
-        <!-- 删除 -->
+        <!-- 表单删除 -->
         function dellFORM(formFieldId,situationDetailsId) {
             if (confirm("是否确定删除？")) {
                 $.ajax({
@@ -333,6 +359,72 @@
                         if (data == "ok") {
                             layer.alert("操作成功", function () {
                                 selFROM(situationDetailsId);
+                                layer.closeAll();
+                            });
+                        } else {
+                            layer.alert(data, function () {
+
+                            });
+                        }
+                    }
+                });
+            }
+        }
+        <!-- 附件加载列表 -->
+        function queryUpload(id) {
+            $("#situationDetailsId4").val(id);
+            $.ajax({
+                url: '/uploadFile/getUploadFileList',
+                data:{"page":1,"limit":999},
+                type: 'get',
+                success: function (data) {
+                    var tmp='';
+                    tmp +='<option value=""></option>';
+                    for (var i = 0 ; i<data.list.length;i++){
+                        tmp +='<option value="'+data.list[i].fileId+'">'+data.list[i].fileName+'</option>';
+                    }
+                    $("#file_id").html(tmp);
+                    layui.form.render("select");
+                }
+            });
+            openUser4(null,"绑定材料");
+        }
+        <!-- 附件查看 -->
+        function addUpload(id) {
+            $.ajax({
+                url: '/uploadFile/queryUploadFiles',
+                data:{"situationDetailsId":id},
+                type: 'get',
+                success: function (data) {
+                    console.log(data);
+                    $("#dataAll").html("");
+                    var htm='';
+                    for(var i=0;i<data.length;i++){
+                        var fileId = data[i].fileId;
+                        var fileName = data[i].fileName;
+                        var j = i+1;
+                        htm+=' <tr>';
+                        htm+=' <td>'+ j +'</td>';
+                        htm+=' <td>'+ fileName +'</td>';
+                        htm+=' <td>表单</td>';
+                        htm+=' <td><a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" onclick="dellFile('+ fileId +','+ id +')">删除</a></td>';
+                        htm+='</tr>';
+                    }
+                    $("#dataAll").html(htm);
+                }
+            });
+        }
+        <!-- 删除附件 -->
+        function dellFile(fileId,id) {
+            if (confirm("是否确定删除？")) {
+                $.ajax({
+                    url: '/uploadFile/deleteuploadByFieldIdAndId',
+                    data: {'fileId': fileId,'situationDetailsId':id},
+                    type: 'post',
+                    success: function (data) {
+                        if (data == "ok") {
+                            layer.alert("操作成功", function () {
+                                addUpload(id);
                                 layer.closeAll();
                             });
                         } else {

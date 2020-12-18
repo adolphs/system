@@ -50,6 +50,13 @@
     <delete id="delete" parameterType="string">
         delete from upload_file where file_id = #{fileId,jdbcType=VARCHAR}
     </delete>
+
+    <select id="queryUploadFiles" resultType="com.wyait.manage.pojo.UploadFile">
+        select DISTINCT
+            uf.file_id,uf.file_name,uf.department_id,uf.department_name,uf.upload_system,uf.create_time
+        from
+            file_situation fs left join upload_file uf on uf.file_id = fs.file_id
+    </select>
 <!--  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">-->
 <!--    select -->
 <!--    <include refid="Base_Column_List" />-->

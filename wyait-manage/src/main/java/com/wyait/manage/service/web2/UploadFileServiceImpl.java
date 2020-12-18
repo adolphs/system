@@ -60,4 +60,11 @@ public class UploadFileServiceImpl implements UploadFileService{
         uploadFileDAO.delete(fileId);
         return "ok";
     }
+
+    @Override
+    public List<UploadFile> queryUploadFiles(Integer situationDetailsId) {
+        return uploadFileDAO.queryUploadFiles(situationDetailsId);
+    }
+
+
 }

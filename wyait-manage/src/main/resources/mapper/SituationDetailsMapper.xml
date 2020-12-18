@@ -89,4 +89,20 @@
         delete from situation where pid = #{situationDetailsId}
     </delete>
 
+
+    <select id="selectComboIdBySituationDetailsId" resultType="com.wyait.manage.pojo.Combo">
+        select DISTINCT
+            c.id,
+            c.combo_name as comboName,
+            c.new_time as newTime,
+            c.update_time as updateTime,
+            c.approval_type as approvalType,
+            c.put_text as putText,
+            c.approval_text as approvalText,
+            c.type,
+            c.flow_chart_url as flowChartUrl
+        from
+            combo_situation_details sd left join combo_situation s on s.id = sd.combo_situation_id
+						left join combo c on c.id = s.combo_id  where sd.id = #{situationDetailsId}
+    </select>
 </mapper>

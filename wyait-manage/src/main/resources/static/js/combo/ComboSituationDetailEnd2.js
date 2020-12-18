@@ -119,6 +119,31 @@ $(function() {
             layer.closeAll();
             return false;
         })
+
+        form.on('submit(userSubmit4)',function (data) {
+            console.log(data);
+            var fileId = data.field.fileId;
+            var situationDetailsId = data.field.situationDetailsId;
+            $.ajax({
+                url: '/uploadFile/addFileSituation',
+                data:{'fileId':fileId,"situationDetailsId":situationDetailsId},
+                type: 'post',
+                success: function (data) {
+                    if (data == "ok") {
+                        layer.alert("操作成功",function(){
+                            addUpload(situationDetailsId);
+                            layer.closeAll();
+                        });
+                    }else{
+                        layer.alert(data,function(){
+
+                        });
+                    }
+                }
+            });
+            layer.closeAll();
+            return false;
+        })
     });
     //搜索框
     layui.use(['form','laydate'], function(){
@@ -292,7 +317,20 @@ function openUser3(id,title){
         }
     });
 }
-
+function openUser4(id,title){
+    layer.open({
+        type:1,
+        title: title,
+        fixed:false,
+        resize :false,
+        shadeClose: true,
+        area: ['550px'],
+        content:$('#setUser4'),
+        end:function(){
+            cleanUser();
+        }
+    });
+}
 
 function openCombo(id,title) {
 

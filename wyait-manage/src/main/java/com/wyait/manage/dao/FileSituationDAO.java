@@ -1,5 +1,6 @@
 package com.wyait.manage.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -7,4 +8,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface FileSituationDAO {
+    int insert(@Param("comboId") Integer comboId,@Param("fileId") String fileId,@Param("situationDetailsId") Integer situationDetailsId);
+
+    int delete(@Param("fileId") Long fileId,@Param("situationDetailsId") Integer situationDetailsId);
 }
