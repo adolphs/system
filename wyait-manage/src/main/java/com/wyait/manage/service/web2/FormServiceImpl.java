@@ -130,7 +130,7 @@ public class FormServiceImpl implements FormService{
                         formField.setFormFieldName(rowData.getCell(0).getStringCellValue());
                         formField.setFormFieldNameValue(rowData.getCell(1).getStringCellValue());
                         formField.setFormFieldType(String.valueOf(rowData.getCell(2).getBooleanCellValue()).trim());
-                        formField.setFormFieldComboId(rowData.getCell(3).getNumericCellValue());
+//                        formField.setFormFieldComboId(rowData.getCell(3).getNumericCellValue());
                         formField.setFormFieldIsBasis(Integer.parseInt(rowData.getCell(4).getStringCellValue()));
                         formField.setFormFieldContent(rowData.getCell(5).getStringCellValue());
                         formField.setFormFieldAnnotation(rowData.getCell(6).getStringCellValue());
