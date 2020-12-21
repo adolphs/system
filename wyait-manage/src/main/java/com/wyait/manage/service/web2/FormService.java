@@ -3,7 +3,11 @@ package com.wyait.manage.service.web2;
 import com.wyait.manage.pojo.FormField;
 import com.wyait.manage.pojo.SysIntfParameter;
 import com.wyait.manage.pojo.User;
+import com.wyait.manage.pojo.result.ResponseResult;
 import com.wyait.manage.utils.PageDataResult;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 public interface FormService {
 
@@ -22,4 +26,8 @@ public interface FormService {
     String updateSituationDetailsIdByFormFieldId(String formFieldId, String situationDetailsId,Integer type);
 
     String deleteSituationDetailsIdByFormFieldId(String formFieldId);
+
+    ResponseResult batchUploadForm(MultipartFile file, HttpServletRequest request);
+
+    FormField getFormPid(String formId);
 }

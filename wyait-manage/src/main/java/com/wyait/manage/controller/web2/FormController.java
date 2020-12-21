@@ -3,6 +3,7 @@ package com.wyait.manage.controller.web2;
 import com.wyait.manage.pojo.FormField;
 import com.wyait.manage.pojo.SysIntfParameter;
 import com.wyait.manage.pojo.User;
+import com.wyait.manage.pojo.result.ResponseResult;
 import com.wyait.manage.service.web2.FormService;
 import com.wyait.manage.utils.PageDataResult;
 import org.apache.shiro.SecurityUtils;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/form")
 @Controller
@@ -24,11 +28,34 @@ public class FormController {
     @Autowired
     private FormService formService;
 
+    /**
+     * 进去表单页面
+     * @param comboId
+     * @return
+     */
     @RequestMapping("/formDetails")
     public ModelAndView formDetails(Integer comboId){
         ModelAndView view = new ModelAndView();
         view.addObject("comboId",comboId);
         view.setViewName("form/formDetails");
+        return view;
+    }
+
+    /**
+     * 进入表单详情页
+     * @param comboId
+     * @param formId  表单id
+     * @return
+     */
+    @RequestMapping("/nextForm")
+    public ModelAndView nextForm(String comboId,String formId){
+        ModelAndView view = new ModelAndView();
+        view.addObject("comboId",comboId);
+        view.addObject("formId",formId);
+        FormField formField = formService.getFormPid(formId);
+        Integer fieldClass = formField.getFormFieldClass() == null?1:formField.getFormFieldClass()+1;
+        view.addObject("formFieldClass",fieldClass);
+        view.setViewName("form/formDetails2");
         return view;
     }
 
@@ -147,5 +174,12 @@ public class FormController {
             logger.error("删除表单项[删除]异常！", e);
             return "操作异常，请您稍后再试";
         }
+    }
+
+    @ResponseBody
+    @RequestMapping("/batchUploadForm")
+    public ResponseResult  batchUploadForm(MultipartFile file, HttpServletRequest request){
+        logger.debug("表单开始上传");
+        return formService.batchUploadForm(file,request);
     }
 }

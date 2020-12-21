@@ -9,7 +9,7 @@ $(function() {
 
         tableIns=table.render({
             elem: '#uesrList'
-            ,url:'/form/getFormList?formFieldComboId='+$("#formFieldComboId").val()
+            ,url:'/form/getFormList?formFieldComboId='+$("#formFieldComboId").val()+'&pid='+$("#pid").val()
             ,method: 'get' //默认：get请求
             ,cellMinWidth: 80
             ,page: true,

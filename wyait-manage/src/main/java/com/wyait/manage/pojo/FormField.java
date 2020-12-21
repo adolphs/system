@@ -52,7 +52,14 @@ public class FormField implements Serializable {
     /**
      * 注释
      */
-    private Integer formFieldAnnotation;
+    private String formFieldAnnotation;
+
+    /**
+     * 级别：1级、2级
+     */
+    private Integer formFieldClass;
+
+    private String pid;
 
     private static final long serialVersionUID = 1L;
 
@@ -120,12 +127,28 @@ public class FormField implements Serializable {
         this.formFieldIsBasis = formFieldIsBasis;
     }
 
-    public Integer getFormFieldAnnotation() {
+    public String getFormFieldAnnotation() {
         return formFieldAnnotation;
     }
 
-    public void setFormFieldAnnotation(Integer formFieldAnnotation) {
+    public void setFormFieldAnnotation(String formFieldAnnotation) {
         this.formFieldAnnotation = formFieldAnnotation;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public Integer getFormFieldClass() {
+        return formFieldClass;
+    }
+
+    public void setFormFieldClass(Integer formFieldClass) {
+        this.formFieldClass = formFieldClass;
     }
 
     @Override

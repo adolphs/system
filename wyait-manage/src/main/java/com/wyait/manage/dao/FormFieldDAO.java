@@ -24,4 +24,6 @@ public interface FormFieldDAO{
     int updateSituationDetailsIdByFormFieldId(@Param("formFieldId") String formFieldId,@Param("situationDetailsId") String situationDetailsId);
 
     int updateSituationDetailsIdByFormFieldId2(Long formFieldId);
+
+    FormField getFormPid(String formId);
 }

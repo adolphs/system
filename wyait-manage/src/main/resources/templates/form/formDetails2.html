@@ -13,7 +13,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">name属性</label>
                 <input id="formFieldComboId" name="formFieldComboId" th:value="${comboId}" autocomplete="off" class="layui-input" type="hidden"/>
-                <input id="formFieldClass" name="formFieldClass" th:value="1" autocomplete="off" class="layui-input" type="hidden"/>
+                <input id="pid" name="pid" th:value="${formId}" autocomplete="off" class="layui-input" type="hidden"/>
+                <input id="formFieldClass" name="formFieldClass" th:value="${formFieldClass}" autocomplete="off" class="layui-input" type="hidden"/>
                 <div class="layui-input-inline">
                     <input id="formFieldName" name="formFieldName" autocomplete="off" class="layui-input" type="text"/>
                 </div>
@@ -93,11 +94,6 @@
                     </div>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">搜索</button>
-                    <!--************这里是上传图片的代码***************-->
-                    <!--************这里添加的隐藏的输入框，用来传递images的参数***************-->
-                    <button type="button" class="layui-btn" id="test1">批量上传</button>
-                    <button type="button" class="layui-btn" id="test">下载模板</button>
-                    <!--************上面里是上传图片的代码***************-->
                 </form>
 
         <!--<hr class="layui-bg-blue"/>-->
@@ -220,48 +216,7 @@
     <!--底部-->
     <div th:replace="fragments/footer :: footer"></div>
     <script src="/js/dateUtils.js"></script>
-    <script src="/js/form/formDetails.js"></script>
-    <script>
-        layui.use('upload', function(){
-            var $ = layui.jquery
-                ,upload = layui.upload;
-
-            //普通图片上传
-            var uploadInst = upload.render({
-                elem: '#test1'
-                ,url: '/form/batchUploadForm'
-                ,accept:'file'
-                ,size:50000
-                ,before: function(obj){
-
-                    obj.preview(function(index, file, result){
-                        $('#demo1').attr('src', result);
-                    });
-                }
-                ,done: function(res){
-                    //如果上传失败
-                    if(res.code > 0){
-                        return layer.msg('上传失败');
-                    }
-                    //上传成功
-                    var demoText = $('#demoText1');
-                    demoText.html('<span style="color: #4cae4c;">'+ res.data.jieshi +'上传成功</span>');
-                    var flowChartUrl = $("#flowChartUrl");
-                    flowChartUrl.val(res.data.src);
-                    $('img').attr('src', res.data.src);
-                    $('img').css('display', "block");
-                }
-                ,error: function(){
-                    //演示失败状态，并实现重传
-                    var demoText = $('#demoText1');
-                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-                    demoText.find('.demo-reload').on('click', function(){
-                        uploadInst.upload();
-                    });
-                }
-            });
-        });
-    </script>
+    <script src="/js/form/formDetails2.js"></script>
 </div>
 </body>
 </html>

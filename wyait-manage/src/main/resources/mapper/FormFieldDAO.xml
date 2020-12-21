@@ -11,10 +11,12 @@
     <result column="form_field_options" jdbcType="VARCHAR" property="formFieldOptions" />
     <result column="form_field_is_basis" jdbcType="INTEGER" property="formFieldIsBasis" />
     <result column="form_field_annotation" jdbcType="VARCHAR" property="formFieldAnnotation" />
+    <result column="form_field_class" jdbcType="INTEGER" property="formFieldClass" />
+    <result column="pid" jdbcType="VARCHAR" property="pid" />
   </resultMap>
   <sql id="Base_Column_List">
     form_field_id, form_field_name, form_field_name_value, form_field_type, form_field_content, 
-    form_field_combo_id, form_field_options, form_field_is_basis, form_field_annotation
+    form_field_combo_id, form_field_options, form_field_is_basis, form_field_annotation, form_field_class
   </sql>
 
   <select id="getFormList" resultType="com.wyait.manage.pojo.FormField">
@@ -27,7 +29,9 @@
      form_field_combo_id,
      form_field_options,
      form_field_is_basis,
-     form_field_annotation
+     form_field_annotation,
+     form_field_class,
+     pid
     from
     form_field
     where
@@ -50,16 +54,22 @@
     <if test="formField.formFieldOptions != null and formField.formFieldOptions != ''">
       and form_field_options = #{formField.formFieldOptions}
     </if>
-
+    <if test="formField.pid != null and formField.pid != ''">
+      and pid = #{formField.pid}
+    </if>
+    <if test="formField.pid == null or formField.pid == ''">
+      and pid is null
+    </if>
   </select>
 
   <insert id="insert" parameterType="com.wyait.manage.pojo.FormField">
     insert into form_field (form_field_id, form_field_name, form_field_name_value, 
       form_field_type, form_field_content, form_field_combo_id, 
-      form_field_options,form_field_is_basis,form_field_annotation)
+      form_field_options,form_field_is_basis,form_field_annotation,form_field_class,pid)
     values (#{formFieldId,jdbcType=VARCHAR}, #{formFieldName,jdbcType=VARCHAR}, #{formFieldNameValue,jdbcType=VARCHAR}, 
       #{formFieldType,jdbcType=VARCHAR}, #{formFieldContent,jdbcType=VARCHAR}, #{formFieldComboId,jdbcType=INTEGER}, 
-      #{formFieldOptions,jdbcType=VARCHAR},#{formFieldIsBasis,jdbcType=INTEGER},#{formFieldAnnotation,jdbcType=VARCHAR})
+      #{formFieldOptions,jdbcType=VARCHAR},#{formFieldIsBasis,jdbcType=INTEGER},#{formFieldAnnotation,jdbcType=VARCHAR},
+      #{formFieldClass,jdbcType=INTEGER},#{pid,jdbcType=VARCHAR})
   </insert>
 
   <update id="updateByFormFieldId" parameterType="com.wyait.manage.pojo.FormField">
@@ -89,6 +99,9 @@
       <if test="formField.formFieldOptions != null">
         form_field_annotation = #{formField.formFieldOptions}
       </if>
+      <if test="formField.formFieldClass != null">
+        form_field_class = #{formField.formFieldClass}
+      </if>
     </set>
     where form_field_id = #{formField.formFieldId}
   </update>
@@ -108,4 +121,8 @@
           form_field_options = null
         where form_field_id = #{formFieldId}
   </update>
+
+  <select id="getFormPid" resultType="com.wyait.manage.pojo.FormField">
+    select * from form_field where form_field_id = #{formId}
+  </select>
 </mapper>
