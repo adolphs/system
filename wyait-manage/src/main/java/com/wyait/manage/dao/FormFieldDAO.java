@@ -26,4 +26,6 @@ public interface FormFieldDAO{
     int updateSituationDetailsIdByFormFieldId2(Long formFieldId);
 
     FormField getFormPid(String formId);
+
+    int insertList(List<FormField> fieldList);
 }

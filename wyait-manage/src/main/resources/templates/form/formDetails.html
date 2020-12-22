@@ -234,30 +234,17 @@
                 ,size:50000
                 ,before: function(obj){
 
-                    obj.preview(function(index, file, result){
-                        $('#demo1').attr('src', result);
-                    });
                 }
                 ,done: function(res){
                     //如果上传失败
-                    if(res.code > 0){
-                        return layer.msg('上传失败');
+                    console.log(res);
+                    if(res.code = 200){
+                        return layer.msg('上传成功');
                     }
-                    //上传成功
-                    var demoText = $('#demoText1');
-                    demoText.html('<span style="color: #4cae4c;">'+ res.data.jieshi +'上传成功</span>');
-                    var flowChartUrl = $("#flowChartUrl");
-                    flowChartUrl.val(res.data.src);
-                    $('img').attr('src', res.data.src);
-                    $('img').css('display', "block");
                 }
                 ,error: function(){
                     //演示失败状态，并实现重传
-                    var demoText = $('#demoText1');
-                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-                    demoText.find('.demo-reload').on('click', function(){
-                        uploadInst.upload();
-                    });
+                    return layer.msg('上传失败，请检查文件列表的格式');
                 }
             });
         });
