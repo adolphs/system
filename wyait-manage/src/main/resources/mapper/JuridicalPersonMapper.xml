@@ -30,7 +30,7 @@
   </resultMap>
 
   <insert id="insert" parameterType="com.wyait.manage.pojo.Person">
-        INSERT INTO `wyait`.`juridical_person` (
+        INSERT INTO juridical_person (
           `uid`,
           `telephonenumber`,
           `mail`,

@@ -25,21 +25,6 @@ public class WyaitManageApplicationTests {
 
 	@Test
 	public void testRead07() throws Exception {
-		FileInputStream fis = new FileInputStream( "D:\\data.xls");
-
-
-
-		Workbook workbook = new XSSFWorkbook(fis);
-		Sheet sheet = workbook.getSheetAt(0);
-		Row row = sheet.getRow(1);
-		Cell cell0 = row.getCell(0);
-		double value0 = cell0.getNumericCellValue();
-		System.out.println(value0);
-		Cell cell1 = row.getCell(1);
-		String value1 = cell1.getStringCellValue();
-		System.out.println(value1);
-		fis.close();
-
 
 	}
 

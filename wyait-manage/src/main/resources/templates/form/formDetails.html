@@ -240,6 +240,8 @@
                     console.log(res);
                     if(res.code = 200){
                         return layer.msg('上传成功');
+                    }else{
+                        return layer.msg('上传失败');
                     }
                 }
                 ,error: function(){

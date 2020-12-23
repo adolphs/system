@@ -128,11 +128,15 @@ public class FormServiceImpl implements FormService{
                         formField.setFormFieldId(IdWorkerUtils.getInstance().createUUID());
                         formField.setFormFieldName(rowData.getCell(0).getStringCellValue());
                         formField.setFormFieldNameValue(rowData.getCell(1).getStringCellValue());
-                        formField.setFormFieldType((int)rowData.getCell(2).getNumericCellValue()+"");
-                        formField.setFormFieldComboId((int)rowData.getCell(3).getNumericCellValue());
-                        formField.setFormFieldIsBasis((int)rowData.getCell(4).getNumericCellValue());
-                        formField.setFormFieldContent(rowData.getCell(5).getStringCellValue());
-                        formField.setFormFieldAnnotation(rowData.getCell(6).getStringCellValue());
+                        formField.setFormFieldType(rowData.getCell(2).getStringCellValue());
+                        formField.setFormFieldComboId(Integer.parseInt(rowData.getCell(3).getStringCellValue()));
+                        formField.setFormFieldIsBasis(Integer.parseInt(rowData.getCell(4).getStringCellValue()));
+                        if (null!=rowData.getCell(5)){
+                            formField.setFormFieldContent(rowData.getCell(5).getStringCellValue());
+                        }
+                        if (null!=rowData.getCell(6)){
+                            formField.setFormFieldAnnotation(rowData.getCell(6).getStringCellValue());
+                        }
                         fieldList.add(formField);
                     }
                 }
@@ -146,6 +150,8 @@ public class FormServiceImpl implements FormService{
             inputStream.close();
         }catch (Exception e){
             e.printStackTrace();
+            result.setCode(500);
+            result.setErrorMessage("出现异常，上传失败");
         }finally{
             return result;
         }
