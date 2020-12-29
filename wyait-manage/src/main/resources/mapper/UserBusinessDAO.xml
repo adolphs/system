@@ -12,83 +12,99 @@
   <sql id="Base_Column_List">
     business_id, useridcode, new_time, submit, department_ids,form_backup
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from user_business
-    where business_id = #{businessId,jdbcType=VARCHAR}
+  
+  <select id="getBusinessList" resultType="com.wyait.manage.entity.BusinessVO" parameterType="com.wyait.manage.entity.BusinessDTO">
+    select ub.submit,ub.department_ids,p.cn,p.idcardnumber,ub.business_id as businessId
+    from user_business ub
+    left join person p on p.useridcode = ub.useridcode
+    where 1=1
+      <if test="businessDTO.name != null and businessDTO.name != ''">
+        and p.cn like CONCAT(CONCAT('%',#{businessDTO.name},'%'),'%')
+      </if>
+      <if test="businessDTO.idcardnumber != null and businessDTO.idcardnumber != ''">
+        and p.idcardnumber = #{businessDTO.idcardnumber}
+      </if>
+      <if test="businessDTO.busineseId != null and businessDTO.busineseId != ''">
+        and ub.business_id = #{businessDTO.busineseId}
+      </if>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from user_business
-    where business_id = #{businessId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.wyait.manage.pojo.UserBusiness">
-    insert into user_business (business_id, useridcode, new_time, 
-      submit, department_ids)
-    values (#{businessId,jdbcType=VARCHAR}, #{useridcode,jdbcType=VARCHAR}, #{newTime,jdbcType=TIMESTAMP}, 
-      #{submit,jdbcType=TIMESTAMP}, #{departmentIds,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.UserBusiness">
-    insert into user_business
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="businessId != null">
-        business_id,
-      </if>
-      <if test="useridcode != null">
-        useridcode,
-      </if>
-      <if test="newTime != null">
-        new_time,
-      </if>
-      <if test="submit != null">
-        submit,
-      </if>
-      <if test="departmentIds != null">
-        department_ids,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="businessId != null">
-        #{businessId,jdbcType=VARCHAR},
-      </if>
-      <if test="useridcode != null">
-        #{useridcode,jdbcType=VARCHAR},
-      </if>
-      <if test="newTime != null">
-        #{newTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="submit != null">
-        #{submit,jdbcType=TIMESTAMP},
-      </if>
-      <if test="departmentIds != null">
-        #{departmentIds,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.UserBusiness">
-    update user_business
-    <set>
-      <if test="useridcode != null">
-        useridcode = #{useridcode,jdbcType=VARCHAR},
-      </if>
-      <if test="newTime != null">
-        new_time = #{newTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="submit != null">
-        submit = #{submit,jdbcType=TIMESTAMP},
-      </if>
-      <if test="departmentIds != null">
-        department_ids = #{departmentIds,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where business_id = #{businessId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.UserBusiness">
-    update user_business
-    set useridcode = #{useridcode,jdbcType=VARCHAR},
-      new_time = #{newTime,jdbcType=TIMESTAMP},
-      submit = #{submit,jdbcType=TIMESTAMP},
-      department_ids = #{departmentIds,jdbcType=VARCHAR}
-    where business_id = #{businessId,jdbcType=VARCHAR}
-  </update>
+<!--  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+<!--    select -->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from user_business-->
+<!--    where business_id = #{businessId,jdbcType=VARCHAR}-->
+<!--  </select>-->
+<!--  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">-->
+<!--    delete from user_business-->
+<!--    where business_id = #{businessId,jdbcType=VARCHAR}-->
+<!--  </delete>-->
+<!--  <insert id="insert" parameterType="com.wyait.manage.pojo.UserBusiness">-->
+<!--    insert into user_business (business_id, useridcode, new_time, -->
+<!--      submit, department_ids)-->
+<!--    values (#{businessId,jdbcType=VARCHAR}, #{useridcode,jdbcType=VARCHAR}, #{newTime,jdbcType=TIMESTAMP}, -->
+<!--      #{submit,jdbcType=TIMESTAMP}, #{departmentIds,jdbcType=VARCHAR})-->
+<!--  </insert>-->
+<!--  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.UserBusiness">-->
+<!--    insert into user_business-->
+<!--    <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--      <if test="businessId != null">-->
+<!--        business_id,-->
+<!--      </if>-->
+<!--      <if test="useridcode != null">-->
+<!--        useridcode,-->
+<!--      </if>-->
+<!--      <if test="newTime != null">-->
+<!--        new_time,-->
+<!--      </if>-->
+<!--      <if test="submit != null">-->
+<!--        submit,-->
+<!--      </if>-->
+<!--      <if test="departmentIds != null">-->
+<!--        department_ids,-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--      <if test="businessId != null">-->
+<!--        #{businessId,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="useridcode != null">-->
+<!--        #{useridcode,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="newTime != null">-->
+<!--        #{newTime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="submit != null">-->
+<!--        #{submit,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="departmentIds != null">-->
+<!--        #{departmentIds,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </insert>-->
+<!--  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.UserBusiness">-->
+<!--    update user_business-->
+<!--    <set>-->
+<!--      <if test="useridcode != null">-->
+<!--        useridcode = #{useridcode,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="newTime != null">-->
+<!--        new_time = #{newTime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="submit != null">-->
+<!--        submit = #{submit,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="departmentIds != null">-->
+<!--        department_ids = #{departmentIds,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where business_id = #{businessId,jdbcType=VARCHAR}-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.UserBusiness">-->
+<!--    update user_business-->
+<!--    set useridcode = #{useridcode,jdbcType=VARCHAR},-->
+<!--      new_time = #{newTime,jdbcType=TIMESTAMP},-->
+<!--      submit = #{submit,jdbcType=TIMESTAMP},-->
+<!--      department_ids = #{departmentIds,jdbcType=VARCHAR}-->
+<!--    where business_id = #{businessId,jdbcType=VARCHAR}-->
+<!--  </update>-->
 </mapper>

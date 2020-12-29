@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+        <h1>业务详情</h1>
+        <hr class="layui-bg-black"/>
+        <div style="height: 40px;background-color: silver"><h3>个人信息</h3></div>
+        <div>
+            <span>姓名：洪保坚</span>
+            <span>身份证：440882199603180030</span>
+            <span>手机号: 17602051787</span>
+            <span>收货地址：广东省广州市番禺区政务服务中心</span>
+        </div>
+        <hr class="layui-bg-black"/>
+        <div style="height: 40px;background-color: silver"><h3>表单信息</h3></div>
+        <div>
+            <span>点击查看</span>
+        </div>
+        <hr class="layui-bg-black"/>
+        <div style="height: 40px;background-color: silver"><h3>附件查看</h3></div>
+        <div>
+            <p>附件一：嘻嘻嘻嘻嘻嘻嘻嘻<span>&nbsp;&nbsp;&nbsp;&nbsp;点击查看</span></p>
+        </div>
+        <hr class="layui-bg-black"/>
+        <div style="height: 40px;background-color: silver"><h3>审批进度</h3></div>
+        <div>
+            <p><span>部门名称：区市场监管局</span><span>进度：正在审批</span></p>
+            <p><span>部门名称：区公安分局</span><span>进度：正在审批</span></p>
+            <p><span>部门名称：区税务局</span><span>进度：正在审批</span></p>
+        </div>
+        <div style="height: 40px;background-color: silver"><h3>最终进度</h3></div>
+        <div>
+            <p><span>是否通过：</span><span>是</span></p>
+            <p>
+                <span>原因：</span>
+                <textarea name="approval_type" placeholder="请输入内容" class="layui-textarea" id="approval_type"></textarea>
+            </p>
+        </div>
+    </div>
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/business/businessDetails.js"></script>
+
+</div>
+</body>
+</html>
