@@ -66,7 +66,7 @@
                         <td>
                             <div class="layui-table-cell laytable-cell-1-5" th:if="${situationDetail.type} == 1">
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'sel('+ ${situationDetail.id} +')'">查看材料</a>
-                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+')'">编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+',\''+${situationDetail.remarks} +'\')'">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'add('+ ${situationDetail.id} +')'">关联材料</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selFROM('+ ${situationDetail.id} +')'">查看表单</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addFROM('+ ${situationDetail.id} +')'">动态表单</a>
@@ -76,14 +76,14 @@
                             </div>
                             <div class="layui-table-cell laytable-cell-1-5" th:if="${situationDetail.type} == 2">
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selSituation('+ ${situationDetail.id} +')'">查看</a>
-                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+')'">编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+',\''+${situationDetail.remarks} +'\')'">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addSituation('+ ${situationDetail.id} +')'">添加情形</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'del('+ ${situationDetail.id} +')'">删除</a>
                             </div>
                             <div class="layui-table-cell laytable-cell-1-5" th:if="${situationDetail.type} == 3">
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selSituation('+ ${situationDetail.id} +')'">查看情形</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'sel('+ ${situationDetail.id} +')'">查看材料</a>
-                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+')'">编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+',\''+${situationDetail.remarks} +'\')'">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addSituation('+ ${situationDetail.id} +')'">添加情形</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'add('+ ${situationDetail.id} +')'">关联材料</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selFROM('+ ${situationDetail.id} +')'">查看表单</a>
@@ -174,6 +174,13 @@
                     <input type="radio" name="type" value="1" title="材料" />
                     <input type="radio" name="type" value="2" title="情形" checked="checked" />
                     <input type="radio" name="type" value="3" title="情形与材料" />
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">名称解释</label>
+                <div class="layui-input-block" >
+                    <textarea name="remarks" placeholder="请输入内容" class="layui-textarea" id="remarks"></textarea>
                 </div>
             </div>
 
@@ -436,9 +443,10 @@
                 });
             }
         }
-        function edit(id,name,type) {
+        function edit(id,name,type,remarks) {
             $("#situationDetailsId").val(id);
             $("#detailsDescribe").val(name);
+            $("#remarks").val(remarks);
             if (type == 1){
                 console.log(type);
                 $("input[name='type'][value='1']").attr("checked",true);

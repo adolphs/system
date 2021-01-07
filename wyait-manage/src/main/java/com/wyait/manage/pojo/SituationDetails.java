@@ -14,17 +14,27 @@ public class SituationDetails {
     private Date newTime;
     private Date updateTime;
     private Integer type;
+    private String remarks;
 
     public SituationDetails() {
     }
 
-    public SituationDetails(Integer situationDetailsId, Integer situationId, String detailsDescribe, Date newTime, Date updateTime, Integer type) {
+    public SituationDetails(Integer situationDetailsId, Integer situationId, String detailsDescribe, Date newTime, Date updateTime, Integer type, String remarks) {
         this.situationDetailsId = situationDetailsId;
         this.situationId = situationId;
         this.detailsDescribe = detailsDescribe;
         this.newTime = newTime;
         this.updateTime = updateTime;
         this.type = type;
+        this.remarks = remarks;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public Integer getSituationDetailsId() {

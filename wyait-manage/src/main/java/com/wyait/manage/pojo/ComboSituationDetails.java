@@ -14,31 +14,36 @@ import java.util.List;
  * @date 2020/7/8 15:23
  */
 @TableName("combo_situation_details")
-public class ComboSituationDetails extends Model<ComboSituationDetails> {
+public class ComboSituationDetails{
     private Integer id;
     private String detailsDescribe;
     private Integer comboSituationId;
     private Date newTime;
     private Date updateTime;
     private Integer type;
+    private String remarks;
     private List<ComboSituationVOTOW> comboSituationVOTOWS;
 
-    public ComboSituationDetails() {
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
-
-    public ComboSituationDetails(Integer id, String detailsDescribe, Integer comboSituationId, Date newTime, Date updateTime, Integer type, List<ComboSituationVOTOW> comboSituationVOTOWS) {
+    public ComboSituationDetails(Integer id, String detailsDescribe, Integer comboSituationId, Date newTime, Date updateTime, Integer type, String remarks, List<ComboSituationVOTOW> comboSituationVOTOWS) {
         this.id = id;
         this.detailsDescribe = detailsDescribe;
         this.comboSituationId = comboSituationId;
         this.newTime = newTime;
         this.updateTime = updateTime;
         this.type = type;
+        this.remarks = remarks;
         this.comboSituationVOTOWS = comboSituationVOTOWS;
+    }
+
+    public ComboSituationDetails() {
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public Integer getId() {
