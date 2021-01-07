@@ -1,10 +1,10 @@
 package com.wyait.manage.controller.web2;
 
+
 import com.wyait.manage.pojo.FormField;
-import com.wyait.manage.pojo.SysIntfParameter;
+import com.wyait.manage.pojo.FormMain;
 import com.wyait.manage.pojo.User;
-import com.wyait.manage.pojo.result.ResponseResult;
-import com.wyait.manage.service.web2.FormService;
+import com.wyait.manage.service.web2.FormMainService;
 import com.wyait.manage.utils.PageDataResult;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
@@ -15,63 +15,43 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-
-@RequestMapping("/form")
 @Controller
-public class FormController {
-    private static final Logger logger = LoggerFactory.getLogger(FormController.class);
+@RequestMapping("/formMain")
+public class FormMainController {
 
+    private static final Logger logger = LoggerFactory.getLogger(FormMainController.class);
     @Autowired
-    private FormService formService;
+    private FormMainService formMainService;
+
 
     /**
      * 进去表单页面
      * @param comboId
      * @return
      */
-    @RequestMapping("/formDetails")
-    public ModelAndView formDetails(Integer comboId,String formId){
+    @RequestMapping("/formMainList")
+    public ModelAndView formDetails(Integer comboId){
         ModelAndView view = new ModelAndView();
         view.addObject("comboId",comboId);
-        view.addObject("formId",formId);
-        view.setViewName("form/formDetails");
+        view.setViewName("form/formMain");
         return view;
     }
 
-    /**
-     * 进入表单详情页
-     * @param comboId
-     * @param formId  表单id
-     * @return
-     */
-    @RequestMapping("/nextForm")
-    public ModelAndView nextForm(String comboId,String formId){
-        ModelAndView view = new ModelAndView();
-        view.addObject("comboId",comboId);
-        view.addObject("formId",formId);
-        FormField formField = formService.getFormPid(formId);
-        Integer fieldClass = formField.getFormFieldClass() == null?1:formField.getFormFieldClass()+1;
-        view.addObject("formFieldClass",fieldClass);
-        view.setViewName("form/formDetails2");
-        return view;
-    }
 
     /**
      * 分页查询表单支持筛选加分页
      * @param page
      * @param limit
-     * @param formField
+     * @param formMain
      * @return
      */
-    @RequestMapping("/getFormList")
+    @RequestMapping("/getFormMainList")
     @ResponseBody
-    public PageDataResult getFormList(@RequestParam("page") Integer page,
-                                                  @RequestParam("limit") Integer limit, FormField formField){
-        logger.debug("分页查询表单项列表！搜索条件：sysIntfParameter：" + formField + ",page:" + page
+    public PageDataResult getFormMainList(@RequestParam("page") Integer page,
+                                      @RequestParam("limit") Integer limit, FormMain formMain){
+        logger.debug("分页查询表单项列表！搜索条件：sysIntfParameter：" + formMain + ",page:" + page
                 + ",每页记录数量limit:" + limit);
         PageDataResult pdr = new PageDataResult();
         try {
@@ -82,7 +62,7 @@ public class FormController {
                 limit = 10;
             }
             // 获取事项管理列表
-            pdr = formService.getFormList(formField, page, limit);
+            pdr = formMainService.getFormMainList(formMain, page, limit);
             logger.debug("表单项查询=pdr:" + pdr);
 
         } catch (Exception e) {
@@ -93,17 +73,18 @@ public class FormController {
         return pdr;
     }
 
+
     /**
      * 新增表单项   修改表单项
-     * @param formField
+     * @param formMain
      * @return
      */
-    @PostMapping("/addFormField")
+    @PostMapping("/addFormMainField")
     @ResponseBody
-    public String addFormField(FormField formField){
-        logger.debug("设置表单项[新增或更新]！sysIntfParameter:" + formField );
+    public String addFormMainField(FormMain formMain){
+        logger.debug("设置表单项[新增或更新]！sysIntfParameter:" + formMain );
         try {
-            if (null == formField) {
+            if (null == formMain) {
                 logger.debug("表单项[新增或更新]，结果=请您填写事项信息");
                 return "您填写事项信息";
             }
@@ -113,8 +94,8 @@ public class FormController {
                 return "您未登录或登录超时，请您登录后再试";
             }
             // 设置用户[新增或更新]
-            logger.info("设置表单项[新增或更新]成功！sysIntfParameter=" + formField + "，操作的用户ID=" + existUser.getId());
-            return formService.addFormField(formField);
+            logger.info("设置表单项[新增或更新]成功！sysIntfParameter=" + formMain + "，操作的用户ID=" + existUser.getId());
+            return formMainService.addFormMainField(formMain);
         }catch (Exception e) {
             e.printStackTrace();
             logger.error("设置表单项[新增或更新]异常！", e);
@@ -124,15 +105,15 @@ public class FormController {
 
     /**
      * 删除
-     * @param formFieldId
+     * @param formMainId
      * @return
      */
-    @PostMapping("/delFormField")
+    @PostMapping("/delFormMainField")
     @ResponseBody
-    public String delFormField(String formFieldId){
-        logger.debug("删除表单项！formFieldId:" + formFieldId );
+    public String delFormMainField(String formMainId){
+        logger.debug("删除表单项！formMainId:" + formMainId );
         try{
-            return formService.delFormField(formFieldId);
+            return formMainService.delFormMainField(formMainId);
         }catch (Exception e) {
             e.printStackTrace();
             logger.error("设置表单项[删除]异常！", e);
@@ -151,7 +132,7 @@ public class FormController {
     public String updateSituationDetailsIdByFormFieldId(@RequestParam String formMainId,@RequestParam String situationDetailsId,Integer type){
         logger.debug("关联表单项！formMainId:" + formMainId + " 情形选项! : situationDetailsId" + situationDetailsId);
         try{
-            return formService.updateSituationDetailsIdByFormFieldId(formMainId,situationDetailsId,type);
+            return formMainService.updateSituationDetailsIdByFormFieldId(formMainId,situationDetailsId,type);
         }catch (Exception e) {
             e.printStackTrace();
             logger.error("关联表单项[删除]异常！", e);
@@ -161,26 +142,19 @@ public class FormController {
 
     /**
      * 删除表单项
-     * @param formFieldId  表单项id
+     * @param formMainId  表单项id
      * @return
      */
     @ResponseBody
     @RequestMapping("/deleteSituationDetailsIdByFormFieldId")
-    public String deleteSituationDetailsIdByFormFieldId(@RequestParam String formFieldId){
-        logger.debug("删除表单项！formFieldId:" + formFieldId);
+    public String deleteSituationDetailsIdByFormFieldId(Long formMainId){
+        logger.debug("删除表单项！formMainId:" + formMainId);
         try{
-            return formService.deleteSituationDetailsIdByFormFieldId(formFieldId);
+            return formMainService.deleteSituationDetailsIdByFormFieldId(formMainId);
         }catch (Exception e) {
             e.printStackTrace();
             logger.error("删除表单项[删除]异常！", e);
             return "操作异常，请您稍后再试";
         }
-    }
-
-    @ResponseBody
-    @RequestMapping("/batchUploadForm")
-    public ResponseResult  batchUploadForm(MultipartFile file, HttpServletRequest request,String formMainId,Integer comboId){
-        logger.debug("表单开始上传");
-        return formService.batchUploadForm(file,request,formMainId,comboId);
     }
 }

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='系统管理'"></head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+        <h3 style="color: #009688">录入新表单项</h3>
+        <form id="Form" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <input id="formMainComboId" name="formMainComboId" th:value="${comboId}" autocomplete="off" class="layui-input" type="hidden"/>
+
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-inline">
+                    <input id="formMainName"  lay-verify="required"  name="formMainName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-inline">
+                    <select name="departmentId" lay-verify="required" id="departmentSearch" autocomplete="off">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button class="layui-btn"  lay-submit="" lay-filter="userSubmit">新增</button>
+        </form>
+
+        <hr class="layui-bg-black"/>
+                <h3 style="color: #009688">搜索表单项</h3>
+                <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">主识别号</label>
+                        <div class="layui-input-inline">
+                            <input id="formMainId" name="formMainId" autocomplete="off" class="layui-input" type="text"/>
+                        </div>
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-inline">
+                            <input id="formMainName1" name="formMainName"  autocomplete="off" class="layui-input" type="text"/>
+                        </div>
+                        <label class="layui-form-label">所属部门</label>
+                        <div class="layui-input-inline">
+                            <select name="departmentId"  id="departmentInsert1">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">搜索</button>
+                </form>
+
+        <!--<hr class="layui-bg-blue"/>-->
+        <hr class="layui-bg-black"/>
+
+
+        <table id="uesrList" lay-filter="userTable"></table>
+        <div style="display:none;" id="currentUser"><shiro:principal property="id"></shiro:principal></div>
+
+
+        <script type="text/html" id="optBar">
+            <a class="layui-btn layui-btn-xs" lay-event="put">表单项详情</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+    </div>
+
+
+    <!--添加或编辑用户-->
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;">
+        <form id="Form2" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;height: 400px">
+            <div class="layui-form-item">
+                <label class="layui-form-label">名称</label>
+<!--                <input id="formFieldComboId2" name="formFieldComboId" th:value="${comboId}" autocomplete="off" class="layui-input" type="hidden"/>-->
+                <input id="formMainId2" name="formMainId" autocomplete="off" class="layui-input" type="hidden"/>
+                <div class="layui-input-inline">
+                    <input id="formFieldName2" name="formMainName" autocomplete="off" class="layui-input" type="text"/>
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-inline">
+                    <select name="departmentId" lay-verify="required" id="departmentInsert">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button class="layui-btn"  lay-submit="" lay-filter="userSubmit2">完成</button>
+        </form>
+    </div>
+
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/form/formMain.js"></script>
+    <script>
+        layui.use(['form', 'upload', 'layer'], function () {
+
+            var form = layui.form;
+
+
+
+            //检查项目添加到下拉框中
+            $.ajax({
+                url: '/department/getDepartments',
+                dataType: 'json',
+                type: 'get',
+                success: function (data) {
+                    $.each(data, function (index, item) {
+                        $('#departmentSearch').append(new Option(item.departmentName, item.departmentId));// 下拉菜单里添加元素
+                        $('#departmentInsert1').append(new Option(item.departmentName, item.departmentId));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
+
+                    //重新渲染 固定写法
+                }
+            })
+
+        });
+    </script>
+</div>
+</body>
+</html>

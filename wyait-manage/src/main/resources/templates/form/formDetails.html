@@ -13,6 +13,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">name属性</label>
                 <input id="formFieldComboId" name="formFieldComboId" th:value="${comboId}" autocomplete="off" class="layui-input" type="hidden"/>
+                <input id="form_main_id" name="formMainId" th:value="${formId}" autocomplete="off" class="layui-input" type="hidden"/>
                 <input id="formFieldClass" name="formFieldClass" th:value="1" autocomplete="off" class="layui-input" type="hidden"/>
                 <div class="layui-input-inline">
                     <input id="formFieldName" name="formFieldName" autocomplete="off" class="layui-input" type="text"/>
@@ -229,7 +230,8 @@
             //普通图片上传
             var uploadInst = upload.render({
                 elem: '#test1'
-                ,url: '/form/batchUploadForm'
+                ,url: '/form/batchUploadForm?'
+                ,data:{'comboId':$("#formFieldComboId2").val(),'formMainId':$("#form_main_id").val()}
                 ,accept:'file'
                 ,size:50000
                 ,before: function(obj){

@@ -87,7 +87,7 @@ public class FormServiceImpl implements FormService{
     }
 
     @Override
-    public ResponseResult batchUploadForm(MultipartFile file, HttpServletRequest request) {
+    public ResponseResult batchUploadForm(MultipartFile file, HttpServletRequest request,String formMainId,Integer comboId) {
         ResponseResult result = new ResponseResult();
         //创建Excel工作薄
         Workbook workbook = null;
@@ -129,7 +129,7 @@ public class FormServiceImpl implements FormService{
                         formField.setFormFieldName(rowData.getCell(0).getStringCellValue());
                         formField.setFormFieldNameValue(rowData.getCell(1).getStringCellValue());
                         formField.setFormFieldType(rowData.getCell(2).getStringCellValue());
-                        formField.setFormFieldComboId(Integer.parseInt(rowData.getCell(3).getStringCellValue()));
+//                        formField.setFormFieldComboId(Integer.parseInt(rowData.getCell(3).getStringCellValue()));
                         formField.setFormFieldIsBasis(Integer.parseInt(rowData.getCell(4).getStringCellValue()));
                         if (null!=rowData.getCell(5)){
                             formField.setFormFieldContent(rowData.getCell(5).getStringCellValue());
@@ -137,6 +137,8 @@ public class FormServiceImpl implements FormService{
                         if (null!=rowData.getCell(6)){
                             formField.setFormFieldAnnotation(rowData.getCell(6).getStringCellValue());
                         }
+                        formField.setFormMainId(formMainId);
+                        formField.setFormFieldComboId(comboId);
                         fieldList.add(formField);
                     }
                 }

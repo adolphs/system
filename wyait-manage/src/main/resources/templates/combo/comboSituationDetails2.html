@@ -79,6 +79,8 @@
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+',\''+${situationDetail.remarks} +'\')'">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addSituation('+ ${situationDetail.id} +')'">添加情形</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'del('+ ${situationDetail.id} +')'">删除</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selFROM('+ ${situationDetail.id} +')'">查看表单</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'addFROM('+ ${situationDetail.id} +')'">动态表单</a>
                             </div>
                             <div class="layui-table-cell laytable-cell-1-5" th:if="${situationDetail.type} == 3">
                                 <a class="layui-btn layui-btn-danger layui-btn-xs layui-bg-green" lay-event="sel" th:onclick="'selSituation('+ ${situationDetail.id} +')'">查看情形</a>
@@ -224,7 +226,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">表单名称</label>
                 <div class="layui-input-inline" style="width: 350px">
-                    <select  id="formSelect" name="formFieldId" lay-filter="test" lay-verify="" lay-search="" >
+                    <select  id="formSelect" name="formMainId" lay-filter="test" lay-verify="" lay-search="" >
 
                     </select>
                 </div>
@@ -232,7 +234,7 @@
 
             <div class="layui-form-item">
                 <div class="layui-input-block" style="margin-left: 10px;">
-                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit3">提交</button>
+                    <button class="layui-btn"  lay-submit="" type="button" lay-filter="userSubmit3">提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
@@ -316,13 +318,13 @@
         function addFROM(id) {
             $("#situationDetailsId3").val(id);
             $.ajax({
-                url: '/form/getFormList?&page=1&limit=999&formFieldIsBasis=2&formFieldComboId='+$("#comboId").val(),
+                url: '/formMain/getFormMainList?&page=1&limit=999&formMainComboId='+$("#comboId").val(),
                 type: 'post',
                 success: function (data) {
                     var tmp='';
                     tmp +='<option value=""></option>';
                     for (var i = 0 ; i<data.list.length;i++){
-                        tmp +='<option value="'+data.list[i].formFieldId+'">'+data.list[i].formFieldNameValue+'</option>';
+                        tmp +='<option value="'+data.list[i].formMainId+'">'+data.list[i].formMainName+'</option>';
                     }
                     $("#formSelect").html(tmp);
                     layui.form.render("select");
@@ -333,16 +335,16 @@
         <!-- 查看动态表单 -->
         function selFROM(id) {
             $.ajax({
-                url: '/form/getFormList',
-                data:{"page":1,"limit":999,"formFieldIsBasis":2,"formFieldOptions":id},
+                url: '/formMain/getFormMainList',
+                data:{"page":1,"limit":999,"formFieldOptions":id,"formMainComboId":$("#comboId").val()},
                 type: 'get',
                 success: function (data) {
                     console.log(data.list);
                     $("#dataAll").html("");
                     var htm='';
                     for(var i=0;i<data.list.length;i++){
-                        var formFieldId = data.list[i].formFieldId;
-                        var formFieldNameValue = data.list[i].formFieldNameValue;
+                        var formFieldId = data.list[i].formMainId;
+                        var formFieldNameValue = data.list[i].formMainName;
                         var j = i+1;
                         htm+=' <tr>';
                         htm+=' <td>'+ j +'</td>';
@@ -356,11 +358,11 @@
             });
         }
         <!-- 表单删除 -->
-        function dellFORM(formFieldId,situationDetailsId) {
+        function dellFORM(formMainId,situationDetailsId) {
             if (confirm("是否确定删除？")) {
                 $.ajax({
-                    url: '/form/deleteSituationDetailsIdByFormFieldId',
-                    data: {'formFieldId': formFieldId},
+                    url: '/formMain/deleteSituationDetailsIdByFormFieldId',
+                    data: {'formMainId': formMainId},
                     type: 'post',
                     success: function (data) {
                         if (data == "ok") {

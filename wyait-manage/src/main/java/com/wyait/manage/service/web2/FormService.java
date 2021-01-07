@@ -27,7 +27,7 @@ public interface FormService {
 
     String deleteSituationDetailsIdByFormFieldId(String formFieldId);
 
-    ResponseResult batchUploadForm(MultipartFile file, HttpServletRequest request);
+    ResponseResult batchUploadForm(MultipartFile file, HttpServletRequest request,String formMainId,Integer comboId);
 
     FormField getFormPid(String formId);
 }

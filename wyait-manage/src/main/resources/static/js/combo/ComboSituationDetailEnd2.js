@@ -97,11 +97,11 @@ $(function() {
 
         form.on('submit(userSubmit3)',function (data) {
             console.log(data);
-            var formFieldId = data.field.formFieldId;
+            var formMainId = data.field.formMainId;
             var situationDetailsId = data.field.situationDetailsId;
             $.ajax({
-                url: '/form/updateSituationDetailsIdByFormFieldId',
-                data:{'formFieldId':formFieldId,"situationDetailsId":situationDetailsId,'type':1},
+                url: '/formMain/updateSituationDetailsIdByFormFieldId',
+                data:{'formMainId':formMainId,"situationDetailsId":situationDetailsId,'type':1},
                 type: 'post',
                 success: function (data) {
                     if (data == "ok") {

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.FormMainDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.FormMain">
+    <id column="form_main_id" jdbcType="VARCHAR" property="formMainId" />
+    <result column="form_main_name" jdbcType="VARCHAR" property="formMainName" />
+    <result column="form_main_combo_id" jdbcType="INTEGER" property="formMainComboId" />
+    <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="form_field_options" jdbcType="VARCHAR" property="formFieldOptions" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    form_main_id, form_main_name, form_main_combo_id
+  </sql>
+  <select id="getFormMainList"  resultMap="BaseResultMap">
+    select
+    fm.form_main_id, fm.form_main_name, fm.form_main_combo_id,fm.department_id,d.department_name
+    from form_main fm inner join department d  on d.department_id = fm.department_id
+    where fm.form_main_combo_id = #{formMainComboId}
+    <if test="formMainName != null and formMainName != ''">
+      and fm.form_main_name like CONCAT(CONCAT('%',#{formMainName}),'%')
+    </if>
+    <if test="formMainId != null and formMainId != ''">
+      and fm.form_main_id = #{formMainId}
+    </if>
+    <if test="departmentId != null and departmentId != ''">
+      and fm.department_id = #{departmentId}
+    </if>
+    <if test="formFieldOptions != null and departmentId != ''">
+      and fm.form_field_options = #{formFieldOptions}
+    </if>
+  </select>
+  <delete id="delete" parameterType="java.lang.String">
+    delete from form_main
+    where form_main_id = #{formMainId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.FormMain">
+    insert into form_main (form_main_id, form_main_name, form_main_combo_id,department_id
+      )
+    values (#{formMainId,jdbcType=VARCHAR}, #{formMainName,jdbcType=VARCHAR}, #{formMainComboId,jdbcType=INTEGER},#{departmentId,jdbcType=INTEGER}
+      )
+  </insert>
+<!--  <insert id="insertSelective" parameterType="com.yjs.api.entity.FormMain">-->
+<!--    insert into form_main-->
+<!--    <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--      <if test="formMainId != null">-->
+<!--        form_main_id,-->
+<!--      </if>-->
+<!--      <if test="formMainName != null">-->
+<!--        form_main_name,-->
+<!--      </if>-->
+<!--      <if test="formMainComboId != null">-->
+<!--        form_main_combo_id,-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--      <if test="formMainId != null">-->
+<!--        #{formMainId,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="formMainName != null">-->
+<!--        #{formMainName,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="formMainComboId != null">-->
+<!--        #{formMainComboId,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </insert>-->
+<!--  <update id="updateByPrimaryKeySelective" parameterType="com.yjs.api.entity.FormMain">-->
+<!--    update form_main-->
+<!--    <set>-->
+<!--      <if test="formMainName != null">-->
+<!--        form_main_name = #{formMainName,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="formMainComboId != null">-->
+<!--        form_main_combo_id = #{formMainComboId,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where form_main_id = #{formMainId,jdbcType=VARCHAR}-->
+<!--  </update>-->
+  <update id="update" parameterType="com.wyait.manage.pojo.FormMain">
+    update form_main
+    set form_main_name = #{formMainName},
+    department_id = #{departmentId}
+    where form_main_id = #{formMainId}
+  </update>
+
+  <update id="updateSituationDetailsIdByFormFieldId">
+    update form_main
+    set form_field_options = #{situationDetailsId}
+    where form_main_id = #{formMainId}
+  </update>
+
+  <update id="deleteSituationDetailsIdByFormFieldId">
+     update form_main
+    set form_field_options = null
+    where form_main_id = #{formMainId}
+  </update>
+</mapper>

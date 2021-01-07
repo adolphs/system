@@ -59,6 +59,8 @@ public class FormField implements Serializable {
      */
     private Integer formFieldClass;
 
+    private String formMainId;
+
     private String pid;
 
     private static final long serialVersionUID = 1L;
@@ -149,6 +151,14 @@ public class FormField implements Serializable {
 
     public void setFormFieldClass(Integer formFieldClass) {
         this.formFieldClass = formFieldClass;
+    }
+
+    public String getFormMainId() {
+        return formMainId;
+    }
+
+    public void setFormMainId(String formMainId) {
+        this.formMainId = formMainId;
     }
 
     @Override
