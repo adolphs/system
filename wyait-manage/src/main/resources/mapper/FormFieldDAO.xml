@@ -62,6 +62,9 @@
     <if test="formField.pid == null or formField.pid == ''">
       and pid is null
     </if>
+    <if test="formField.formMainId != null and formField.formMainId != ''">
+      and form_main_id = #{formField.formMainId}
+    </if>
   </select>
 
   <insert id="insert" parameterType="com.wyait.manage.pojo.FormField">
