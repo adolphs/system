@@ -41,6 +41,8 @@ public class UploadFile implements Serializable {
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
+    public Integer comboId;
+
     private static final long serialVersionUID = 1L;
 
     public String getFileId() {
@@ -89,6 +91,14 @@ public class UploadFile implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getComboId() {
+        return comboId;
+    }
+
+    public void setComboId(Integer comboId) {
+        this.comboId = comboId;
     }
 
     @Override

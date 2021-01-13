@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -28,9 +29,11 @@ public class UploadFileController {
     @Autowired
     private FileSituationService fileSituationService;
     @RequestMapping("/list")
-    public String uploadFileList(){
-        logger.info("进入文件管理页面");
-        return "form/uploadFileList";
+    public ModelAndView uploadFileList(Integer comboId){
+        ModelAndView view = new ModelAndView();
+        view.addObject("comboId",comboId);
+        view.setViewName("form/uploadFileList");
+        return view;
     }
 
     /**
@@ -65,6 +68,7 @@ public class UploadFileController {
 
         return pdr;
     }
+
 
     @ResponseBody
     @RequestMapping("/addUploadFile")

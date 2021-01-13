@@ -58,6 +58,7 @@
     <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 550px">
         <form id="departmentForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
             <input id="fileId" type="hidden" name="fileId"/>
+            <input id="comboId" type="hidden" th:value="${comboId}" name="comboId"/>
             <div class="layui-form-item">
                 <label class="layui-form-label">文件名称</label>
                 <div class="layui-input-inline">

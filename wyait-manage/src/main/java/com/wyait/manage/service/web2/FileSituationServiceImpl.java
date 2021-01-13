@@ -3,6 +3,7 @@ package com.wyait.manage.service.web2;
 import com.wyait.manage.dao.FileSituationDAO;
 import com.wyait.manage.dao.SituationDetailsMapper;
 import com.wyait.manage.pojo.Combo;
+import com.wyait.manage.utils.IdWorkerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -382,9 +382,10 @@
         <!-- 附件加载列表 -->
         function queryUpload(id) {
             $("#situationDetailsId4").val(id);
+            console.log($("#comboId").val());
             $.ajax({
                 url: '/uploadFile/getUploadFileList',
-                data:{"page":1,"limit":999},
+                data:{"page":1,"limit":999,"comboId":$("#comboId").val()},
                 type: 'get',
                 success: function (data) {
                     var tmp='';

@@ -8,6 +8,7 @@
     <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
     <result column="upload_system" jdbcType="VARCHAR" property="uploadSystem" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="combo_id" jdbcType="INTEGER" property="comboId" />
   </resultMap>
   <sql id="Base_Column_List">
     file_id, file_name, department_id, department_name, upload_system, create_time
@@ -15,7 +16,7 @@
 
   <select id="getUploadFileList" resultType="com.wyait.manage.pojo.UploadFile">
     select
-        file_id,file_name,department_id,department_name,upload_system,create_time
+        file_id,file_name,department_id,department_name,upload_system,create_time,combo_id
     from
         upload_file
     where
@@ -23,6 +24,9 @@
     <if test="uploadFile.departmentId != null and uploadFile.departmentId != ''">
         and department_id = #{uploadFile.departmentId}
     </if>
+      <if test="uploadFile.comboId != null and uploadFile.comboId != ''">
+          and combo_id = #{uploadFile.comboId}
+      </if>
     <if test="uploadFile.fileName != null and uploadFile.fileName != ''">
         and file_name like CONCAT(CONCAT('%',#{uploadFile.fileName}),'%')
     </if>
@@ -30,10 +34,11 @@
 
     <insert id="insert" parameterType="com.wyait.manage.pojo.UploadFile">
         insert into upload_file (file_id, file_name, department_id,
-          department_name, upload_system, create_time
+          department_name, upload_system, create_time,combo_id
           )
         values (#{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR},
-          #{departmentName,jdbcType=VARCHAR}, #{uploadSystem,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+          #{departmentName,jdbcType=VARCHAR}, #{uploadSystem,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+          #{comboId,jdbcType=INTEGER}
           )
     </insert>
 
@@ -56,6 +61,8 @@
             uf.file_id,uf.file_name,uf.department_id,uf.department_name,uf.upload_system,uf.create_time
         from
             file_situation fs left join upload_file uf on uf.file_id = fs.file_id
+        where
+            fs.situation_id = #{situationDetailsId}
     </select>
 <!--  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">-->
 <!--    select -->
