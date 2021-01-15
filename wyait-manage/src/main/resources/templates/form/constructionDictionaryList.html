@@ -10,6 +10,7 @@
     <div class="layui-body" style="margin: 1%">
 
         <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+
             <div class="layui-form-item">
                 <label class="layui-form-label">字典表名称</label>
                 <div class="layui-input-inline">
@@ -25,7 +26,8 @@
                     </select>
                 </div>
             </div>
-
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button class="layui-btn"  lay-submit="" lay-filter="searchSubmit">提交</button>
         </form>
 
         <!--<hr class="layui-bg-blue"/>-->
@@ -45,28 +47,39 @@
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
             {{#  } }}
         </script>
+
+        <script type="text/html" id="jobTpl">
+            {{#  if(d.level == 1){ }}
+            <span>类型</span>
+            {{#  } else if(d.level == 2) { }}
+            <span>类别</span>
+            {{#  } else if(d.level == 3) { }}
+            <span>阶段</span>
+            {{#  } }}
+        </script>
     </div>
 
 
     <!--添加或编辑用户-->
     <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;">
         <form id="userForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;height: 400px">
+            <input type="hidden" name="constructionDictionaryId" id="constructionDictionaryId" />
             <div class="layui-form-item">
                 <label class="layui-form-label">字典名称</label>
                 <div class="layui-input-inline">
-                    <input id="name1" name="name" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                    <input id="name1" name="name" lay-verify="required" autocomplete="off" style="width: 390px" class="layui-input" type="text"/>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">字典值</label>
                 <div class="layui-input-inline">
-                    <input id="value" name="value" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                    <input id="value" name="value" lay-verify="required" autocomplete="off" style="width: 390px" class="layui-input" type="text"/>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">类型</label>
                 <div class="layui-input-block">
-                    <select name="level" id="level1" autocomplete="off">
+                    <select name="level" id="level1" autocomplete="off" lay-filter="select1-demo">
                         <option value="">请选择</option>
                         <option value="1">主类</option>
                         <option value="2">次类</option>
@@ -74,10 +87,10 @@
                     </select>
                 </div>
             </div>
-            <div class="layui-form-item">
+            <div class="layui-form-item" id="pid_class">
                 <label class="layui-form-label">请选择主类</label>
                 <div class="layui-input-block">
-                    <select name="pid" id="pid" autocomplete="off">
+                    <select name="pid" id="pid" autocomplete="off" style="display: none">
                         <option value="">请选择</option>
                     </select>
                 </div>
@@ -95,7 +108,37 @@
     <div th:replace="fragments/footer :: footer"></div>
     <script src="/js/dateUtils.js"></script>
     <script src="/js/form/constructionDictionaryList.js"></script>
+    <script>
+        layui.use(['layer', 'jquery', 'form'], function () {
+            var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
 
+            form.on('select(select1-demo)', function(data){
+                if (data.value == 2){
+                    $("#pid_class").show();
+                    //获取相对于的数据
+                    $.ajax({
+                        type: "POST",
+                        data:{'level':1,'page':1,'limit':999},
+                        url: "/constructionDictionary/getConstructionDictionaryList",
+                        success: function (data) {
+                            var htm = '<option value="">请选择</option>';
+                            htm+='<option value="1">政府投资项目</option>';
+                            htm+='<option value="2">社会投资项目</option>';
+                            $('#pid').html(htm);
+                            layui.form.render("select");
+                        }
+                    });
+                }else{
+                    $("#pid_class").hide();
+                    $('#pid').html(' <option value="">请选择</option>');
+                    layui.form.render("select");
+                }
+            });
+        });
+
+    </script>
 </div>
 </body>
 </html>

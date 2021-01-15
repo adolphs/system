@@ -21,6 +21,9 @@
     <if test="constructionDictionary.name != null and constructionDictionary.name != ''">
       and name like CONCAT(CONCAT('%',#{constructionDictionary.name}),'%')
     </if>
+    <if test="constructionDictionary.level != null and constructionDictionary.level != ''">
+      and level = #{constructionDictionary.level}
+    </if>
   </select>
 <!--  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">-->
 <!--    select -->
