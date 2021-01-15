@@ -253,6 +253,25 @@ function getUserAndRoles(obj,id) {
             }
         });
 
+        $.ajax({
+            type: "POST",
+            data:{'level':2,'page':1,'limit':999},
+            url: "/constructionDictionary/getConstructionDictionaryList",
+            success: function (data) {
+                var tmp = '';
+                $.each(data.list, function (index, item) {
+                    console.log(obj.constructionDictionaryId)
+                    if (item.constructionDictionaryId == obj.constructionDictionaryId){
+                        tmp +='<option value="'+item.constructionDictionaryId+'" selected="selected">'+item.name+'</option>';
+                    }else{
+                        tmp +='<option value="'+item.constructionDictionaryId+'">'+item.name+'</option>';
+                    }
+
+                })
+                $("#constructionDictionaryId").html(tmp);
+                layui.form.render("select");
+            }
+        });
 
     });
     //处理复选框

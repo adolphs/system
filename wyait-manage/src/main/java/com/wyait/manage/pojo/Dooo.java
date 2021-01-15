@@ -27,6 +27,7 @@ public class Dooo {
     private Integer approvalType; //审批状态：0.审批通过 1.审批驳回 2.退回
     private String putText; //提交说明
     private String approvalText; //审批说明
+    private String constructionDictionaryId;//字典表ID
 
     public String getApprovalTextName() {
         return approvalTextName;
@@ -150,5 +151,13 @@ public class Dooo {
 
     public void setApprovalText(String approvalText) {
         this.approvalText = approvalText;
+    }
+
+    public String getConstructionDictionaryId() {
+        return constructionDictionaryId;
+    }
+
+    public void setConstructionDictionaryId(String constructionDictionaryId) {
+        this.constructionDictionaryId = constructionDictionaryId;
     }
 }

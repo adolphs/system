@@ -71,7 +71,7 @@
 
 
     <!--添加或编辑用户-->
-    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;">
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 600px">
         <form id="doooForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
             <input id="type" type="hidden" name="pageNum"/>
             <input id="newTime" type="hidden" name="roleIds"/>
@@ -104,6 +104,14 @@
                 <div class="layui-input-block" id="checkboxType">
                     <input type="checkbox" name="type" title="个人" value="0" />
                     <input type="checkbox" name="type" title="法人" value="1" checked="checked" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">对应阶段</label>
+                <div class="layui-input-block">
+                    <select name="constructionDictionaryId" id="constructionDictionaryId">
+                        <option value="">如果是建设工程的请录入建设工程的内容</option>
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item layui-form-text">
@@ -168,6 +176,19 @@
     }
     })
 
+    });
+
+
+    $.ajax({
+        type: "POST",
+        data:{'level':2,'page':1,'limit':999},
+        url: "/constructionDictionary/getConstructionDictionaryList",
+        success: function (data) {
+            console.log(data.list.length);
+            $.each(data.list, function (index, item) {
+                $('#constructionDictionaryId').append(new Option(item.name, item.constructionDictionaryId));// 下拉菜单里添加元素
+            })
+        }
     });
     </script>
 </div>
