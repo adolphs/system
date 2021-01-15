@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.SerialNumberDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.SerialNumber">
+    <id column="serial_number_id" jdbcType="VARCHAR" property="serialNumberId" />
+    <result column="business_id" jdbcType="VARCHAR" property="businessId" />
+    <result column="serial_number_type" jdbcType="INTEGER" property="serialNumberType" />
+    <result column="serial_number_value" jdbcType="VARCHAR" property="serialNumberValue" />
+    <result column="progress" jdbcType="INTEGER" property="progress" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    serial_number_id, business_id, serial_number_type, serial_number_value, progress
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from serial_number
+    where serial_number_id = #{serialNumberId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from serial_number
+    where serial_number_id = #{serialNumberId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.SerialNumber">
+    insert into serial_number (serial_number_id, business_id, serial_number_type,
+      serial_number_value, progress)
+    values (#{serialNumberId,jdbcType=VARCHAR}, #{businessId,jdbcType=VARCHAR}, #{serialNumberType,jdbcType=INTEGER},
+      #{serialNumberValue,jdbcType=VARCHAR}, #{progress,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.SerialNumber">
+    insert into serial_number
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialNumberId != null">
+        serial_number_id,
+      </if>
+      <if test="businessId != null">
+        business_id,
+      </if>
+      <if test="serialNumberType != null">
+        serial_number_type,
+      </if>
+      <if test="serialNumberValue != null">
+        serial_number_value,
+      </if>
+      <if test="progress != null">
+        progress,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialNumberId != null">
+        #{serialNumberId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumberType != null">
+        #{serialNumberType,jdbcType=INTEGER},
+      </if>
+      <if test="serialNumberValue != null">
+        #{serialNumberValue,jdbcType=VARCHAR},
+      </if>
+      <if test="progress != null">
+        #{progress,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.SerialNumber">
+    update serial_number
+    <set>
+      <if test="businessId != null">
+        business_id = #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumberType != null">
+        serial_number_type = #{serialNumberType,jdbcType=INTEGER},
+      </if>
+      <if test="serialNumberValue != null">
+        serial_number_value = #{serialNumberValue,jdbcType=VARCHAR},
+      </if>
+      <if test="progress != null">
+        progress = #{progress,jdbcType=INTEGER},
+      </if>
+    </set>
+    where serial_number_id = #{serialNumberId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.SerialNumber">
+    update serial_number
+    set business_id = #{businessId,jdbcType=VARCHAR},
+      serial_number_type = #{serialNumberType,jdbcType=INTEGER},
+      serial_number_value = #{serialNumberValue,jdbcType=VARCHAR},
+      progress = #{progress,jdbcType=INTEGER}
+    where serial_number_id = #{serialNumberId,jdbcType=VARCHAR}
+  </update>
+</mapper>
