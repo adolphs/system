@@ -7,7 +7,9 @@
  */
 package com.wyait.manage.service;
 
+import com.wyait.manage.dao.SerialNumberDAO;
 import com.wyait.manage.dao.SysIntfParameterDAO;
+import com.wyait.manage.pojo.SerialNumber;
 import com.wyait.manage.service.db1.ProjectConstructionApprovalService;
 import com.wyait.manage.utils.HttpClient;
 import net.sf.json.JSONArray;
@@ -31,6 +33,8 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
 
     @Autowired
     private SysIntfParameterDAO sysIntfParameterDAO;
+    @Autowired
+    private SerialNumberDAO serialNumberDAO;
 
     /**
      *  3.1 登录接口
@@ -155,8 +159,11 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
 
     /**
      * 3.5提交网上申报信息接口
+     * @param data
+     * @param files
      * @return
      */
+    @Override
     public String pushInformation(JSONObject data, List<Map<String, Object>> files) {
         String accessToken = logon();    //获取token
         String dataId = getDataId(accessToken, null);   //获取表单ID
@@ -262,28 +269,46 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
         materials2.put("ITEM_ID",  "");    //事项Id（非必填），若为空，当前材料为共性材料
         jsonArray2.add(materials2);    //填写的表格，
         responseText = HttpClient.doPostJson(getUrl, JSONObject.fromObject(params).toString());
-//        System.out.println("--------------联合申报数据提交-----responseText----------" + responseText);
+        JSONObject jsonObject = JSONObject.fromObject(responseText);
+        //        System.out.println("--------------联合申报数据提交-----responseText----------" + responseText);
 //        {"code":"200","data":{"associationNumber":"lh202012140200777201"},"msg":"操作成功！"}
+        if ("200".equals(jsonObject.get("code")) && jsonObject!=null){
+            String assNo = JSONObject.fromObject(jsonObject.get("data")).getString("associationNumber");
+            SerialNumber serialNumber = new SerialNumber();
+            serialNumber.setBusinessId(data.getString("formId"));
+            serialNumber.setProgress(1);
+            serialNumber.setSerialNumberId(assNo);
+            serialNumber.setSerialNumberType(2);
+            serialNumber.setSerialNumberValue(assNo);
+
+            serialNumberDAO.insert(serialNumber);
+        }
         return responseText;
     }
 
     /**
      * 3.20项目联办进度信息查询接口
+     * @param accessToken
+     * @param projectCode
+     * @param associationNumber
      * @return
      */
-    public String queryProgress(String accessToken, String projectCode) {
+    @Override
+    public String queryProgress(String projectCode, String associationNumber) {
+        String accessToken = logon();    //获取token
         /**
          * http://10.194.252.58:8082/Service/gz/parallel/building/getProjectInfo?access_token=  //测试环境
          */
         String url = "http://10.194.252.58:8082/Service/gz/parallel/building/getProjectInfo?access_token=" + accessToken;   //测试环境
         Map<String, Object> params = new HashMap<>();
-        params.put("projectCode", "2018-440112-47-03-834191");
+        params.put("projectCode", projectCode);             //项目编码   2018-440112-47-03-834191
+        params.put("associationNumber", associationNumber);   //联办流水号
         String responseText = HttpClient.doPostJson(url, JSONObject.fromObject(params).toString());
         JSONObject jsonObject = JSONObject.fromObject(responseText);
         if ("200".equals(jsonObject.get("code")) && jsonObject!=null){
             return jsonObject.getString("data");
         } else {
-            return "{'err_msg':'请稍后在查询!'}";
+            return responseText;
         }
     }
 }
