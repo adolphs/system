@@ -48,4 +48,12 @@ public interface ProjectConstructionApprovalService {
      * @return
      */
     String pushInformation(JSONObject data, List<Map<String, Object>> files);
+
+    /**
+     * 3.20项目联办进度信息查询接口
+     * @param projectCode
+     * @param associationNumber
+     * @return
+     */
+    String queryProgress(String projectCode, String associationNumber);
 }
