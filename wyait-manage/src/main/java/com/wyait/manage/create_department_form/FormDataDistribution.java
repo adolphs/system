@@ -7,8 +7,6 @@
  */
 package com.wyait.manage.create_department_form;
 
-import com.wyait.manage.dao.SysIntfParameterDAO;
-import com.wyait.manage.service.web2.SysIntfParameterService;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,18 +27,6 @@ public class FormDataDistribution {
 
     private static final Logger logger = LoggerFactory.getLogger(FormDataDistribution.class);
 
-    /*
-        SELECT
-        fv.form_value,
-                ff.form_field_name,
-                ub.situation_ids,ub.combo_id
-        FROM
-        form_value fv
-        LEFT JOIN form_field ff ON ff.form_field_id = fv.form_field_id
-        LEFT JOIN user_business ub ON ub.business_id = fv.form_business_id
-        WHERE
-        ub.business_id = '1346364410698780672'
-        */
     /**
      *  1. 按照部门区分相应模板文件
      *  2. 根据表单ID或者表单名找对应的模板填充数据、生成各个申请表格
@@ -55,15 +41,11 @@ public class FormDataDistribution {
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");*/
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
         JSONObject data = new JSONObject();
+        data.put("formId", formId);
         data.put("date", dateFormat.format(now.getTime()));
         String path = "e:\\user_form\\"+ data.get("date") +"\\";   //表单存放路径
         data.put("outputPath", path);
-        //查询用户+ 表单数据
-        String formListSql = "SELECT fv.form_value,ff.form_field_name,ub.situation_ids,ub.combo_id " +
-                " from form_value fv " +
-                " LEFT JOIN form_field ff ON ff.form_field_id = fv.form_field_id" +
-                " LEFT JOIN user_business ub ON ub.business_id = fv.form_business_id "+
-                " WHERE ub.business_id = " + "1346364410698780672";
+
         try {
 
 
