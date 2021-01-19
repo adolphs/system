@@ -32,6 +32,8 @@ public class SerialNumber implements Serializable {
      */
     private Integer progress;
 
+    private String remarks;
+
     private static final long serialVersionUID = 1L;
 
     public String getSerialNumberId() {
@@ -72,6 +74,14 @@ public class SerialNumber implements Serializable {
 
     public void setProgress(Integer progress) {
         this.progress = progress;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     @Override
