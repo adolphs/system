@@ -28,12 +28,34 @@ public class UserBusiness implements Serializable {
     /**
      * 涉及部门
      */
-    private String departmentIds;
+    private String situationIds;
 
     /**
      * 提交内容留底
      */
     private String formBackup;
+
+    /**
+     * 1 用户  2 法人
+     */
+    private String type;
+
+    /**
+     * 套餐id
+     */
+    private Integer comboId;
+
+    /**
+     * 地址id
+     */
+    private String addressId;
+
+    /**
+     * 全部状态 1、新建 2、已提交 3、完成  4、驳回
+     */
+    private Integer allType;
+
+    private String departmentIds;
 
     private static final long serialVersionUID = 1L;
 
@@ -69,12 +91,12 @@ public class UserBusiness implements Serializable {
         this.submit = submit;
     }
 
-    public String getDepartmentIds() {
-        return departmentIds;
+    public String getSituationIds() {
+        return situationIds;
     }
 
-    public void setDepartmentIds(String departmentIds) {
-        this.departmentIds = departmentIds;
+    public void setSituationIds(String situationIds) {
+        this.situationIds = situationIds;
     }
 
     public String getFormBackup() {
@@ -83,6 +105,46 @@ public class UserBusiness implements Serializable {
 
     public void setFormBackup(String formBackup) {
         this.formBackup = formBackup;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getComboId() {
+        return comboId;
+    }
+
+    public void setComboId(Integer comboId) {
+        this.comboId = comboId;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
+    }
+
+    public Integer getAllType() {
+        return allType;
+    }
+
+    public void setAllType(Integer allType) {
+        this.allType = allType;
+    }
+
+    public String getDepartmentIds() {
+        return departmentIds;
+    }
+
+    public void setDepartmentIds(String departmentIds) {
+        this.departmentIds = departmentIds;
     }
 
     @Override
@@ -101,7 +163,7 @@ public class UserBusiness implements Serializable {
             && (this.getUseridcode() == null ? other.getUseridcode() == null : this.getUseridcode().equals(other.getUseridcode()))
             && (this.getNewTime() == null ? other.getNewTime() == null : this.getNewTime().equals(other.getNewTime()))
             && (this.getSubmit() == null ? other.getSubmit() == null : this.getSubmit().equals(other.getSubmit()))
-            && (this.getDepartmentIds() == null ? other.getDepartmentIds() == null : this.getDepartmentIds().equals(other.getDepartmentIds()));
+            && (this.getSituationIds() == null ? other.getSituationIds() == null : this.getSituationIds().equals(other.getSituationIds()));
     }
 
     @Override
@@ -112,7 +174,7 @@ public class UserBusiness implements Serializable {
         result = prime * result + ((getUseridcode() == null) ? 0 : getUseridcode().hashCode());
         result = prime * result + ((getNewTime() == null) ? 0 : getNewTime().hashCode());
         result = prime * result + ((getSubmit() == null) ? 0 : getSubmit().hashCode());
-        result = prime * result + ((getDepartmentIds() == null) ? 0 : getDepartmentIds().hashCode());
+        result = prime * result + ((getSituationIds() == null) ? 0 : getSituationIds().hashCode());
         return result;
     }
 
@@ -126,7 +188,7 @@ public class UserBusiness implements Serializable {
         sb.append(", useridcode=").append(useridcode);
         sb.append(", newTime=").append(newTime);
         sb.append(", submit=").append(submit);
-        sb.append(", departmentIds=").append(departmentIds);
+        sb.append(", departmentIds=").append(situationIds);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

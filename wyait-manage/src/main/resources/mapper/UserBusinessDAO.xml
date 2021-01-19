@@ -6,8 +6,13 @@
     <result column="useridcode" jdbcType="VARCHAR" property="useridcode" />
     <result column="new_time" jdbcType="TIMESTAMP" property="newTime" />
     <result column="submit" jdbcType="TIMESTAMP" property="submit" />
-    <result column="department_ids" jdbcType="VARCHAR" property="departmentIds" />
+    <result column="situation_ids" jdbcType="VARCHAR" property="situationIds" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="combo_id" jdbcType="INTEGER" property="comboId" />
     <result column="form_backup" jdbcType="VARCHAR" property="formBackup" />
+    <result column="address_id" jdbcType="VARCHAR" property="addressId" />
+    <result column="all_type" jdbcType="INTEGER" property="allType" />
+    <result column="department_ids" jdbcType="VARCHAR" property="departmentIds" />
   </resultMap>
   <sql id="Base_Column_List">
     business_id, useridcode, new_time, submit, department_ids,form_backup
