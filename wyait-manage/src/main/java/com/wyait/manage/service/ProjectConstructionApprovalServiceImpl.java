@@ -8,8 +8,12 @@
 package com.wyait.manage.service;
 
 import com.wyait.manage.dao.SerialNumberDAO;
+import com.wyait.manage.dao.SysIntfMessageDao;
 import com.wyait.manage.dao.SysIntfParameterDAO;
+import com.wyait.manage.pojo.Data;
 import com.wyait.manage.pojo.SerialNumber;
+import com.wyait.manage.pojo.SysIntfMessage;
+import com.wyait.manage.pojo.SysIntfParameter;
 import com.wyait.manage.service.db1.ProjectConstructionApprovalService;
 import com.wyait.manage.utils.HttpClient;
 import net.sf.json.JSONArray;
@@ -35,6 +39,9 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
     private SysIntfParameterDAO sysIntfParameterDAO;
     @Autowired
     private SerialNumberDAO serialNumberDAO;
+    @Autowired
+    private SysIntfMessageDao intfMessageDao;
+
 
     /**
      *  3.1 登录接口
@@ -61,10 +68,7 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
     @Override
     public String getProjectCategory(String accessToken) {
         String response = "";
-        /**
-         * http://{API_ROOT}/api/blsp/listProjectCategory?access_token={access_token}
-         */
-        String url = "http://api2.gzonline.gov.cn:9090/api/blsp/listProjectCategory";  //测试环境
+        String url = "http://api2.gzonline.gov.cn:9090/api/blsp/listProjectCategory";
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("access_token", accessToken);
         String resultString = HttpClient.doGet(url, paramsMap);
@@ -165,15 +169,12 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
      */
     @Override
     public String pushInformation(JSONObject data, List<Map<String, Object>> files) {
+        String responseText = "";
         String accessToken = logon();    //获取token
         String dataId = getDataId(accessToken, null);   //获取表单ID
-        String responseText = "";
-        /**
-         * 获取联办分组事项及相关材料信息接口
-         */
-//        String getUrl = "http://api2.gzonline.gov.cn:9090/api/inspur/blsp/webApply_all?SystemCode=20180929000000440100&access_token=473db01a626940299d4a8cda6de9e92a";  //正式环境
-
-        String getUrl = "http://10.194.252.58:8082/Service/gz/parallel/building/webApply?SystemCode=20180929000000440100&access_token=" + accessToken;   //测试环境
+//        SysIntfParameter sysParameter = sysIntfParameterDAO.feachSysParameter("jsgcsp");     //测试环境http://10.194.252.58:8082
+        SysIntfParameter sysParameter = sysIntfParameterDAO.feachSysParameter("jsgclhsp");
+        String getUrl = sysParameter.getIpPort() + "/Service/gz/parallel/building/webApply?SystemCode=20180929000000440100&access_token=" + accessToken;
         Map<String, Object> params = new HashMap<>();
 
         params.put("flowId", "key-20180926164742125500:1:439a3f36-c229-11e8-8ac4-d00dd26c0510");    //阶段ID    3.3返回的ID
@@ -239,6 +240,12 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
         jsonArray.add(items);
         params.put("items", jsonArray);
 
+
+        /**
+         * @Select("SELECT upf.create_time, upf.file_name AS materiaName,usf.file_name,usf.file_url,usf.file_locahost " +
+         *   " FROM user_file usf " +
+         *    " LEFT JOIN upload_file upf ON upf.file_id = usf.file_id " +
+         */
         /* 材料信息*/
         JSONArray jsonArray2 = new JSONArray();
         JSONObject materials = null;
@@ -246,10 +253,10 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
             for (Map<String, Object> fis:files){
                 materials = new JSONObject();
                 materials.put("DOCUMENT_ID", "9e0448d0-5dfb-e3fc-b497-26cd6b562f66");  //材料ID（事项系统获取），若为共性材料，此值传共性材料code
-                materials.put("DOCUMENT_NAME", "立案申请函");  //材料名称（事项系统获取）
+                materials.put("DOCUMENT_NAME", fis.get("materiaName"));  //材料名称（事项系统获取）
                 materials.put("TYPE","1");   //文件类型( 0：纸质；1：电子文档；2：审批结果材；3：联合评审方案；6：容缺材料；7：承诺材料；8：电子证照；9：联合审图结果文件； )
-                materials.put("FILE_NAME", "fileName");  // 上传文件名称
-                materials.put("FILE_PATH", "http://10.194.252.56:8083/WebDiskServerDemo/doc?doc_id=ded44266-8c22-11e9-95c4-d00d80981a7e");  //附件存储路径
+                materials.put("FILE_NAME", fis.get("file_name"));  // 上传文件名称
+                materials.put("FILE_PATH", "http://yjs.panyu.gov.cn/api" + fis.get("file_url"));  //附件存储路径
                 materials.put("FILE_AUTH_CODE", "");  //若TYPE值为3，即联合评审方案，此值为联合评审方案文件下载地址；若TYPE值为8，即电子证照，此值为电子证照授权码；若TYPE值为9，即联合审图结果文件，此值为文件下载地址。
                 materials.put("LHPSUI_ PATH", "");   //若TYPE值为3，即联合评审方案，此值为联合评审页面UI地址，可直接浏览
                 materials.put("ITEM_ID",  "");    //事项Id（非必填），若为空，当前材料为共性材料
@@ -261,18 +268,27 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
         materials2.put("DOCUMENT_ID", "9e0448d0-5dfb-e3fc-b497-26cd6b562f66");  //材料ID（事项系统获取），若为共性材料，此值传共性材料code
         materials2.put("DOCUMENT_NAME", data.getString("tableName"));  //材料名称（事项系统获取）
         materials2.put("TYPE","1");   //文件类型( 0：纸质；1：电子文档；2：审批结果材；3：联合评审方案；6：容缺材料；7：承诺材料；8：电子证照；9：联合审图结果文件； )
-        materials2.put("FILE_NAME", "fileName");  // 上传文件名称
-//        System.out.println("===============存储路径=========================" + data.getString("outputPath") + data.get("tableName") + ".docx");
-        materials2.put("FILE_PATH", data.getString("outputPath") + data.get("tableName") + ".docx");  //附件存储路径
+        materials2.put("FILE_NAME", data.get("tableName"));  // 上传文件名称
+        materials2.put("FILE_PATH", "http://yjs.panyu.gov.cn/api" + data.get("outputPath") + data.get("tableName") + ".docx");  //附件存储路径
         materials2.put("FILE_AUTH_CODE", "");  //若TYPE值为3，即联合评审方案，此值为联合评审方案文件下载地址；若TYPE值为8，即电子证照，此值为电子证照授权码；若TYPE值为9，即联合审图结果文件，此值为文件下载地址。
         materials2.put("LHPSUI_ PATH", "");   //若TYPE值为3，即联合评审方案，此值为联合评审页面UI地址，可直接浏览
         materials2.put("ITEM_ID",  "");    //事项Id（非必填），若为空，当前材料为共性材料
         jsonArray2.add(materials2);    //填写的表格，
         responseText = HttpClient.doPostJson(getUrl, JSONObject.fromObject(params).toString());
         JSONObject jsonObject = JSONObject.fromObject(responseText);
-        //        System.out.println("--------------联合申报数据提交-----responseText----------" + responseText);
-//        {"code":"200","data":{"associationNumber":"lh202012140200777201"},"msg":"操作成功！"}
+
+        /* 记录日志 */
+        SysIntfMessage sim = new SysIntfMessage();
+        sim.setCreateDate(new Data());
+        sim.setModifyDate(new Data());
+        sim.setOutUniqueKey("pushInformation");
+        sim.setData(data.toString());
+        sim.setType(1);
+        sim.setResultMsg(responseText);
+        String status = null;   //推送状态
         if ("200".equals(jsonObject.get("code")) && jsonObject!=null){
+            status = "SUCCESS"; //成功
+        // {"code":"200","data":{"associationNumber":"lh202012140200777201"},"msg":"操作成功！"}
             String assNo = JSONObject.fromObject(jsonObject.get("data")).getString("associationNumber");
             SerialNumber serialNumber = new SerialNumber();
             serialNumber.setBusinessId(data.getString("formId"));
@@ -280,9 +296,16 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
             serialNumber.setSerialNumberId(assNo);
             serialNumber.setSerialNumberType(2);
             serialNumber.setSerialNumberValue(assNo);
-
             serialNumberDAO.insert(serialNumber);
+            responseText = "推送成功！";
+        } else {
+            status = "FAILURE";   //失败
+        // {"code":"300","msg":"编码不存在"}
+            responseText = jsonObject.getString("msg");
         }
+        sim.setResult(status);
+        intfMessageDao.insert(sim);
+
         return responseText;
     }
 
@@ -296,10 +319,12 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
     @Override
     public String queryProgress(String projectCode, String associationNumber) {
         String accessToken = logon();    //获取token
+        SysIntfParameter sysParameter = sysIntfParameterDAO.feachSysParameter("jsgclhsp");     //正式环境
+//        SysIntfParameter sysParameter = sysIntfParameterDAO.feachSysParameter("jsgcsp");     //测试环境
         /**
          * http://10.194.252.58:8082/Service/gz/parallel/building/getProjectInfo?access_token=  //测试环境
          */
-        String url = "http://10.194.252.58:8082/Service/gz/parallel/building/getProjectInfo?access_token=" + accessToken;   //测试环境
+        String url = sysParameter.getIpPort() + "/Service/gz/parallel/building/getProjectInfo?access_token=" + accessToken;   //测试环境
         Map<String, Object> params = new HashMap<>();
         params.put("projectCode", projectCode);             //项目编码   2018-440112-47-03-834191
         params.put("associationNumber", associationNumber);   //联办流水号
