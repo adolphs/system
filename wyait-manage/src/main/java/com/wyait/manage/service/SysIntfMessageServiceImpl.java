@@ -45,20 +45,20 @@ public class SysIntfMessageServiceImpl extends ServiceImpl<SysIntfMessageDao, Sy
      * @param formId        表单
      * @return
      */
-    public void distributionData(String formId) {
+    public String distributionData(String formId) {
+        String msg =  "";
         Calendar now = Calendar.getInstance();
-       /* Long time = new Date().getTime();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");*/
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
         JSONObject data = new JSONObject();
         data.put("date", dateFormat.format(now.getTime()));
-        String path = "e:\\user_form\\"+ data.get("date") +"\\";   //表单存放路径
+        String path = "c:\\user_form\\";   //表单存放路径
+//        String path = WTAUT_FORM + businessId  + "\\";   //表单存放路径
         data.put("outputPath", path);
 
         //查询用户+ 表单数据
         List<Map<String, Object>> formDepartmentList = messageDao.feachFormDepartment(formId);  //用户数据：  部门+ 表单名称
         List<Map<String, Object>> feachUserFormList = messageDao.feachUserFormList(formId);   //用户表单数据
-        List<Map<String, Object>> fileList = messageDao.feachMaterialList("1349167434100613120");          //用户上传附件文件
+        List<Map<String, Object>> fileList = messageDao.feachMaterialList(formId);          //用户上传附件文件
 
         System.out.println(formDepartmentList.size()+"----------------formDepartmentList--------------" + formDepartmentList);
         System.out.println(feachUserFormList.size()+"----------------feachUserFormList--------------" + feachUserFormList);
@@ -102,13 +102,14 @@ public class SysIntfMessageServiceImpl extends ServiceImpl<SysIntfMessageDao, Sy
                 }
             }
             //推送表单
-            approvalService.pushInformation(data, fileList);
+            msg =  approvalService.pushInformation(data, fileList);
+
         } catch (Exception e) {
             //
             System.out.println("----------FormDataDistribution-------------表单数据分发异常：" + e);
 //            logger.error("----------表单数据分发异常：-------------" + e);
         }
-
+        return msg;
     }
 
 
