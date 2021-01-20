@@ -8,9 +8,11 @@
     <result column="serial_number_value" jdbcType="VARCHAR" property="serialNumberValue" />
     <result column="progress" jdbcType="INTEGER" property="progress" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="select_time" jdbcType="TIMESTAMP" property="selectTime" />
+    <result column="new_time" jdbcType="TIMESTAMP" property="newTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    serial_number_id, business_id, serial_number_type, serial_number_value, progress, remarks
+    serial_number_id, business_id, serial_number_type, serial_number_value, progress, remarks,select_time,new_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select

@@ -1,6 +1,7 @@
 package com.wyait.manage.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author 
@@ -33,6 +34,16 @@ public class SerialNumber implements Serializable {
     private Integer progress;
 
     private String remarks;
+
+    /**
+     * 创建时间
+     */
+    private Date newTime;
+
+    /**
+     *  查询时间
+     */
+    private Date selectTime;
 
     private static final long serialVersionUID = 1L;
 
