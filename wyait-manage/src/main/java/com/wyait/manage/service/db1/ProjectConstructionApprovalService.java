@@ -56,4 +56,12 @@ public interface ProjectConstructionApprovalService {
      * @return
      */
     String queryProgress(String projectCode, String associationNumber);
+
+    /**
+     * 5.1项目编码核验服务
+     *      [根据项目编码获取检验编码是否存在]
+     * @param projectCode  项目编码
+     * @return   msg等于200时，核验成功；否则失败
+     */
+    String proofProjectCode(String projectCode);
 }
