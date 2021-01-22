@@ -336,4 +336,39 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
             return responseText;
         }
     }
+
+    /**
+     * 5.1项目编码核验服务
+     *      [根据项目编码获取检验编码是否存在]
+     * @param projectCode  项目编码
+     * @return   msg等于200时，核验成功；否则失败
+     */
+    @Override
+    public String proofProjectCode(String projectCode){
+        String msg = null;
+        Map<String, String> map = new HashMap<>();
+        map.put("client_id", "20171213180514100100");    //互联互通平台——应用系统用户名
+        map.put("client_secret", "DB9BC834BDCC42D1A24BC8BB40798408");   //密码
+        String resultString = HttpClient.doGet("http://api1.gzonline.gov.cn:9090/oauth/token", map);
+        String access_token = JSONObject.fromObject(resultString).getString("access_token");
+        //{"access_token":"e7e929e7425247fa91dedd5c8e04a840","token_type":"bearer","expires_in":3600}
+
+        String url = "http://api1.gzonline.gov.cn:9090/api/zswz/szxspjgpt/checkProjectCode/1.0?access_token=" + access_token;
+        JSONObject params = new JSONObject();
+        params.put("proofCode", projectCode);     //项目编码
+        params.put("version", "2");     //数值为1或者空，返回1.0版本json数据 2：返回2.0标准json数据，建议传2，1.0版本以后会撤销。
+        params.put("type", "1");    //查询方式，取值： 1：只返回项目状态 2：验证项目编码，如果有效，返回项目基本信息
+        String responseString = HttpClient.doPostJson(url, params.toString());
+//        {"result":"{\"result\":2}","error":"","code":"200"}
+        JSONObject jsonObject = JSONObject.fromObject(responseString);
+        if ("200".equals(jsonObject.get("code")) && jsonObject!=null){
+            msg = JSONObject.fromObject(jsonObject.get("result")).getString("result");
+            if ("1".equals(msg) || "2".equals(msg)) {
+                msg = "200";  //核验成功
+            }
+        } else {
+            msg = "1001";  //失败
+        }
+        return msg;
+    }
 }
