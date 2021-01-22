@@ -14,10 +14,11 @@
     <result column="form_field_class" jdbcType="INTEGER" property="formFieldClass" />
     <result column="pid" jdbcType="VARCHAR" property="pid" />
     <result column="form_main_id" jdbcType="VARCHAR" property="formMainId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
     form_field_id, form_field_name, form_field_name_value, form_field_type, form_field_content, 
-    form_field_combo_id, form_field_options, form_field_is_basis, form_field_annotation, form_field_class
+    form_field_combo_id, form_field_options, form_field_is_basis, form_field_annotation, form_field_class,status
   </sql>
 
   <select id="getFormList" resultType="com.wyait.manage.pojo.FormField">
@@ -33,7 +34,8 @@
      form_field_annotation,
      form_field_class,
      pid,
-    form_main_id
+    form_main_id,
+    status
     from
     form_field
     where
@@ -70,11 +72,11 @@
   <insert id="insert" parameterType="com.wyait.manage.pojo.FormField">
     insert into form_field (form_field_id, form_field_name, form_field_name_value, 
       form_field_type, form_field_content, form_field_combo_id, 
-      form_field_options,form_field_is_basis,form_field_annotation,form_field_class,pid,form_main_id)
+      form_field_options,form_field_is_basis,form_field_annotation,form_field_class,pid,form_main_id,status)
     values (#{formFieldId,jdbcType=VARCHAR}, #{formFieldName,jdbcType=VARCHAR}, #{formFieldNameValue,jdbcType=VARCHAR}, 
       #{formFieldType,jdbcType=VARCHAR}, #{formFieldContent,jdbcType=VARCHAR}, #{formFieldComboId,jdbcType=INTEGER}, 
       #{formFieldOptions,jdbcType=VARCHAR},#{formFieldIsBasis,jdbcType=INTEGER},#{formFieldAnnotation,jdbcType=VARCHAR},
-      #{formFieldClass,jdbcType=INTEGER},#{pid,jdbcType=VARCHAR},#{formMainId,jdbcType=VARCHAR})
+      #{formFieldClass,jdbcType=INTEGER},#{pid,jdbcType=VARCHAR},#{formMainId,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR})
   </insert>
 
   <update id="updateByFormFieldId" parameterType="com.wyait.manage.pojo.FormField">
@@ -107,6 +109,9 @@
       <if test="formField.formFieldClass != null">
         form_field_class = #{formField.formFieldClass}
       </if>
+      <if test="formField.status != null">
+        status = #{formField.status}
+      </if>
     </set>
     where form_field_id = #{formField.formFieldId}
   </update>
@@ -134,13 +139,14 @@
   <insert id="insertList" parameterType="list">
     insert into form_field (form_field_id, form_field_name, form_field_name_value,
       form_field_type, form_field_content, form_field_combo_id,
-      form_field_options,form_field_is_basis,form_field_annotation,form_field_class,pid,form_main_id)
+      form_field_options,form_field_is_basis,form_field_annotation,form_field_class,pid,form_main_id,
+    status)
     values
     <foreach collection="list" item="item" index="index" separator=",">
       (#{item.formFieldId},#{item.formFieldName}, #{item.formFieldNameValue},
       #{item.formFieldType}, #{item.formFieldContent}, #{item.formFieldComboId},
       #{item.formFieldOptions}, #{item.formFieldIsBasis}, #{item.formFieldAnnotation},
-      #{item.formFieldClass}, #{item.pid},#{item.formMainId})
+      #{item.formFieldClass}, #{item.pid},#{item.formMainId},#{item.status})
     </foreach>
   </insert>
 </mapper>

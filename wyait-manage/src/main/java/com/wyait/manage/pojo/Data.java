@@ -25,7 +25,7 @@ public class Data {
     private String blankName;
     private String templateName;
     private String departmentIds;
-
+    private String isElectronicCertificate;
     public String getType() {
         return type;
     }
@@ -133,6 +133,14 @@ public class Data {
 
     public void setDepartmentIds(String departmentIds) {
         this.departmentIds = departmentIds;
+    }
+
+    public String getIsElectronicCertificate() {
+        return isElectronicCertificate;
+    }
+
+    public void setIsElectronicCertificate(String isElectronicCertificate) {
+        this.isElectronicCertificate = isElectronicCertificate;
     }
 
     public Data(Integer dataId, String dataName, String blankUrl, String templateUrl, String remarks, Integer dataType, String dataForm, Date newTime, Date updateTime, String type, String blankName, String templateName, String departmentIds) {

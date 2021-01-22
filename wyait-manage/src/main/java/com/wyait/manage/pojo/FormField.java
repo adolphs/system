@@ -63,6 +63,11 @@ public class FormField implements Serializable {
 
     private String pid;
 
+    /**
+     * 状态: 1=手机号 2=邮箱 3=普通文本 4=金额 5=邮政编码
+     */
+    private String status;
+
     private static final long serialVersionUID = 1L;
 
     public String getFormFieldId() {
@@ -159,6 +164,14 @@ public class FormField implements Serializable {
 
     public void setFormMainId(String formMainId) {
         this.formMainId = formMainId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

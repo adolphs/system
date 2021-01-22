@@ -11,6 +11,7 @@ import com.wyait.manage.pojo.result.ResponseResult;
 import com.wyait.manage.utils.IdWorkerUtils;
 import com.wyait.manage.utils.PageDataResult;
 import com.wyait.manage.utils.SnowflakeIdWorker;
+import com.wyait.manage.utils.StringUtil;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -128,15 +129,15 @@ public class FormServiceImpl implements FormService{
                         formField.setFormFieldId(IdWorkerUtils.getInstance().createUUID());
                         formField.setFormFieldName(rowData.getCell(0).getStringCellValue());
                         formField.setFormFieldNameValue(rowData.getCell(1).getStringCellValue());
-                        formField.setFormFieldType(rowData.getCell(2).getStringCellValue());
-//                        formField.setFormFieldComboId(Integer.parseInt(rowData.getCell(3).getStringCellValue()));
-                        formField.setFormFieldIsBasis(Integer.parseInt(rowData.getCell(4).getStringCellValue()));
+                        formField.setFormFieldType(StringUtil.subStringFront(rowData.getCell(2).getStringCellValue(),"-"));
+                        formField.setFormFieldIsBasis(Integer.parseInt(StringUtil.subStringFront(rowData.getCell(3).getStringCellValue(),"-")));
+                        if (null!=rowData.getCell(4)){
+                            formField.setFormFieldContent(rowData.getCell(4).getStringCellValue());
+                        }
                         if (null!=rowData.getCell(5)){
-                            formField.setFormFieldContent(rowData.getCell(5).getStringCellValue());
+                            formField.setFormFieldAnnotation(rowData.getCell(5).getStringCellValue());
                         }
-                        if (null!=rowData.getCell(6)){
-                            formField.setFormFieldAnnotation(rowData.getCell(6).getStringCellValue());
-                        }
+                        formField.setStatus(StringUtil.subStringFront(rowData.getCell(6).getStringCellValue(),"-"));
                         formField.setFormMainId(formMainId);
                         formField.setFormFieldComboId(comboId);
                         fieldList.add(formField);

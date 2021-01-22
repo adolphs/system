@@ -14,6 +14,7 @@
     <result column="new_time" property="newTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="departmentIds" property="departmentIds" jdbcType="VARCHAR" />
+    <result column="is_electronic_certificate" property="isElectronicCertificate" jdbcType="VARCHAR" />
   </resultMap>
 
   <select id="getDatas" resultType="com.wyait.manage.pojo.Data">
@@ -64,16 +65,20 @@
       blank_name = #{blankName},
       template_url = #{templateUrl},
       template_name = #{templateName},
-      update_time = #{updateTime}
+      update_time = #{updateTime},
+        is_electronic_certificate = #{isElectronicCertificate}
 
     </set>
     where data_id = #{dataId}
   </update>
 
   <insert id="insertData" parameterType="com.wyait.manage.pojo.Data">
-    insert into `data` ( data_name,blank_url,blank_name,template_url,template_name,remarks,data_type,data_form,new_time,update_time,departmentIds)
-		values (#{dataName,jdbcType=VARCHAR},#{blankUrl,jdbcType=VARCHAR},#{blankName,jdbcType=VARCHAR},#{templateUrl,jdbcType=VARCHAR},#{templateName,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},#{dataType,jdbcType=INTEGER},#{dataForm,jdbcType=VARCHAR},#{newTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},
-		#{departmentIds,jdbcType=VARCHAR})
+    insert into `data` ( data_name,blank_url,blank_name,template_url,template_name,remarks,data_type,data_form,new_time,update_time,departmentIds,
+                         is_electronic_certificate)
+		values (#{dataName,jdbcType=VARCHAR},#{blankUrl,jdbcType=VARCHAR},#{blankName,jdbcType=VARCHAR},#{templateUrl,jdbcType=VARCHAR},
+		        #{templateName,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},#{dataType,jdbcType=INTEGER},#{dataForm,jdbcType=VARCHAR},
+		        #{newTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},
+		#{departmentIds,jdbcType=VARCHAR},#{isElectronicCertificate,jdbcType=VARCHAR})
   </insert>
 
   <delete id="delData" parameterType="int">
