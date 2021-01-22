@@ -82,8 +82,8 @@ public class FormDataDistribution {
             }
         } catch (Exception e) {
             //
-            System.out.println("----------FormDataDistribution-------------表单数据分发异常：" + e);
-//            logger.error("----------表单数据分发异常：-------------" + e);
+//            System.out.println("----------FormDataDistribution-------------表单数据分发异常：" + e);
+            logger.error("----------表单数据分发异常：-------------" + e);
         }
 
     }

@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public interface SysIntfMessageService extends IService<SysIntfMessage> {
 
-    void distributionData(String formId);
+    String distributionData(String formId);
 
 
     /**
