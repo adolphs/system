@@ -1,10 +1,13 @@
 package com.wyait.manage.controller.web;
 
+import com.wyait.manage.service.db1.DoooService;
 import com.wyait.manage.service.db1.ProgramDefService;
 import com.wyait.manage.dao.ProgramDefDao;
 import com.wyait.manage.pojo.*;
 import com.wyait.manage.service.db2.Db2ProgramDefService;
 import com.wyait.manage.utils.PageDataResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,9 +27,13 @@ public class SychronizationController {
 
     private static final int content = 50;   //每一页查询20条
 
+    private static final Logger logger = LoggerFactory
+            .getLogger(SychronizationController.class);
+
     @Autowired
     private Db2ProgramDefService programDefService2;
-
+    @Autowired
+    DoooService doooService;
     @Autowired
     private ProgramDefService programService1;
     @Autowired
@@ -172,5 +179,12 @@ public class SychronizationController {
         pdr.setTotals(10);
         pdr.setCode(200);
         return pdr;
+    }
+
+    @RequestMapping("/getDoooCodeList")
+    @ResponseBody
+    public List<Map<String,Object>> getDoooCodeList(Integer doooId){
+        logger.info("同步查询事项编码doooId="+doooId);
+        return programDefService2.getDoooCodeList(doooService.getDoooById(doooId));
     }
 }

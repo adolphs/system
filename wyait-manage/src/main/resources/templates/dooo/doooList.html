@@ -107,13 +107,23 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">对应阶段</label>
+                <label class="layui-form-label">所属系统</label>
                 <div class="layui-input-block">
-                    <select name="constructionDictionaryId" id="constructionDictionaryId">
-                        <option value="">如果是建设工程的请录入建设工程的内容</option>
+                    <select name="systemStatus" id="system_status">
+                        <option value="">请选择所属系统类型</option>
+                        <option value="1">一网通办</option>
+                        <option value="2">一站式审批系统</option>
+                        <option value="3">建设工程</option>
                     </select>
                 </div>
             </div>
+<!--            <div class="layui-form-item">-->
+<!--                <label class="layui-form-label">事项编码</label>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <input id="doooCode" name="doooCode" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>-->
+<!--                </div>-->
+<!--                <input type="button" class="layui-btn layui-btn-primary" value="同步" />-->
+<!--            </div>-->
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">受理条件</label>
                 <div class="layui-input-block">

@@ -21,6 +21,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -279,8 +280,8 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
 
         /* 记录日志 */
         SysIntfMessage sim = new SysIntfMessage();
-        sim.setCreateDate(new Data());
-        sim.setModifyDate(new Data());
+        sim.setCreateDate(new Date());
+        sim.setModifyDate(new Date());
         sim.setOutUniqueKey("pushInformation");
         sim.setData(data.toString());
         sim.setType(1);
@@ -311,7 +312,6 @@ public class ProjectConstructionApprovalServiceImpl implements ProjectConstructi
 
     /**
      * 3.20项目联办进度信息查询接口
-     * @param accessToken
      * @param projectCode
      * @param associationNumber
      * @return

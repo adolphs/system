@@ -5,6 +5,7 @@ import com.wyait.manage.pojo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 省事项库
@@ -37,4 +38,11 @@ public interface Db2ProgramDefService {
 
     /*** 权力与义务*/
     List<ProgramItemRightDuty> fetchByIDRightDuty(@Param("programId") String programId);
+
+    /**
+     * 根据事项ID查找编码
+     * @param doooId
+     * @return
+     */
+    List<Map<String,Object>> getDoooCodeList(Dooo dooo);
 }

@@ -92,4 +92,16 @@
         where y.program_id = #{programId}
     </select>
 
+    <select id="getDoooCodeList" resultType="map">
+        select rownum r, b.version ,b.PROGRAM_ID,b.PROGRAM_NAME, b.PROGRAM_CODE, b.SERVICE_OBJECT, b.ADMIN_DEPT, b.REPORT_DATE, b.LATEST_UPDATE_DATE,
+        ROW_NUMBER() over (partition by b.PROGRAM_CODE order by b.report_date desc) RN
+        from PY_BASE.APPR_PROGRAM_DEF b
+        where b.data_src = 'cityPull'
+        and b.is_deleted = 0
+        --             and b.program_level = 0
+        and b.exchange = 1
+        --             and b.audit_status = 2
+
+        and b.PROGRAM_NAME like CONCAT(CONCAT('%',#{doooName}),'%')
+    </select>
 </mapper>

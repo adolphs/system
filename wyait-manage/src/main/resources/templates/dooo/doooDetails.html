@@ -22,6 +22,20 @@
     <div th:replace="fragments/head :: header"></div>
 
     <div class="layui-body" style="margin: 1%">
+        <span>事项编码</span><br/>
+        <hr class="layui-bg-black"/>
+        <form id="userSearch" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">事项编码</label>
+                <div class="layui-input-inline">
+                    <input id="doooCode" name="doooCode"  autocomplete="off" class="layui-input" type="text" style="width: 300px"/>
+                </div>
+            </div>
+            <div style="color: red" id="tishi">**请尽快添加事项编码</div>
+            <input class="layui-btn" type="button" value="提交" onclick="sumbitDooCode()" />
+            <input class="layui-btn" type="button" value="同步" onclick="synchronizeDooCode()" />
+        </form>
+        <hr class="layui-bg-black"/>
         <span>事项详情</span><br/>
         <hr class="layui-bg-black"/>
 
@@ -258,6 +272,7 @@
         templateData();
         blankData();
         getDataEndingByDoooId();
+        getDoooCode();
         function templateData() {
             $.ajax({
                 url: '/data/getTemplateDataByDoooId',
@@ -350,6 +365,53 @@
            }
 
        }
+       // 查询事项编码
+       function getDoooCode(){
+           $.ajax({
+               url: '/dooo/getDoooByDoooId',
+               data:{"doooId":$("#doooId").val()},
+               type: 'post',
+               success: function (data) {
+                   console.log(data);
+                   if (data.doooCode){
+                       $("#doooCode").val(data.doooCode);
+                       $("#tishi").hide();
+                   }
+               }
+           });
+       }
+       // 修改事项编码
+        function sumbitDooCode(){
+            $.ajax({
+                url: '/dooo/getDooo',
+                data:{"doooId":$("#doooId").val(),"doooCode":$("#doooCode").val()},
+                type: 'post',
+                success: function (data) {
+                    if (data == "ok"){
+                        layer.alert("提交成功",function(){
+                            location.reload();
+                        });
+                    }
+                }
+            });
+        }
+
+        //同步事项编码
+        function synchronizeDooCode(){
+            $.ajax({
+                url: '/sychronization/getDoooCodeList',
+                data:{"doooId":$("#doooId").val()},
+                type: 'post',
+                success: function (data) {
+                    if (data.length == 0){
+                        layer.alert("未找到这个事项的编码，请手动录入");
+                    }else{
+                        $("#doooCode").val(data[0].PROGRAM_CODE);
+                    }
+
+                }
+            });
+        }
     </script>
 
 </div>

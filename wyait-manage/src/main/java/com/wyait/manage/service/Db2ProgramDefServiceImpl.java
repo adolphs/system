@@ -1,5 +1,6 @@
 package com.wyait.manage.service;
 
+import com.wyait.manage.dao.DoooMapper;
 import com.wyait.manage.dao.ProgramDefDao;
 import com.wyait.manage.pojo.*;
 import com.wyait.manage.service.db2.Db2ProgramDefService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 省事项库
@@ -19,7 +21,8 @@ import java.util.List;
 public class Db2ProgramDefServiceImpl  implements Db2ProgramDefService {
     @Autowired
     private ProgramDefDao programDefDao2;
-
+    @Autowired
+    private DoooMapper doooMapper;
     @Override
     public List<ProgramDef> fetchAllmatterList(String programName, Integer start, Integer end) {
         return programDefDao2.fetchAllmatterList(programName,start, end);
@@ -59,6 +62,14 @@ public class Db2ProgramDefServiceImpl  implements Db2ProgramDefService {
     @Override
     public List<ProgramItemRightDuty> fetchByIDRightDuty(String programId) {
         return programDefDao2.fetchByIDRightDuty(programId);
+    }
+
+    @Override
+    public List<Map<String,Object>> getDoooCodeList(Dooo dooo) {
+        if (dooo == null){
+            return null;
+        }
+        return programDefDao2.getDoooCodeList(dooo.getDoooName());
     }
 
 }

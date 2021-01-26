@@ -127,7 +127,23 @@ public class DoooController {
         }
     }
 
+    /**
+     * 根据事项id查找事项
+     * @param doooId
+     * @return
+     */
+    @RequestMapping("/getDoooByDoooId")
+    @ResponseBody
+    public Dooo getDoooByDoooId(Integer doooId){
+        logger.info("根据事项ID查询事项："+ doooId);
+        return doooService.getDoooById(doooId);
+    }
 
+    /**
+     * 删除事项
+     * @param doooId
+     * @return
+     */
     @PostMapping("/delDooo")
     @ResponseBody
     public String delDooo(Integer doooId){

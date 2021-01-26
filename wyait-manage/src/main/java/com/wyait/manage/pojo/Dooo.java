@@ -27,7 +27,9 @@ public class Dooo {
     private Integer approvalType; //审批状态：0.审批通过 1.审批驳回 2.退回
     private String putText; //提交说明
     private String approvalText; //审批说明
-    private String constructionDictionaryId;//字典表ID
+    private String systemStatus; //1. 一网通办 2.一站式审批系统 3.建设工程
+    private String doooCode; //事项编码--来源省事项库
+
 
     public String getApprovalTextName() {
         return approvalTextName;
@@ -153,11 +155,19 @@ public class Dooo {
         this.approvalText = approvalText;
     }
 
-    public String getConstructionDictionaryId() {
-        return constructionDictionaryId;
+    public String getSystemStatus() {
+        return systemStatus;
     }
 
-    public void setConstructionDictionaryId(String constructionDictionaryId) {
-        this.constructionDictionaryId = constructionDictionaryId;
+    public void setSystemStatus(String systemStatus) {
+        this.systemStatus = systemStatus;
+    }
+
+    public String getDoooCode() {
+        return doooCode;
+    }
+
+    public void setDoooCode(String doooCode) {
+        this.doooCode = doooCode;
     }
 }

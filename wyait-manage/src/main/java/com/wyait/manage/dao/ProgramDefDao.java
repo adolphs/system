@@ -5,6 +5,7 @@ import com.wyait.manage.pojo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *  省事项库
@@ -38,4 +39,6 @@ public interface ProgramDefDao extends BaseMapper<ProgramDef> {
 
     /*** 权力与义务*/
     List<ProgramItemRightDuty> fetchByIDRightDuty(@Param("programId") String programId);
+
+    List<Map<String,Object>> getDoooCodeList(@Param("doooName") String doooName);
 }

@@ -11,13 +11,14 @@
         <result column="approval_type" property="approvalType" jdbcType="INTEGER" />
         <result column="department_id" property="departmentId" jdbcType="INTEGER" />
         <result column="dooo_condition" property="doooCondition" jdbcType="VARCHAR" />
+        <result column="system_status" property="systemStatus" jdbcType="VARCHAR" />
+        <result column="dooo_code" property="doooCode" jdbcType="VARCHAR" />
         <result column="new_time" property="newTime" jdbcType="TIMESTAMP" />
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-        <result column="construction_dictionary_id" property="constructionDictionaryId" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="getDooos" resultType="com.wyait.manage.pojo.Dooo">
-        select dooo_id,dooo_name,remark,type,department_id,new_time,update_time,dooo_condition,approval_type,construction_dictionary_id
+        select dooo_id,dooo_name,remark,type,department_id,new_time,update_time,dooo_condition,approval_type,system_status,dooo_code
         from dooo
         <where>
             1=1
@@ -72,8 +73,11 @@
             <if test="approvalType != null">
                 approval_type = #{approvalType,jdbcType=INTEGER},
             </if>
-            <if test="constructionDictionaryId != null">
-                construction_dictionary_id = #{constructionDictionaryId,jdbcType=VARCHAR},
+            <if test="doooCode != null">
+                dooo_code = #{doooCode,jdbcType=VARCHAR},
+            </if>
+            <if test="systemStatus != null">
+                system_status = #{systemStatus,jdbcType=VARCHAR},
             </if>
             update_time = #{updateTime,jdbcType=TIMESTAMP}
         </set>
@@ -81,9 +85,9 @@
     </update>
 
     <insert id="insertDooo" parameterType="com.wyait.manage.pojo.Dooo">
-       insert into dooo ( dooo_name,remark,`type`,department_id,dooo_condition,new_time,update_time,approval_type,put_text,approval_text,construction_dictionary_id)
+       insert into dooo ( dooo_name,remark,`type`,department_id,dooo_condition,new_time,update_time,approval_type,put_text,approval_text,system_status,dooo_code)
 		values (#{doooName,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{departmentId,jdbcType=INTEGER},#{doooCondition,jdbcType=VARCHAR},#{newTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},
-		#{approvalType,jdbcType=INTEGER},#{putText,jdbcType=VARCHAR},#{approvalText,jdbcType=VARCHAR},#{constructionDictionaryId,jdbcType=VARCHAR})
+		#{approvalType,jdbcType=INTEGER},#{putText,jdbcType=VARCHAR},#{approvalText,jdbcType=VARCHAR},#{systemStatus,jdbcType=VARCHAR},#{doooCode,jdbcType=VARCHAR})
   </insert>
 
     <delete id="delDooo" parameterType="int">

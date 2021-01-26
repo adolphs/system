@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.activerecord.Model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 〈接口日志表〉
@@ -28,8 +29,8 @@ public class SysIntfMessage extends Model<SysIntfMessage> {
     }
 
     private int id;
-    private Data createDate;  //创建时间
-    private Data modifyDate;  //修改时间
+    private Date createDate;  //创建时间
+    private Date modifyDate;  //修改时间
     private String outUniqueKey; //日记文件
     private String data;     //发送
     private int type;        //类型
@@ -45,19 +46,19 @@ public class SysIntfMessage extends Model<SysIntfMessage> {
         this.id = id;
     }
 
-    public Data getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Data createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
-    public Data getModifyDate() {
+    public Date getModifyDate() {
         return modifyDate;
     }
 
-    public void setModifyDate(Data modifyDate) {
+    public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
     }
 
