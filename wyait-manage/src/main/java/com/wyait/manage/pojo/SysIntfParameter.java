@@ -52,7 +52,7 @@ public class SysIntfParameter implements Serializable {
     /**
      * 路径
      */
-    private String url;
+    private String secretVal;
 
     /**
      * ip/端口号
@@ -137,13 +137,6 @@ public class SysIntfParameter implements Serializable {
         this.enabled = enabled;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     public String getIpPort() {
         return ipPort;
@@ -185,6 +178,14 @@ public class SysIntfParameter implements Serializable {
         this.remarks = remarks;
     }
 
+    public String getSecretVal() {
+        return secretVal;
+    }
+
+    public void setSecretVal(String secretVal) {
+        this.secretVal = secretVal;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -204,7 +205,6 @@ public class SysIntfParameter implements Serializable {
             && (this.getApplication() == null ? other.getApplication() == null : this.getApplication().equals(other.getApplication()))
             && (this.getEncoded() == null ? other.getEncoded() == null : this.getEncoded().equals(other.getEncoded()))
             && (this.getEnabled() == null ? other.getEnabled() == null : this.getEnabled().equals(other.getEnabled()))
-            && (this.getUrl() == null ? other.getUrl() == null : this.getUrl().equals(other.getUrl()))
             && (this.getIpPort() == null ? other.getIpPort() == null : this.getIpPort().equals(other.getIpPort()))
             && (this.getAccount() == null ? other.getAccount() == null : this.getAccount().equals(other.getAccount()))
             && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
@@ -224,7 +224,6 @@ public class SysIntfParameter implements Serializable {
         result = prime * result + ((getApplication() == null) ? 0 : getApplication().hashCode());
         result = prime * result + ((getEncoded() == null) ? 0 : getEncoded().hashCode());
         result = prime * result + ((getEnabled() == null) ? 0 : getEnabled().hashCode());
-        result = prime * result + ((getUrl() == null) ? 0 : getUrl().hashCode());
         result = prime * result + ((getIpPort() == null) ? 0 : getIpPort().hashCode());
         result = prime * result + ((getAccount() == null) ? 0 : getAccount().hashCode());
         result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
@@ -255,7 +254,7 @@ public class SysIntfParameter implements Serializable {
         sb.append(", application=").append(application);
         sb.append(", encoded=").append(encoded);
         sb.append(", enabled=").append(enabled);
-        sb.append(", url=").append(url);
+        sb.append(", secretVal=").append(secretVal);
         sb.append(", ipPort=").append(ipPort);
         sb.append(", account=").append(account);
         sb.append(", password=").append(password);

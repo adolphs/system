@@ -62,8 +62,8 @@
                 <div class="layui-input-block">
                     <select name="isElectronicCertificate" lay-verify="required" id="isElectronicCertificate">
                         <option value=""></option>
-                        <option value="0">是</option>
-                        <option value="1" selected="selected">否</option>
+                        <option value="0" th:selected="${data.isElectronicCertificate eq '0' }">是</option>
+                        <option value="1" th:selected="${data.isElectronicCertificate eq '1'}">否</option>
                     </select>
                 </div>
             </div>

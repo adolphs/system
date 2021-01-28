@@ -10,7 +10,7 @@
     <result column="application" jdbcType="VARCHAR" property="application" />
     <result column="encoded" jdbcType="VARCHAR" property="encoded" />
     <result column="enabled" jdbcType="INTEGER" property="enabled" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="secret_val" jdbcType="VARCHAR" property="secretVal" />
     <result column="ip_port" jdbcType="VARCHAR" property="ipPort" />
     <result column="account" jdbcType="VARCHAR" property="account" />
     <result column="password" jdbcType="VARCHAR" property="password" />
@@ -18,16 +18,13 @@
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, create_date, modify_date, `application`, encoded, enabled, url, ip_port, 
+    id, user_id, create_date, modify_date, `application`, encoded, enabled, secret_val, ip_port,
     account, `password`, secret_key, remarks
   </sql>
 
   <select id="getSysIntfParameterList" resultType="com.wyait.manage.pojo.SysIntfParameter">
-    select id,user_id,create_date,modify_date,application,encoded,enabled,url,ip_port,account,password,secret_key,remarks,user_name
+    select id,user_id,create_date,modify_date,application,encoded,enabled,secret_val,ip_port,account,password,secret_key,remarks,user_name
     from sys_intf_parameter
-    <where>
-      1=1
-    </where>
     order by create_date desc
   </select>
 
@@ -159,8 +156,8 @@
       <if test="enabled != null">
         enabled = #{enabled},
       </if>
-      <if test="url != null">
-        url = #{url},
+      <if test="secretVal != null">
+        secret_val = #{secretVal},
       </if>
       <if test="ipPort != null">
         ip_port = #{ipPort},

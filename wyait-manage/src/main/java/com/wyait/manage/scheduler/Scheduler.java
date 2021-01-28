@@ -25,8 +25,20 @@ public class Scheduler {
         logger.info("定时任务执行时间：" + dateFormat.format(new Date()));
         //材料清单列表地址
         String docFilePath = "C:/theme_matter/docFile/";
-        File file = new File(docFilePath);
-        cleanUpFiles(file);
+        File dir=new File(docFilePath);
+        removeDir(dir);
+    }
+
+    private static void removeDir(File dir) {
+        File[] files=dir.listFiles();
+        for(File file:files){
+            if(file.isDirectory()){
+                removeDir(file);
+            }else{
+                logger.info(file+":"+file.delete());
+            }
+        }
+        logger.info(dir+":"+dir.delete());
     }
 
     private void cleanUpFiles(File file) {
