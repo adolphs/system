@@ -72,4 +72,8 @@ public class Db2ProgramDefServiceImpl  implements Db2ProgramDefService {
         return programDefDao2.getDoooCodeList(dooo.getDoooName());
     }
 
+    @Override
+    public List<ProgramMaterial> fetchByProgramCode(String programCode) {
+        return programDefDao2.fetchByProgramCode(programCode);
+    }
 }
