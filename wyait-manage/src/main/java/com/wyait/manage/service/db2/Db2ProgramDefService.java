@@ -45,4 +45,7 @@ public interface Db2ProgramDefService {
      * @return
      */
     List<Map<String,Object>> getDoooCodeList(Dooo dooo);
+
+    /** 根据事项编码查询材料列表*/
+    List<ProgramMaterial> fetchByProgramCode(String programCode);
 }
