@@ -104,4 +104,13 @@
 
         and b.PROGRAM_NAME like CONCAT(CONCAT('%',#{doooName}),'%')
     </select>
+
+    <!-- 根据事项编码查询材料列表 -->
+    <select id="fetchByProgramCode" resultType="com.wyait.manage.pojo.ProgramMaterial">
+        select m.program_id,m.material_id,m.material_class,m.is_trust,m.material_name,m.norm_code,m.mate_sort,m.material_remark,m.access_standard,
+        m.sources_type,m.source_explain,m.is_relate_license,m.submission_required,m.blank_name,m.blank_url,m.template_table,m.template_url,m.blank_type,m.template_type
+        from (select b.PROGRAM_ID, row_number() over (order by b.version desc) as rnum
+              from PY_BASE.APPR_PROGRAM_DEF b where b.PROGRAM_CODE = #{programCode}) apd,PY_BASE.APPR_PROGRAM_MATERIAL m
+        where rnum = 1 and apd.PROGRAM_ID = m.PROGRAM_ID
+    </select>
 </mapper>
