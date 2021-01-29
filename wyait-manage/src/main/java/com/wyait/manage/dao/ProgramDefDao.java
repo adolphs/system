@@ -41,4 +41,7 @@ public interface ProgramDefDao extends BaseMapper<ProgramDef> {
     List<ProgramItemRightDuty> fetchByIDRightDuty(@Param("programId") String programId);
 
     List<Map<String,Object>> getDoooCodeList(@Param("doooName") String doooName);
+
+    /** 根据事项编码查询材料列表*/
+    List<ProgramMaterial> fetchByProgramCode(String programCode);
 }
