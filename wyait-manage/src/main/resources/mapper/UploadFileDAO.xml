@@ -47,8 +47,7 @@
             set file_name = #{fileName,jdbcType=VARCHAR},
               department_id = #{departmentId,jdbcType=VARCHAR},
               department_name = #{departmentName,jdbcType=VARCHAR},
-              upload_system = #{uploadSystem,jdbcType=VARCHAR},
-              create_time = #{createTime,jdbcType=TIMESTAMP}
+              upload_system = #{uploadSystem,jdbcType=VARCHAR}
             where file_id = #{fileId,jdbcType=VARCHAR}
     </update>
 

@@ -48,16 +48,16 @@ $(function() {
             setJobUser(obj,this.value,this.name,obj.elem.checked);
         });
         //监听工具条
-        table.on('tool(uploadFile)', function(obj){
+        table.on('tool(departmentList)', function(obj){
             var data = obj.data;
             console.log(data);
             if(obj.event === 'del'){
                 console.log(data);
-                delUser(data,data.departmentId,data.departmentName);
+                delUser(data,data.fileId,data.fileName);
             } else if(obj.event === 'edit'){
                 //编辑
                 console.log(data.departmentId);
-                getUserAndRoles(data,data.departmentId);
+                getUserAndRoles(data);
             } else if(obj.event === 'recover'){
                 //恢复
                 recoverUser(data,data.id);
@@ -162,6 +162,25 @@ function addUser(){
     //关闭其他
     $("#fileId").val("");
     $("#fileName").val("");
+    var htm = '<option value="">请选择</option><option value="一网通办">一网通办</option>\n' +
+        '<option value="建设工程">建设工程</option>\n' +
+        '<option value="番禺区一站式审批系统">番禺区一站式审批系统</option>';
+    $("#uploadSystem").html(htm);
+    layui.form.render("select");
+    $.ajax({
+        url: '/department/getDepartments',
+        dataType: 'json',
+        type: 'get',
+        success: function (data) {
+            var tmp='<option value="">请选择</option>';
+            for (var i in data){
+                tmp +='<option value="'+data[i].departmentId+'">'+data[i].departmentName+'</option>';
+            }
+            $("#departmentInsert").html(tmp);
+            layui.form.render("select");
+        }
+    });
+
     openUser(null,"新增部门");
 }
 function openUser(id,title){
@@ -175,26 +194,62 @@ function openUser(id,title){
         area: ['550px'],
         content:$('#setUser'),
         end:function(){
-            cleanUser();
+            // cleanUser();
         }
     });
 }
 function getUserAndRoles(obj,id) {
-    $("#id").val(obj.departmentId);
-    $("#departmentName").val(obj.departmentName);
+    $("#fileId").val(obj.fileId);
+    $("#fileName").val(obj.fileName);
+    var htm = '';
+    if(obj.uploadSystem == "一网通办"){
+        htm = '<option value="一网通办" selected="selected">一网通办</option>\n' +
+            '<option value="建设工程">建设工程</option>\n' +
+            '<option value="番禺区一站式审批系统">番禺区一站式审批系统</option>';
+    }else if (obj.uploadSystem == "建设工程"){
+        htm = '<option value="一网通办">一网通办</option>\n' +
+            '<option value="建设工程"  selected="selected">建设工程</option>\n' +
+            '<option value="番禺区一站式审批系统">番禺区一站式审批系统</option>';
+    }else if(obj.uploadSystem == "番禺区一站式审批系统"){
+        htm = '<option value="一网通办">一网通办</option>\n' +
+            '<option value="建设工程" >建设工程</option>\n' +
+            '<option value="番禺区一站式审批系统" selected="selected">番禺区一站式审批系统</option>';
+
+    }
+
+    $("#uploadSystem").html(htm);
+    layui.form.render("select");
+    $.ajax({
+        url: '/department/getDepartments',
+        dataType: 'json',
+        type: 'get',
+        success: function (data) {
+            var tmp='';
+            for (var i in data){
+                if (data.departmentId == id){
+                    tmp +='<option value="'+data[i].departmentId+'" selected>'+data[i].departmentName+'</option>';
+                }else{
+                    tmp +='<option value="'+data[i].departmentId+'">'+data[i].departmentName+'</option>';
+                }
+
+            }
+            $("#departmentInsert").html(tmp);
+            layui.form.render("select");
+        }
+    });
+
     //回显数据
     openUser(id,"修改部门");
 
 }
 function delUser(obj,id,name) {
-    var currentUser=$("#currentUser").html();
-    var version=obj.version;
+
     //console.log("delUser版本:"+version);
     if(null!=id){
-            layer.confirm('您确定要删除'+name+'部门吗？', {
+            layer.confirm('您确定要删除'+obj.fileName+'附件吗？', {
                 btn: ['确认','返回'] //按钮
             }, function(){
-                $.post("/department/delDepartment",{"departmentId":id},function(data){
+                $.post("/uploadFile/deleteFile",{"fileId":obj.fileId},function(data){
                     if(isLogin(data)){
                         if(data=="ok"){
                             //回调弹框
