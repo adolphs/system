@@ -120,6 +120,10 @@
     DELETE FROM form_field WHERE form_field_id = #{formFieldId}
   </delete>
 
+ <delete id="delFormFieldByFormMainId" parameterType="string">
+    DELETE FROM form_field WHERE form_main_id = #{formMainId}
+  </delete>
+
   <update id="updateSituationDetailsIdByFormFieldId">
         update form_field set
           form_field_options = #{situationDetailsId}

@@ -28,4 +28,6 @@ public interface FormFieldDAO{
     FormField getFormPid(String formId);
 
     int insertList(List<FormField> fieldList);
+
+    int delFormFieldByFormMainId(String formMainId);
 }

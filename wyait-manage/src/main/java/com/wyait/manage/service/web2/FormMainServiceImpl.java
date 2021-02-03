@@ -2,11 +2,13 @@ package com.wyait.manage.service.web2;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.wyait.manage.dao.FormFieldDAO;
 import com.wyait.manage.dao.FormMainDAO;
 import com.wyait.manage.pojo.FormField;
 import com.wyait.manage.pojo.FormMain;
 import com.wyait.manage.utils.PageDataResult;
 import com.wyait.manage.utils.SnowflakeIdWorker;
+import groovy.transform.ThreadInterrupt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ public class FormMainServiceImpl implements FormMainService{
 
     @Autowired
     private FormMainDAO formMainDAO;
+    @Autowired
+    private FormFieldDAO formFieldDAO;
     @Autowired
     SnowflakeIdWorker snowflakeIdWorker;
     @Override
@@ -47,8 +51,10 @@ public class FormMainServiceImpl implements FormMainService{
     }
 
     @Override
+    @ThreadInterrupt
     public String delFormMainField(String formMainId) {
         formMainDAO.delete(formMainId);
+        formFieldDAO.delFormFieldByFormMainId(formMainId);
         return "ok";
     }
 
