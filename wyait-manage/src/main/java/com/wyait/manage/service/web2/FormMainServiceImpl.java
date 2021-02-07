@@ -11,6 +11,7 @@ import com.wyait.manage.utils.SnowflakeIdWorker;
 import groovy.transform.ThreadInterrupt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class FormMainServiceImpl implements FormMainService{
     }
 
     @Override
-    @ThreadInterrupt
+    @Transactional
     public String delFormMainField(String formMainId) {
         formMainDAO.delete(formMainId);
         formFieldDAO.delFormFieldByFormMainId(formMainId);

@@ -21,7 +21,7 @@ public class Scheduler {
     private static final Logger logger = LoggerFactory.getLogger(Scheduler.class);
 
     //每天3:05 执行 清空材料清单
-    @Scheduled(cron = "0 05 03 ? * *")
+//    @Scheduled(cron = "0 05 03 ? * *")
     public void deleteDataList(){
         logger.info("定时任务执行时间：" + dateFormat.format(new Date()));
         //材料清单列表地址

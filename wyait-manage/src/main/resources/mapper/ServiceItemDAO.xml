@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.ServiceItemDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.ServiceItem">
+    <id column="carry_out_code" jdbcType="VARCHAR" property="carry_out_code" />
+    <result column="service_agent_code" jdbcType="VARCHAR" property="service_agent_code" />
+    <result column="service_agent_name" jdbcType="VARCHAR" property="service_agent_name" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="service_code" jdbcType="VARCHAR" property="service_code" />
+    <result column="ctg_code" jdbcType="VARCHAR" property="ctg_code" />
+    <result column="accept_time" jdbcType="VARCHAR" property="accept_time" />
+    <result column="conditions" jdbcType="VARCHAR" property="conditions" />
+    <result column="legal_period" jdbcType="VARCHAR" property="legal_period" />
+    <result column="legal_period_type" jdbcType="VARCHAR" property="legal_period_type" />
+    <result column="promised_period" jdbcType="VARCHAR" property="promised_period" />
+    <result column="promised_period_type" jdbcType="VARCHAR" property="promised_period_type" />
+    <result column="apply_time" jdbcType="VARCHAR" property="apply_time" />
+    <result column="accept_time_sp" jdbcType="VARCHAR" property="accept_time_sp" />
+    <result column="have_certificate" jdbcType="VARCHAR" property="have_certificate" />
+    <result column="need_charge" jdbcType="VARCHAR" property="need_charge" />
+    <result column="suit_online" jdbcType="VARCHAR" property="suit_online" />
+    <result column="online_service_url" jdbcType="VARCHAR" property="online_service_url" />
+    <result column="ems" jdbcType="VARCHAR" property="ems" />
+    <result column="faq" jdbcType="VARCHAR" property="faq" />
+    <result column="theme_gr_type" jdbcType="VARCHAR" property="theme_gr_type" />
+    <result column="theme_fr_type" jdbcType="VARCHAR" property="theme_fr_type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    carry_out_code, service_agent_code, service_agent_name, `name`, service_code, ctg_code, 
+    accept_time, conditions, legal_period, legal_period_type, promised_period, promised_period_type, 
+    apply_time, accept_time_sp, have_certificate, need_charge, suit_online, online_service_url, 
+    ems, faq, theme_gr_type, theme_fr_type
+  </sql>
+
+  <select id="getItemList" resultType="com.wyait.manage.pojo.ServiceItem">
+        select * from service_item where 1=1
+    <if test="item.carry_out_code != null and item.carry_out_code != ''">
+      and carry_out_code = #{item.carry_out_code}
+    </if>
+    <if test="item.name != null and item.name != ''">
+      and  name like CONCAT(CONCAT('%',#{item.name}),'%')
+    </if>
+    <if test="item.service_agent_code != null and item.service_agent_code != ''">
+      and service_agent_code = #{item.service_agent_code}
+    </if>
+  </select>
+
+  <select id="getItemList2" resultType="com.wyait.manage.pojo.ServiceItem">
+    select
+    <include refid="Base_Column_List" />
+    from service_item
+    where carry_out_code = #{carryOutCode}
+  </select>
+
+<!--  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+<!--    select -->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from service_item-->
+<!--    where carry_out_code = #{carry_out_code,jdbcType=VARCHAR}-->
+<!--  </select>-->
+<!--  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">-->
+<!--    delete from service_item-->
+<!--    where carry_out_code = #{carry_out_code,jdbcType=VARCHAR}-->
+<!--  </delete>-->
+  <insert id="insert" parameterType="com.wyait.manage.pojo.ServiceItem">
+    insert into service_item (carry_out_code, service_agent_code, 
+      service_agent_name, `name`, service_code, 
+      ctg_code, accept_time, conditions, 
+      legal_period, legal_period_type, promised_period, 
+      promised_period_type, apply_time, accept_time_sp, 
+      have_certificate, need_charge, suit_online, 
+      online_service_url, ems, faq, 
+      theme_gr_type, theme_fr_type)
+    values (#{carry_out_code,jdbcType=VARCHAR}, #{service_agent_code,jdbcType=VARCHAR}, 
+      #{service_agent_name,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{service_code,jdbcType=VARCHAR}, 
+      #{ctg_code,jdbcType=VARCHAR}, #{accept_time,jdbcType=VARCHAR}, #{conditions,jdbcType=VARCHAR}, 
+      #{legal_period,jdbcType=VARCHAR}, #{legal_period_type,jdbcType=VARCHAR}, #{promised_period,jdbcType=VARCHAR}, 
+      #{promised_period_type,jdbcType=VARCHAR}, #{apply_time,jdbcType=VARCHAR}, #{accept_time_sp,jdbcType=VARCHAR}, 
+      #{have_certificate,jdbcType=VARCHAR}, #{need_charge,jdbcType=VARCHAR}, #{suit_online,jdbcType=VARCHAR}, 
+      #{online_service_url,jdbcType=VARCHAR}, #{ems,jdbcType=VARCHAR}, #{faq,jdbcType=VARCHAR}, 
+      #{theme_gr_type,jdbcType=VARCHAR}, #{theme_fr_type,jdbcType=VARCHAR})
+  </insert>
+<!--  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.ServiceItem">-->
+<!--    insert into service_item-->
+<!--    <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--      <if test="carry_out_code != null">-->
+<!--        carry_out_code,-->
+<!--      </if>-->
+<!--      <if test="service_agent_code != null">-->
+<!--        service_agent_code,-->
+<!--      </if>-->
+<!--      <if test="service_agent_name != null">-->
+<!--        service_agent_name,-->
+<!--      </if>-->
+<!--      <if test="name != null">-->
+<!--        `name`,-->
+<!--      </if>-->
+<!--      <if test="service_code != null">-->
+<!--        service_code,-->
+<!--      </if>-->
+<!--      <if test="ctg_code != null">-->
+<!--        ctg_code,-->
+<!--      </if>-->
+<!--      <if test="accept_time != null">-->
+<!--        accept_time,-->
+<!--      </if>-->
+<!--      <if test="conditions != null">-->
+<!--        conditions,-->
+<!--      </if>-->
+<!--      <if test="legal_period != null">-->
+<!--        legal_period,-->
+<!--      </if>-->
+<!--      <if test="legal_period_type != null">-->
+<!--        legal_period_type,-->
+<!--      </if>-->
+<!--      <if test="promised_period != null">-->
+<!--        promised_period,-->
+<!--      </if>-->
+<!--      <if test="promised_period_type != null">-->
+<!--        promised_period_type,-->
+<!--      </if>-->
+<!--      <if test="apply_time != null">-->
+<!--        apply_time,-->
+<!--      </if>-->
+<!--      <if test="accept_time_sp != null">-->
+<!--        accept_time_sp,-->
+<!--      </if>-->
+<!--      <if test="have_certificate != null">-->
+<!--        have_certificate,-->
+<!--      </if>-->
+<!--      <if test="need_charge != null">-->
+<!--        need_charge,-->
+<!--      </if>-->
+<!--      <if test="suit_online != null">-->
+<!--        suit_online,-->
+<!--      </if>-->
+<!--      <if test="online_service_url != null">-->
+<!--        online_service_url,-->
+<!--      </if>-->
+<!--      <if test="ems != null">-->
+<!--        ems,-->
+<!--      </if>-->
+<!--      <if test="faq != null">-->
+<!--        faq,-->
+<!--      </if>-->
+<!--      <if test="theme_gr_type != null">-->
+<!--        theme_gr_type,-->
+<!--      </if>-->
+<!--      <if test="theme_fr_type != null">-->
+<!--        theme_fr_type,-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--      <if test="carry_out_code != null">-->
+<!--        #{carry_out_code,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="service_agent_code != null">-->
+<!--        #{service_agent_code,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="service_agent_name != null">-->
+<!--        #{service_agent_name,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="name != null">-->
+<!--        #{name,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="service_code != null">-->
+<!--        #{service_code,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="ctg_code != null">-->
+<!--        #{ctg_code,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="accept_time != null">-->
+<!--        #{accept_time,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="conditions != null">-->
+<!--        #{conditions,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="legal_period != null">-->
+<!--        #{legal_period,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="legal_period_type != null">-->
+<!--        #{legal_period_type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="promised_period != null">-->
+<!--        #{promised_period,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="promised_period_type != null">-->
+<!--        #{promised_period_type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="apply_time != null">-->
+<!--        #{apply_time,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="accept_time_sp != null">-->
+<!--        #{accept_time_sp,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="have_certificate != null">-->
+<!--        #{have_certificate,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="need_charge != null">-->
+<!--        #{need_charge,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="suit_online != null">-->
+<!--        #{suit_online,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="online_service_url != null">-->
+<!--        #{online_service_url,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="ems != null">-->
+<!--        #{ems,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="faq != null">-->
+<!--        #{faq,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="theme_gr_type != null">-->
+<!--        #{theme_gr_type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="theme_fr_type != null">-->
+<!--        #{theme_fr_type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </insert>-->
+<!--  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.ServiceItem">-->
+<!--    update service_item-->
+<!--    <set>-->
+<!--      <if test="service_agent_code != null">-->
+<!--        service_agent_code = #{service_agent_code,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="service_agent_name != null">-->
+<!--        service_agent_name = #{service_agent_name,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="name != null">-->
+<!--        `name` = #{name,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="service_code != null">-->
+<!--        service_code = #{service_code,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="ctg_code != null">-->
+<!--        ctg_code = #{ctg_code,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="accept_time != null">-->
+<!--        accept_time = #{accept_time,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="conditions != null">-->
+<!--        conditions = #{conditions,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="legal_period != null">-->
+<!--        legal_period = #{legal_period,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="legal_period_type != null">-->
+<!--        legal_period_type = #{legal_period_type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="promised_period != null">-->
+<!--        promised_period = #{promised_period,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="promised_period_type != null">-->
+<!--        promised_period_type = #{promised_period_type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="apply_time != null">-->
+<!--        apply_time = #{apply_time,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="accept_time_sp != null">-->
+<!--        accept_time_sp = #{accept_time_sp,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="have_certificate != null">-->
+<!--        have_certificate = #{have_certificate,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="need_charge != null">-->
+<!--        need_charge = #{need_charge,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="suit_online != null">-->
+<!--        suit_online = #{suit_online,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="online_service_url != null">-->
+<!--        online_service_url = #{online_service_url,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="ems != null">-->
+<!--        ems = #{ems,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="faq != null">-->
+<!--        faq = #{faq,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="theme_gr_type != null">-->
+<!--        theme_gr_type = #{theme_gr_type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="theme_fr_type != null">-->
+<!--        theme_fr_type = #{theme_fr_type,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where carry_out_code = #{carry_out_code,jdbcType=VARCHAR}-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.ServiceItem">-->
+<!--    update service_item-->
+<!--    set service_agent_code = #{service_agent_code,jdbcType=VARCHAR},-->
+<!--      service_agent_name = #{service_agent_name,jdbcType=VARCHAR},-->
+<!--      `name` = #{name,jdbcType=VARCHAR},-->
+<!--      service_code = #{service_code,jdbcType=VARCHAR},-->
+<!--      ctg_code = #{ctg_code,jdbcType=VARCHAR},-->
+<!--      accept_time = #{accept_time,jdbcType=VARCHAR},-->
+<!--      conditions = #{conditions,jdbcType=VARCHAR},-->
+<!--      legal_period = #{legal_period,jdbcType=VARCHAR},-->
+<!--      legal_period_type = #{legal_period_type,jdbcType=VARCHAR},-->
+<!--      promised_period = #{promised_period,jdbcType=VARCHAR},-->
+<!--      promised_period_type = #{promised_period_type,jdbcType=VARCHAR},-->
+<!--      apply_time = #{apply_time,jdbcType=VARCHAR},-->
+<!--      accept_time_sp = #{accept_time_sp,jdbcType=VARCHAR},-->
+<!--      have_certificate = #{have_certificate,jdbcType=VARCHAR},-->
+<!--      need_charge = #{need_charge,jdbcType=VARCHAR},-->
+<!--      suit_online = #{suit_online,jdbcType=VARCHAR},-->
+<!--      online_service_url = #{online_service_url,jdbcType=VARCHAR},-->
+<!--      ems = #{ems,jdbcType=VARCHAR},-->
+<!--      faq = #{faq,jdbcType=VARCHAR},-->
+<!--      theme_gr_type = #{theme_gr_type,jdbcType=VARCHAR},-->
+<!--      theme_fr_type = #{theme_fr_type,jdbcType=VARCHAR}-->
+<!--    where carry_out_code = #{carry_out_code,jdbcType=VARCHAR}-->
+<!--  </update>-->
+</mapper>

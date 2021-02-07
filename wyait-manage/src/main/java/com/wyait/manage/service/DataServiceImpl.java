@@ -72,10 +72,10 @@ public class DataServiceImpl extends ServiceImpl<DataMapper, Data> implements Da
             if (null != data1){
                 return "该材料名称已经存在";
             }
-            if (data.getBlankUrl() != null){
+            if (data.getBlankUrl() != null && data.getBlankUrl() != ""){
                 data.setBlankUrl("/材料/"+data.getBlankUrl());
             }
-            if (data.getTemplateUrl() != null){
+            if (data.getTemplateUrl() != null && data.getTemplateUrl() != ""){
                 data.setTemplateUrl("/材料/"+data.getTemplateUrl());
             }
             data.setNewTime(new Date());

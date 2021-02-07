@@ -75,7 +75,6 @@ public class DepartmentController {
             logger.error("部门列表查询异常！", e);
         }
 
-
         return pdr;
     }
 

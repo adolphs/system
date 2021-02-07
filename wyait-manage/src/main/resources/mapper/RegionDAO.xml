@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.RegionDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.Region">
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="PARENT_CODE" jdbcType="VARCHAR" property="parentCode" />
+    <result column="PARENT_NAME" jdbcType="VARCHAR" property="parentName" />
+    <result column="SORT_ORDER" jdbcType="VARCHAR" property="sortOrder" />
+    <result column="SHORT_CODE" jdbcType="VARCHAR" property="shortCode" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.Region">
+    insert into region (CODE, PARENT_CODE, PARENT_NAME, 
+      SORT_ORDER, SHORT_CODE, `NAME`
+      )
+    values (#{code,jdbcType=VARCHAR}, #{parentCode,jdbcType=VARCHAR}, #{parentName,jdbcType=VARCHAR}, 
+      #{sortOrder,jdbcType=VARCHAR}, #{shortCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.Region">
+    insert into region
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="parentCode != null">
+        PARENT_CODE,
+      </if>
+      <if test="parentName != null">
+        PARENT_NAME,
+      </if>
+      <if test="sortOrder != null">
+        SORT_ORDER,
+      </if>
+      <if test="shortCode != null">
+        SHORT_CODE,
+      </if>
+      <if test="name != null">
+        `NAME`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null">
+        #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="parentName != null">
+        #{parentName,jdbcType=VARCHAR},
+      </if>
+      <if test="sortOrder != null">
+        #{sortOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="shortCode != null">
+        #{shortCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

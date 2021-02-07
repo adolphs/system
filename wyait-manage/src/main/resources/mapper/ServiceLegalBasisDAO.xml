@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.ServiceLegalBasisDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.ServiceLegalBasis">
+    <result column="basis_code" jdbcType="VARCHAR" property="basis_code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="wh" jdbcType="VARCHAR" property="wh" />
+    <result column="basis_type" jdbcType="VARCHAR" property="basis_type" />
+    <result column="office" jdbcType="VARCHAR" property="office" />
+    <result column="carry_out_date" jdbcType="TIMESTAMP" property="carry_out_date" />
+    <result column="carry_out_code" jdbcType="VARCHAR" property="carry_out_code" />
+  </resultMap>
+
+  <!-- 批量增加 -->
+  <insert id="insertList" parameterType="list">
+    insert into service_legal_basis (basis_code, `name`, wh,
+    basis_type, office, carry_out_date,
+    carry_out_code)
+    values
+    <foreach collection="serviceLegalBases" item="item" index="index" separator=",">
+      (#{item.basis_code}, #{item.name}, #{item.wh},
+      #{item.basis_type}, #{item.office}, #{item.carry_out_date},
+      #{item.carry_out_code})
+    </foreach>
+  </insert>
+
+
+  <insert id="insert" parameterType="com.wyait.manage.pojo.ServiceLegalBasis">
+    insert into service_legal_basis (basis_code, `name`, wh, 
+      basis_type, office, carry_out_date, 
+      carry_out_code)
+    values (#{basis_code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{wh,jdbcType=VARCHAR}, 
+      #{basis_type,jdbcType=VARCHAR}, #{office,jdbcType=VARCHAR}, #{carry_out_date,jdbcType=TIMESTAMP}, 
+      #{carry_out_code,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.ServiceLegalBasis">
+    insert into service_legal_basis
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="basis_code != null">
+        basis_code,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="wh != null">
+        wh,
+      </if>
+      <if test="basis_type != null">
+        basis_type,
+      </if>
+      <if test="office != null">
+        office,
+      </if>
+      <if test="carry_out_date != null">
+        carry_out_date,
+      </if>
+      <if test="carry_out_code != null">
+        carry_out_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="basis_code != null">
+        #{basis_code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="wh != null">
+        #{wh,jdbcType=VARCHAR},
+      </if>
+      <if test="basis_type != null">
+        #{basis_type,jdbcType=VARCHAR},
+      </if>
+      <if test="office != null">
+        #{office,jdbcType=VARCHAR},
+      </if>
+      <if test="carry_out_date != null">
+        #{carry_out_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="carry_out_code != null">
+        #{carry_out_code,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

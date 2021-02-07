@@ -9,7 +9,7 @@ $(function() {
 
         tableIns=table.render({
             elem: '#departmentList'
-            ,url:'/department/getDedepartmentList'
+            ,url:'/organ/getOrganList'
             ,method: 'post' //默认：get请求
             ,cellMinWidth: 80
             ,page: true,
@@ -24,9 +24,11 @@ $(function() {
             }
             ,cols: [[
                 {type:'numbers'}
-                ,{field:'departmentName', title:'部门名'}
-                ,{field:'newTime', title: '添加时间',align:'center',unresize: true, sort: true}
-                ,{fixed:'right', title:'操作', width:140,align:'center', toolbar:'#optBar'}
+                ,{field:'org_code', title:'机构编码'}
+                ,{field:'name', title:'机构名称'}
+                ,{field:'division', title:'区划名称'}
+                ,{field:'short_name', title:'简称'}
+                ,{field:'tongyi_code', title:'统一社会信用代码'}
             ]]
             ,  done: function(res, curr, count){
                 //如果是异步请求数据方式，res即为你接口返回的信息。
@@ -184,32 +186,25 @@ function cleanUser(){
 // }
 //开通用户
 function addUser(){
-    $.get("/auth/getRoles",function(data){
-        if(data!=null){
-            //显示角色数据
-            $("#roleDiv").empty();
-            $.each(data, function (index, item) {
-                // <input type="checkbox" name="roleId" title="发呆" lay-skin="primary"/>
-                var roleInput=$("<input type='checkbox' name='roleId' value="+item.id+" title="+item.roleName+" lay-skin='primary'/>");
-                //未选中
-                /*<div class="layui-unselect layui-form-checkbox" lay-skin="primary">
-                    <span>发呆</span><i class="layui-icon">&#xe626;</i>
-                    </div>*/
-                //选中
-                // <div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary">
-                // <span>写作</span><i class="layui-icon">&#xe627;</i></div>
-                var div=$("<div class='layui-unselect layui-form-checkbox' lay-skin='primary'>" +
-                    "<span>"+item.roleName+"</span><i class='layui-icon'>&#xe626;</i>" +
-                    "</div>");
-                $("#roleDiv").append(roleInput).append(div);
-            })
-            openUser(null,"新增部门");
-            //重新渲染下form表单 否则复选框无效
-            layui.form.render('checkbox');
-        }else{
-            //弹出错误提示
-            layer.alert("获取角色数据有误，请您稍后再试",function () {
+    $.ajax({
+        type: "POST",
+        url: "/organ/synchronizeOrgan",
+        success: function (data) {
+            if (data.code == "200") {
+                layer.alert(data.data,function(){
+                    location.reload();
+                });
+            }else{
+                layer.alert(data.data,function(){
+                    location.reload();
+                });
+            }
+        },
+        error: function () {
+            layer.alert("操作请求错误，请您稍后再试",function(){
                 layer.closeAll();
+                //加载load方法
+                load(obj);//自定义
             });
         }
     });

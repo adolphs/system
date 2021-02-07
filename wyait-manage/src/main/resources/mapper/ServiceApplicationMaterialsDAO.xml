@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.ServiceApplicationMaterialsDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.ServiceApplicationMaterials">
+    <id column="materials_id" jdbcType="VARCHAR" property="materials_id" />
+    <result column="inner_code" jdbcType="VARCHAR" property="inner_code" />
+    <result column="materials_code" jdbcType="VARCHAR" property="materials_code" />
+    <result column="materials_name" jdbcType="VARCHAR" property="materials_name" />
+    <result column="copy" jdbcType="VARCHAR" property="copy" />
+    <result column="filling_requirement" jdbcType="VARCHAR" property="filling_requirement" />
+    <result column="standard_collection" jdbcType="VARCHAR" property="standard_collection" />
+    <result column="origin" jdbcType="VARCHAR" property="origin" />
+    <result column="elect" jdbcType="VARCHAR" property="elect" />
+    <result column="materials_type" jdbcType="VARCHAR" property="materials_type" />
+    <result column="sample_code" jdbcType="VARCHAR" property="sample_code" />
+    <result column="empty_code" jdbcType="VARCHAR" property="empty_code" />
+    <result column="sample_file_url" jdbcType="VARCHAR" property="sample_file_url" />
+    <result column="empty_file_url" jdbcType="VARCHAR" property="empty_file_url" />
+    <result column="sample_file_name" jdbcType="VARCHAR" property="sample_file_name" />
+    <result column="empty_file_name" jdbcType="VARCHAR" property="empty_file_name" />
+    <result column="electronic_license" jdbcType="VARCHAR" property="electronic_license" />
+    <result column="electronic_license_code" jdbcType="VARCHAR" property="electronic_license_code" />
+    <result column="is_relate_license" jdbcType="VARCHAR" property="is_relate_license" />
+    <result column="submission_required" jdbcType="VARCHAR" property="submission_required" />
+    <result column="carry_out_code" jdbcType="VARCHAR" property="carry_out_code" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    materials_id, inner_code, materials_code, materials_name, `copy`, filling_requirement, 
+    standard_collection, origin, elect, materials_type, sample_code, empty_code, sample_file_url, 
+    empty_file_url, sample_file_name, empty_file_name, electronic_license, electronic_license_code, 
+    is_relate_license, submission_required, carry_out_code
+  </sql>
+
+  <insert id="insertList" parameterType="list">
+    insert into service_application_materials
+       (materials_id, inner_code, materials_code,
+       materials_name, `copy`, filling_requirement,
+       standard_collection, origin, elect,
+       materials_type, sample_code, empty_code,
+       sample_file_url, empty_file_url, sample_file_name,
+       empty_file_name, electronic_license, electronic_license_code,
+       is_relate_license, submission_required,
+       carry_out_code)
+    values
+    <foreach collection="applicationMaterialsList" item="item" index="index" separator=",">
+      (#{item.materials_id}, #{item.inner_code}, #{item.materials_code},
+      #{item.materials_name}, #{item.copy}, #{item.filling_requirement},
+      #{item.standard_collection},#{item.origin},#{item.elect},
+      #{item.materials_type},#{item.sample_code},#{item.empty_code},
+      #{item.sample_file_url},#{item.empty_file_url},#{item.sample_file_name},
+      #{item.empty_file_name},#{item.electronic_license},#{item.electronic_license_code},
+      #{item.is_relate_license},#{item.submission_required},
+      #{item.carry_out_code})
+    </foreach>
+  </insert>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from service_application_materials
+    where materials_id = #{materials_id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from service_application_materials
+    where materials_id = #{materials_id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.ServiceApplicationMaterials">
+    insert into service_application_materials (materials_id, inner_code, materials_code, 
+      materials_name, `copy`, filling_requirement, 
+      standard_collection, origin, elect, 
+      materials_type, sample_code, empty_code, 
+      sample_file_url, empty_file_url, sample_file_name, 
+      empty_file_name, electronic_license, electronic_license_code, 
+      is_relate_license, submission_required, 
+      carry_out_code)
+    values (#{materials_id,jdbcType=VARCHAR}, #{inner_code,jdbcType=VARCHAR}, #{materials_code,jdbcType=VARCHAR}, 
+      #{materials_name,jdbcType=VARCHAR}, #{copy,jdbcType=VARCHAR}, #{filling_requirement,jdbcType=VARCHAR}, 
+      #{standard_collection,jdbcType=VARCHAR}, #{origin,jdbcType=VARCHAR}, #{elect,jdbcType=VARCHAR}, 
+      #{materials_type,jdbcType=VARCHAR}, #{sample_code,jdbcType=VARCHAR}, #{empty_code,jdbcType=VARCHAR}, 
+      #{sample_file_url,jdbcType=VARCHAR}, #{empty_file_url,jdbcType=VARCHAR}, #{sample_file_name,jdbcType=VARCHAR}, 
+      #{empty_file_name,jdbcType=VARCHAR}, #{electronic_license,jdbcType=VARCHAR}, #{electronic_license_code,jdbcType=VARCHAR}, 
+      #{is_relate_license,jdbcType=VARCHAR}, #{submission_required,jdbcType=VARCHAR}, 
+      #{carry_out_code,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.ServiceApplicationMaterials">
+    insert into service_application_materials
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="materials_id != null">
+        materials_id,
+      </if>
+      <if test="inner_code != null">
+        inner_code,
+      </if>
+      <if test="materials_code != null">
+        materials_code,
+      </if>
+      <if test="materials_name != null">
+        materials_name,
+      </if>
+      <if test="copy != null">
+        `copy`,
+      </if>
+      <if test="filling_requirement != null">
+        filling_requirement,
+      </if>
+      <if test="standard_collection != null">
+        standard_collection,
+      </if>
+      <if test="origin != null">
+        origin,
+      </if>
+      <if test="elect != null">
+        elect,
+      </if>
+      <if test="materials_type != null">
+        materials_type,
+      </if>
+      <if test="sample_code != null">
+        sample_code,
+      </if>
+      <if test="empty_code != null">
+        empty_code,
+      </if>
+      <if test="sample_file_url != null">
+        sample_file_url,
+      </if>
+      <if test="empty_file_url != null">
+        empty_file_url,
+      </if>
+      <if test="sample_file_name != null">
+        sample_file_name,
+      </if>
+      <if test="empty_file_name != null">
+        empty_file_name,
+      </if>
+      <if test="electronic_license != null">
+        electronic_license,
+      </if>
+      <if test="electronic_license_code != null">
+        electronic_license_code,
+      </if>
+      <if test="is_relate_license != null">
+        is_relate_license,
+      </if>
+      <if test="submission_required != null">
+        submission_required,
+      </if>
+      <if test="carry_out_code != null">
+        carry_out_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="materials_id != null">
+        #{materials_id,jdbcType=VARCHAR},
+      </if>
+      <if test="inner_code != null">
+        #{inner_code,jdbcType=VARCHAR},
+      </if>
+      <if test="materials_code != null">
+        #{materials_code,jdbcType=VARCHAR},
+      </if>
+      <if test="materials_name != null">
+        #{materials_name,jdbcType=VARCHAR},
+      </if>
+      <if test="copy != null">
+        #{copy,jdbcType=VARCHAR},
+      </if>
+      <if test="filling_requirement != null">
+        #{filling_requirement,jdbcType=VARCHAR},
+      </if>
+      <if test="standard_collection != null">
+        #{standard_collection,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null">
+        #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="elect != null">
+        #{elect,jdbcType=VARCHAR},
+      </if>
+      <if test="materials_type != null">
+        #{materials_type,jdbcType=VARCHAR},
+      </if>
+      <if test="sample_code != null">
+        #{sample_code,jdbcType=VARCHAR},
+      </if>
+      <if test="empty_code != null">
+        #{empty_code,jdbcType=VARCHAR},
+      </if>
+      <if test="sample_file_url != null">
+        #{sample_file_url,jdbcType=VARCHAR},
+      </if>
+      <if test="empty_file_url != null">
+        #{empty_file_url,jdbcType=VARCHAR},
+      </if>
+      <if test="sample_file_name != null">
+        #{sample_file_name,jdbcType=VARCHAR},
+      </if>
+      <if test="empty_file_name != null">
+        #{empty_file_name,jdbcType=VARCHAR},
+      </if>
+      <if test="electronic_license != null">
+        #{electronic_license,jdbcType=VARCHAR},
+      </if>
+      <if test="electronic_license_code != null">
+        #{electronic_license_code,jdbcType=VARCHAR},
+      </if>
+      <if test="is_relate_license != null">
+        #{is_relate_license,jdbcType=VARCHAR},
+      </if>
+      <if test="submission_required != null">
+        #{submission_required,jdbcType=VARCHAR},
+      </if>
+      <if test="carry_out_code != null">
+        #{carry_out_code,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.ServiceApplicationMaterials">
+    update service_application_materials
+    <set>
+      <if test="inner_code != null">
+        inner_code = #{inner_code,jdbcType=VARCHAR},
+      </if>
+      <if test="materials_code != null">
+        materials_code = #{materials_code,jdbcType=VARCHAR},
+      </if>
+      <if test="materials_name != null">
+        materials_name = #{materials_name,jdbcType=VARCHAR},
+      </if>
+      <if test="copy != null">
+        `copy` = #{copy,jdbcType=VARCHAR},
+      </if>
+      <if test="filling_requirement != null">
+        filling_requirement = #{filling_requirement,jdbcType=VARCHAR},
+      </if>
+      <if test="standard_collection != null">
+        standard_collection = #{standard_collection,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null">
+        origin = #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="elect != null">
+        elect = #{elect,jdbcType=VARCHAR},
+      </if>
+      <if test="materials_type != null">
+        materials_type = #{materials_type,jdbcType=VARCHAR},
+      </if>
+      <if test="sample_code != null">
+        sample_code = #{sample_code,jdbcType=VARCHAR},
+      </if>
+      <if test="empty_code != null">
+        empty_code = #{empty_code,jdbcType=VARCHAR},
+      </if>
+      <if test="sample_file_url != null">
+        sample_file_url = #{sample_file_url,jdbcType=VARCHAR},
+      </if>
+      <if test="empty_file_url != null">
+        empty_file_url = #{empty_file_url,jdbcType=VARCHAR},
+      </if>
+      <if test="sample_file_name != null">
+        sample_file_name = #{sample_file_name,jdbcType=VARCHAR},
+      </if>
+      <if test="empty_file_name != null">
+        empty_file_name = #{empty_file_name,jdbcType=VARCHAR},
+      </if>
+      <if test="electronic_license != null">
+        electronic_license = #{electronic_license,jdbcType=VARCHAR},
+      </if>
+      <if test="electronic_license_code != null">
+        electronic_license_code = #{electronic_license_code,jdbcType=VARCHAR},
+      </if>
+      <if test="is_relate_license != null">
+        is_relate_license = #{is_relate_license,jdbcType=VARCHAR},
+      </if>
+      <if test="submission_required != null">
+        submission_required = #{submission_required,jdbcType=VARCHAR},
+      </if>
+      <if test="carry_out_code != null">
+        carry_out_code = #{carry_out_code,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where materials_id = #{materials_id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.ServiceApplicationMaterials">
+    update service_application_materials
+    set inner_code = #{inner_code,jdbcType=VARCHAR},
+      materials_code = #{materials_code,jdbcType=VARCHAR},
+      materials_name = #{materials_name,jdbcType=VARCHAR},
+      `copy` = #{copy,jdbcType=VARCHAR},
+      filling_requirement = #{filling_requirement,jdbcType=VARCHAR},
+      standard_collection = #{standard_collection,jdbcType=VARCHAR},
+      origin = #{origin,jdbcType=VARCHAR},
+      elect = #{elect,jdbcType=VARCHAR},
+      materials_type = #{materials_type,jdbcType=VARCHAR},
+      sample_code = #{sample_code,jdbcType=VARCHAR},
+      empty_code = #{empty_code,jdbcType=VARCHAR},
+      sample_file_url = #{sample_file_url,jdbcType=VARCHAR},
+      empty_file_url = #{empty_file_url,jdbcType=VARCHAR},
+      sample_file_name = #{sample_file_name,jdbcType=VARCHAR},
+      empty_file_name = #{empty_file_name,jdbcType=VARCHAR},
+      electronic_license = #{electronic_license,jdbcType=VARCHAR},
+      electronic_license_code = #{electronic_license_code,jdbcType=VARCHAR},
+      is_relate_license = #{is_relate_license,jdbcType=VARCHAR},
+      submission_required = #{submission_required,jdbcType=VARCHAR},
+      carry_out_code = #{carry_out_code,jdbcType=VARCHAR}
+    where materials_id = #{materials_id,jdbcType=VARCHAR}
+  </update>
+</mapper>
