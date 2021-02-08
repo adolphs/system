@@ -9,8 +9,8 @@ $(function() {
 
         tableIns=table.render({
             elem: '#uesrList'
-            ,url:'/serviceItem/getItemList'
-        	,method: 'post' //默认：get请求
+            ,url:'/serviceItem/getItemList?approval_type=2'
+        	// ,method: 'post' //默认：get请求
             ,cellMinWidth: 80
             ,page: true,
             request: {
@@ -27,6 +27,7 @@ $(function() {
                 ,{field:'name', title:'事项名称'}
                 ,{field:'carry_out_code', title:'事项编码'}
                 ,{field:'service_agent_name', title: '所属部门'}
+                ,{field:'put_text', title: '提交说明'}
                 ,{fixed:'right', title:'操作', width:240,align:'center', toolbar:'#optBar'}
             ]]
             ,  done: function(res, curr, count){
@@ -323,15 +324,15 @@ function delUser(obj,id,name) {
     }
 }
 function recoverUser(obj) {
-    if (confirm("是否确定退订审核？")){
+    if (confirm("是否确定通过审核？")){
         $.ajax({
             url: '/serviceItem/updateApprovalType',
-            data:{'carry_out_code':obj.carry_out_code,'approval_type':1},
+            data:{'carry_out_code':obj.carry_out_code,'approval_type':3},
             // dataType: 'json',
             type: 'post',
             success: function (data) {
                 if (data.code == 200){
-                    layer.alert("退订成功！",function(){
+                    layer.alert("审批成功！",function(){
                         layer.closeAll();
                         //加载load方法
                         load(obj);//自定义
@@ -366,7 +367,7 @@ function load(obj){
 function put() {
         $.ajax({
             url: '/serviceItem/updateApprovalType',
-            data:{'carry_out_code':$("#doooId3").val(),'approval_type':2,'put_text':$("#approval_type").val()},
+            data:{'carry_out_code':$("#doooId3").val(),'approval_type':1,'approval_text':$("#approval_type").val()},
             // dataType: 'json',
             type: 'post',
             success: function (data) {
@@ -392,7 +393,7 @@ function openUser3(data){
     $("#approval_type").val("");
     layer.open({
         type:1,
-        title: '提交审核',
+        title: '驳回审核',
         fixed:false,
         resize :false,
         shadeClose: true,

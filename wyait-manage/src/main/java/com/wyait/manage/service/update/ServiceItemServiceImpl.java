@@ -74,30 +74,36 @@ public class ServiceItemServiceImpl implements ServiceItemService{
         logger.info("---responseText----"+ jsonObject);
         if ("1".equals(jsonObject.getString("state")) && jsonObject!=null){
             JSONObject item = JSONObject.fromObject(jsonObject.getString("data"));
+            if (item.size() == 0){
+                result.setCode(202);
+                result.setData("未检查到相关事项，请确认事项编码是否正确！");
+                return result;
+            }
             //事项本身
             ServiceItem serviceItem = new ServiceItem();
-            serviceItem.setAccept_time(item.getString("accept_time"));
-            serviceItem.setAccept_time_sp(item.getString("accept_time_sp"));
-            serviceItem.setApply_time(item.getString("apply_time"));
-            serviceItem.setConditions(item.getString("conditions"));
-            serviceItem.setService_code(item.getString("service_code"));
-            serviceItem.setCtg_code(item.getString("ctg_code"));
-            serviceItem.setEms(item.getString("ems"));
-            serviceItem.setFaq(item.getString("faq"));
-            serviceItem.setCarry_out_code(item.getString("carry_out_code"));
-            serviceItem.setHave_certificate(item.getString("have_certificate"));
-            serviceItem.setLegal_period(item.getString("legal_period"));
-            serviceItem.setTheme_gr_type(item.getString("theme_gr_type"));
-            serviceItem.setTheme_fr_type(item.getString("theme_fr_type"));
-            serviceItem.setSuit_online(item.getString("suit_online"));
-            serviceItem.setService_agent_name(item.getString("service_agent_name"));
-            serviceItem.setService_agent_code(item.getString("service_agent_code"));
-            serviceItem.setPromised_period_type(item.getString("promised_period_type"));
-            serviceItem.setOnline_service_url(item.getString("online_service_url"));
-            serviceItem.setNeed_charge(item.getString("need_charge"));
-            serviceItem.setName(item.getString("name"));
-            serviceItem.setLegal_period_type(item.getString("legal_period_type"));
-            serviceItem.setPromised_period(item.getString("promised_period"));
+            serviceItem.setAccept_time(item.getString("accept_time")==null?null:item.getString("accept_time"));
+            serviceItem.setAccept_time_sp(item.getString("accept_time_sp")==null?null:item.getString("accept_time_sp"));
+            serviceItem.setApply_time(item.getString("apply_time")==null?null:item.getString("apply_time"));
+            serviceItem.setConditions(item.getString("conditions")==null?null:item.getString("conditions"));
+            serviceItem.setService_code(item.getString("service_code")==null?null:item.getString("service_code"));
+            serviceItem.setCtg_code(item.getString("ctg_code")==null?null:item.getString("ctg_code"));
+            serviceItem.setEms(item.getString("ems")==null?null:item.getString("ems"));
+            serviceItem.setFaq(item.getString("faq")==null?null:item.getString("faq"));
+            serviceItem.setCarry_out_code(item.getString("carry_out_code")==null?null:item.getString("carry_out_code"));
+            serviceItem.setHave_certificate(item.getString("have_certificate")==null?null:item.getString("have_certificate"));
+            serviceItem.setLegal_period(item.getString("legal_period")==null?null:item.getString("legal_period"));
+            serviceItem.setTheme_gr_type(item.getString("theme_gr_type")==null?null:item.getString("theme_gr_type"));
+            serviceItem.setTheme_fr_type(item.getString("theme_fr_type")==null?null:item.getString("theme_fr_type"));
+            serviceItem.setSuit_online(item.getString("suit_online")==null?null:item.getString("suit_online"));
+            serviceItem.setService_agent_name(item.getString("service_agent_name")==null?null:item.getString("service_agent_name"));
+            serviceItem.setService_agent_code(item.getString("service_agent_code")==null?null:item.getString("service_agent_code"));
+            serviceItem.setPromised_period_type(item.getString("promised_period_type")==null?null:item.getString("promised_period_type"));
+            serviceItem.setOnline_service_url(item.getString("online_service_url")==null?null:item.getString("online_service_url"));
+            serviceItem.setNeed_charge(item.getString("need_charge")==null?null:item.getString("need_charge"));
+            serviceItem.setName(item.getString("name")==null?null:item.getString("name"));
+            serviceItem.setLegal_period_type(item.getString("legal_period_type")==null?null:item.getString("legal_period_type"));
+            serviceItem.setPromised_period(item.getString("promised_period")==null?null:item.getString("promised_period"));
+            serviceItem.setApproval_type(1);
             int itemInt = serviceItemDAO.insert(serviceItem);
             if (itemInt == 0){
                 result.setCode(502);
@@ -111,7 +117,7 @@ public class ServiceItemServiceImpl implements ServiceItemService{
                ServiceLegalBasis serviceLegalBasis = new ServiceLegalBasis();
                serviceLegalBasis.setBasis_type(legalBasis.get(i).get("basis_type")==null?null:legalBasis.get(i).get("basis_type").toString());
                serviceLegalBasis.setWh(legalBasis.get(i).get("wh")==null?null:legalBasis.get(i).get("wh").toString());
-               serviceLegalBasis.setCarry_out_date(new Date(Long.parseLong(legalBasis.get(i).get("carry_out_date")==null?null:legalBasis.get(i).get("carry_out_date").toString())));
+               serviceLegalBasis.setCarry_out_date(legalBasis.get(i).get("carry_out_date")==null?null:legalBasis.get(i).get("carry_out_date").toString());
                serviceLegalBasis.setBasis_code(legalBasis.get(i).get("basis_code")==null?null:legalBasis.get(i).get("basis_code").toString());
                serviceLegalBasis.setName(legalBasis.get(i).get("name")==null?null:legalBasis.get(i).get("name").toString());
                serviceLegalBasis.setOffice(legalBasis.get(i).get("office")==null?null:legalBasis.get(i).get("office").toString());
@@ -137,58 +143,62 @@ public class ServiceItemServiceImpl implements ServiceItemService{
 
             //办理窗口
             List<Map<String, Object>> windows = JsonUtil.jsonToList(item.getString("windows"));
-            for (int i = 0;i<windows.size();i++){
-                ServiceWindow serviceWindow = new ServiceWindow();
-                serviceWindow.setName(windows.get(i).get("name")==null?null:windows.get(0).get("name").toString());
-                serviceWindow.setWindow_code(windows.get(i).get("window_code")==null?null:windows.get(0).get("window_code").toString());
-                serviceWindow.setCarry_out_code(carryOutCode);
-                serviceWindow.setOffice_hour(windows.get(i).get("office_hour")==null?null:windows.get(0).get("office_hour").toString());
-                serviceWindow.setPhone(windows.get(i).get("phone")==null?null:windows.get(0).get("phone").toString());
-                serviceWindow.setOrg_code(windows.get(i).get("org_code")==null?null:windows.get(0).get("org_code").toString());
-                serviceWindow.setOrg_name(windows.get(i).get("org_name")==null?null:windows.get(0).get("org_name").toString());
-                serviceWindow.setAddress(windows.get(i).get("address")==null?null:windows.get(0).get("address").toString());
-                serviceWindow.setTraffic_guide(windows.get(i).get("traffic_guide")==null?null:windows.get(0).get("traffic_guide").toString());
-                serviceWindowDAO.insert(serviceWindow);
+            if (windows != null){
+                for (int i = 0;i<windows.size();i++){
+                    ServiceWindow serviceWindow = new ServiceWindow();
+                    serviceWindow.setName(windows.get(i).get("name")==null?null:windows.get(0).get("name").toString());
+                    serviceWindow.setWindow_code(windows.get(i).get("window_code")==null?null:windows.get(0).get("window_code").toString());
+                    serviceWindow.setCarry_out_code(carryOutCode);
+                    serviceWindow.setOffice_hour(windows.get(i).get("office_hour")==null?null:windows.get(0).get("office_hour").toString());
+                    serviceWindow.setPhone(windows.get(i).get("phone")==null?null:windows.get(0).get("phone").toString());
+                    serviceWindow.setOrg_code(windows.get(i).get("org_code")==null?null:windows.get(0).get("org_code").toString());
+                    serviceWindow.setOrg_name(windows.get(i).get("org_name")==null?null:windows.get(0).get("org_name").toString());
+                    serviceWindow.setAddress(windows.get(i).get("address")==null?null:windows.get(0).get("address").toString());
+                    serviceWindow.setTraffic_guide(windows.get(i).get("traffic_guide")==null?null:windows.get(0).get("traffic_guide").toString());
+                    serviceWindowDAO.insert(serviceWindow);
+                }
             }
 
             //办事材料
             List<Map<String, Object>> submitDocuments = JsonUtil.jsonToList(item.getString("submit_documents"));
-            List<ServiceApplicationMaterials> applicationMaterialsList = new ArrayList<>();
-            for (int i = 0;i<submitDocuments.size();i++){
-                ServiceApplicationMaterials applicationMaterials = new ServiceApplicationMaterials();
-                applicationMaterials.setMaterials_id(submitDocuments.get(i).get("materials_id")==null?null:submitDocuments.get(i).get("materials_id").toString());
-                applicationMaterials.setInner_code(submitDocuments.get(i).get("inner_code")==null?null:submitDocuments.get(i).get("inner_code").toString());
-                applicationMaterials.setMaterials_code(submitDocuments.get(i).get("materials_code")==null?null:submitDocuments.get(i).get("materials_code").toString());
-                applicationMaterials.setMaterials_name(submitDocuments.get(i).get("materials_name")==null?null:submitDocuments.get(i).get("materials_name").toString());
-                applicationMaterials.setCopy(submitDocuments.get(i).get("copy")==null?null:submitDocuments.get(i).get("copy").toString());
-                applicationMaterials.setFilling_requirement(submitDocuments.get(i).get("filling_requirement")==null?null:submitDocuments.get(i).get("filling_requirement").toString());
-                applicationMaterials.setStandard_collection(submitDocuments.get(i).get("standard_collection")==null?null:submitDocuments.get(i).get("standard_collection").toString());
-                applicationMaterials.setOrigin(submitDocuments.get(i).get("origin")==null?null:submitDocuments.get(i).get("origin").toString());
-                applicationMaterials.setElect(submitDocuments.get(i).get("elect")==null?null:submitDocuments.get(i).get("elect").toString());
-                applicationMaterials.setMaterials_type(submitDocuments.get(i).get("materials_type")==null?null:submitDocuments.get(i).get("materials_type").toString());
-                applicationMaterials.setElectronic_license_code(submitDocuments.get(i).get("electronic_license_code")==null?null:submitDocuments.get(i).get("electronic_license_code").toString());
-                applicationMaterials.setElectronic_license(submitDocuments.get(i).get("electronic_license")==null?null:submitDocuments.get(i).get("electronic_license").toString());
-                applicationMaterials.setIs_relate_license(submitDocuments.get(i).get("is_relate_license")==null?null:submitDocuments.get(i).get("is_relate_license").toString());
-                applicationMaterials.setSubmission_required(submitDocuments.get(i).get("submission_required")==null?null:submitDocuments.get(i).get("submission_required").toString());
-                applicationMaterials.setCarry_out_code(carryOutCode);
+            if (submitDocuments != null){
+                List<ServiceApplicationMaterials> applicationMaterialsList = new ArrayList<>();
+                for (int i = 0;i<submitDocuments.size();i++){
+                    ServiceApplicationMaterials applicationMaterials = new ServiceApplicationMaterials();
+                    applicationMaterials.setMaterials_id(submitDocuments.get(i).get("materials_id")==null?null:submitDocuments.get(i).get("materials_id").toString());
+                    applicationMaterials.setInner_code(submitDocuments.get(i).get("inner_code")==null?null:submitDocuments.get(i).get("inner_code").toString());
+                    applicationMaterials.setMaterials_code(submitDocuments.get(i).get("materials_code")==null?null:submitDocuments.get(i).get("materials_code").toString());
+                    applicationMaterials.setMaterials_name(submitDocuments.get(i).get("materials_name")==null?null:submitDocuments.get(i).get("materials_name").toString());
+                    applicationMaterials.setCopy(submitDocuments.get(i).get("copy")==null?null:submitDocuments.get(i).get("copy").toString());
+                    applicationMaterials.setFilling_requirement(submitDocuments.get(i).get("filling_requirement")==null?null:submitDocuments.get(i).get("filling_requirement").toString());
+                    applicationMaterials.setStandard_collection(submitDocuments.get(i).get("standard_collection")==null?null:submitDocuments.get(i).get("standard_collection").toString());
+                    applicationMaterials.setOrigin(submitDocuments.get(i).get("origin")==null?null:submitDocuments.get(i).get("origin").toString());
+                    applicationMaterials.setElect(submitDocuments.get(i).get("elect")==null?null:submitDocuments.get(i).get("elect").toString());
+                    applicationMaterials.setMaterials_type(submitDocuments.get(i).get("materials_type")==null?null:submitDocuments.get(i).get("materials_type").toString());
+                    applicationMaterials.setElectronic_license_code(submitDocuments.get(i).get("electronic_license_code")==null?null:submitDocuments.get(i).get("electronic_license_code").toString());
+                    applicationMaterials.setElectronic_license(submitDocuments.get(i).get("electronic_license")==null?null:submitDocuments.get(i).get("electronic_license").toString());
+                    applicationMaterials.setIs_relate_license(submitDocuments.get(i).get("is_relate_license")==null?null:submitDocuments.get(i).get("is_relate_license").toString());
+                    applicationMaterials.setSubmission_required(submitDocuments.get(i).get("submission_required")==null?null:submitDocuments.get(i).get("submission_required").toString());
+                    applicationMaterials.setCarry_out_code(carryOutCode);
 
-                //文件模板
-                List<Map<String, Object>> sampleFile = JsonUtil.jsonToList(submitDocuments.get(i).get("sample_file")==null?null:submitDocuments.get(0).get("sample_file").toString());
-                if (sampleFile.size() != 0){
-                    applicationMaterials.setSample_file_url(sampleFile.get(0).get("file_path")==null?null:sampleFile.get(0).get("file_path").toString());
-                    applicationMaterials.setSample_file_name(sampleFile.get(0).get("file_name")==null?null:sampleFile.get(0).get("file_name").toString());
-                    applicationMaterials.setSample_code(sampleFile.get(0).get("file_id")==null?null:sampleFile.get(0).get("file_id").toString());
+                    //文件模板
+                    List<Map<String, Object>> sampleFile = JsonUtil.jsonToList(submitDocuments.get(i).get("sample_file")==null?null:submitDocuments.get(i).get("sample_file").toString());
+                    if (sampleFile.size() != 0){
+                        applicationMaterials.setSample_file_url(sampleFile.get(0).get("file_path")==null?null:sampleFile.get(0).get("file_path").toString());
+                        applicationMaterials.setSample_file_name(sampleFile.get(0).get("file_name")==null?null:sampleFile.get(0).get("file_name").toString());
+                        applicationMaterials.setSample_code(sampleFile.get(0).get("file_id")==null?null:sampleFile.get(0).get("file_id").toString());
+                    }
+                    //文件空表
+                    List<Map<String, Object>> emptyFile = JsonUtil.jsonToList(submitDocuments.get(i).get("empty_file")==null?null:submitDocuments.get(i).get("empty_file").toString());
+                    if (emptyFile.size() != 0){
+                        applicationMaterials.setEmpty_file_url(emptyFile.get(0).get("file_path")==null?null:emptyFile.get(0).get("file_path").toString());
+                        applicationMaterials.setEmpty_file_name(emptyFile.get(0).get("file_name")==null?null:emptyFile.get(0).get("file_name").toString());
+                        applicationMaterials.setEmpty_code(emptyFile.get(0).get("file_id")==null?null:emptyFile.get(0).get("file_id").toString());
+                    }
+                    applicationMaterialsList.add(applicationMaterials);
                 }
-                //文件空表
-                List<Map<String, Object>> emptyFile = JsonUtil.jsonToList(submitDocuments.get(i).get("empty_file")==null?null:submitDocuments.get(0).get("empty_file").toString());
-                if (emptyFile.size() != 0){
-                    applicationMaterials.setEmpty_file_url(emptyFile.get(0).get("file_path")==null?null:emptyFile.get(0).get("file_path").toString());
-                    applicationMaterials.setEmpty_file_name(emptyFile.get(0).get("file_name")==null?null:emptyFile.get(0).get("file_name").toString());
-                    applicationMaterials.setEmpty_code(emptyFile.get(0).get("file_id")==null?null:emptyFile.get(0).get("file_id").toString());
-                }
-                applicationMaterialsList.add(applicationMaterials);
+                serviceApplicationMaterialsDAO.insertList(applicationMaterialsList);
             }
-            serviceApplicationMaterialsDAO.insertList(applicationMaterialsList);
             result.setCode(200);
             result.setData("事项同步成功，事项编码：" + carryOutCode);
         } else {
@@ -197,5 +207,48 @@ public class ServiceItemServiceImpl implements ServiceItemService{
             result.setData("同步失败，原因="+jsonObject.getString("message"));
         }
        return result;
+    }
+
+    @Override
+    public ServiceItem queryItemByCarryOutCode(String carryOutCode) {
+        return serviceItemDAO.queryItemByCarryOutCode(carryOutCode);
+    }
+
+    @Override
+    public ServiceWindow queryWindowByCarryOutCode(String carryOutCode) {
+        return serviceWindowDAO.queryWindowByCarryOutCode(carryOutCode);
+    }
+
+    @Override
+    public List<ServiceLegalBasis> queryLegalBasisByCarryOutCode(String carryOutCode) {
+        return serviceLegalBasisDAO.queryLegalBasisByCarryOutCode(carryOutCode);
+    }
+
+    @Override
+    public List<ServiceApplicationMaterials> queryMaterialsByCarryOutCode(String carryOutCode) {
+        return serviceApplicationMaterialsDAO.queryMaterialsByCarryOutCode(carryOutCode);
+    }
+
+    @Override
+    public ResponseResult selectLawterm(String basisCode) {
+        ResponseResult result = new ResponseResult();
+        result.setCode(200);
+        result.setData(serviceLawtermDAO.selectLawterm(basisCode));
+        return result;
+    }
+
+    @Override
+    public ResponseResult updateApprovalType(ServiceItem serviceItem) {
+        ResponseResult result = new ResponseResult();
+        if (serviceItem.getApproval_type() == 2){
+            serviceItemDAO.updateApprovalTypeIsTwo(serviceItem);
+        }else if (serviceItem.getApproval_type() == 1){
+            serviceItemDAO.updateApprovalTypeIsOne(serviceItem);
+        }else if (serviceItem.getApproval_type() == 3){
+            serviceItemDAO.updateApprovalTypeIsThree(serviceItem);
+        }
+        result.setCode(200);
+        result.setData("事项审批流程操作成功");
+        return result;
     }
 }

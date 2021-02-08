@@ -23,6 +23,10 @@
     </foreach>
   </insert>
 
+  <select id="selectLawterm" resultMap="BaseResultMap">
+    select * from service_lawterm where basis_code = #{basisCode}
+  </select>
+
   <insert id="insert" parameterType="com.wyait.manage.pojo.ServiceLawterm">
     insert into service_lawterm (term_name, sort_num, basis_code, 
       content)

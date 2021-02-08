@@ -12,4 +12,6 @@ import java.util.List;
 @Repository
 public interface ServiceLawtermDAO extends MyBatisBaseDao<ServiceLawterm, ServiceLawterm> {
     int insertList(@Param("serviceLawterms") List<ServiceLawterm> serviceLawterms);
+
+    ServiceLawterm selectLawterm(String basisCode);
 }

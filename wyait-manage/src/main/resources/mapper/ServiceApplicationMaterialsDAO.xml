@@ -54,6 +54,16 @@
     </foreach>
   </insert>
 
+  <select id="queryMaterialsByCarryOutCode" resultMap="BaseResultMap">
+    select * from service_application_materials where carry_out_code = #{carryOutCode}
+  </select>
+
+  <select id="selMaterialsBySituationDetailsId" resultMap="BaseResultMap">
+        select * from service_materials_situation sms
+            left join service_application_materials sam on sms.materials_id = sam.materials_id
+        where sms.situation_details_id = #{situationDetailsId}
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

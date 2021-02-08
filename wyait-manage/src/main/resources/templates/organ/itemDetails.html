@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:include="layout :: htmlhead" th:with="title='用户管理'"></head>
+<style>
+    .top{
+        margin-top:10px;
+        width: 100%;
+        /*background-color: #00B83F;*/
+    }
+    .top1{
+        width: 100%;
+
+        float: left;
+        /*background-color: #00b8b8;*/
+    }
+
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+
+    <div class="layui-body" style="margin: 1%">
+        <hr class="layui-bg-black"/>
+        <span>事项详情</span><br/>
+<!--        <button class="layui-btn layui-btn-normal" onclick="addUser()">绑定通用材料</button>-->
+
+        <div class="top">
+            <div class="top1">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th >事项名称</th>
+                        <th >事项编码</th>
+                        <th >所属部门</th>
+                        <th >个人主题</th>
+                        <th >法人主题</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${serviceItem.name}"></td>
+                        <td th:text="${serviceItem.carry_out_code}"></td>
+                        <td th:text="${serviceItem.service_agent_name}"></td>
+                        <td th:text="${serviceItem.theme_gr_type == null?'否':'是'}"></td>
+                        <td th:text="${serviceItem.theme_fr_type == null?'否':'是'}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+<!--                <div style="margin-left: 47%;margin-top: 1%;">-->
+<!--                    <a href="/data/dataList" class="layui-btn layui-btn-normal">返回</a>-->
+<!--                </div>-->
+            </div>
+        </div>
+<!--        </script>-->
+
+        <hr class="layui-bg-black" style="margin-top: 130px"/>
+        <button class="layui-btn layui-btn-normal" onclick="addUser()">添加情形</button>
+        <hr class="layui-bg-black" />
+        <span>事项关联的情形</span>
+        <table id="uesrList" lay-filter="userTable"></table>
+        <div style="display:none;" id="currentUser"><shiro:principal property="id"></shiro:principal></div>
+
+
+
+        <script type="text/html" id="optBar">
+            <a class="layui-btn layui-btn-xs" lay-event="sel">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs" lay-event="del">删除</a>
+        </script>
+
+        <hr class="layui-bg-black"/>
+        <span>办事窗口</span>
+        <div class="top">
+            <div class="top1">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>窗口名称</th>
+                        <th>联系电话</th>
+                        <th>窗口地址</th>
+                        <th>办公时间</th>
+                        <th>交通指引</th>
+                    </tr>
+                    </thead>
+                    <tbody id="dataEnding">
+                    <tr>
+                        <td th:text="${serviceWindow.name}"></td>
+                        <td th:text="${serviceWindow.phone}"></td>
+                        <td th:text="${serviceWindow.address}"></td>
+                        <td th:text="${serviceWindow.office_hour}"></td>
+                        <td th:text="${serviceWindow.traffic_guide}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr class="layui-bg-black"/>
+        <span>法律法规</span>
+        <div class="top">
+            <div class="top1">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>法规名称</th>
+                        <th>法律文号</th>
+                        <th>依据分类</th>
+                        <th>颁布机关</th>
+                        <th>实施时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="blankData">
+                    <tr th:each="legalBasi,loopStatus:${legalBasis}" th:class="${loopStatus}">
+                        <td th:text="${loopStatus.count}" style="width: 20px;"></td>
+                        <td th:text="${legalBasi.name}"></td>
+                        <td th:text="${legalBasi.wh}"></td>
+                        <td th:text="${legalBasi.basis_type}"></td>
+                        <td th:text="${legalBasi.office}"></td>
+                        <td th:text="${legalBasi.carry_out_date}"></td>
+
+                        <td><span class="layui-btn layui-btn-xs" th:onclick="'selectLawterm('+ '\'' +${legalBasi.basis_code}+ '\'' +')'">查看详情</span></td>
+<!--                        th:onclick="'edit('+ ${situationDetail.id} +',\''+ ${situationDetail.detailsDescribe} +'\','+${situationDetail.type}+',\''+${situationDetail.remarks} +'\')'">编辑</a>-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr class="layui-bg-black"/>
+        <span>材料列表</span>
+        <div class="top">
+            <div class="top1">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>材料名称</th>
+                        <th>复印件份数</th>
+                        <th>原件份数</th>
+                        <th>电子件份数</th>
+                        <th>空表下载</th>
+                        <th>范本下载</th>
+                        <th>是否关联电子证照</th>
+                        <th>是否免提交</th>
+                    </tr>
+                    </thead>
+                    <tbody id="blankData1">
+                    <tr th:each="material,loopStatus:${materials}" th:class="${loopStatus}">
+                        <td th:text="${loopStatus.count}" style="width: 20px;"></td>
+                        <td th:text="${material.materials_name}"></td>
+                        <td th:text="${material.copy}"></td>
+                        <td th:text="${material.origin}"></td>
+                        <td th:text="${material.elect}"></td>
+                        <td><a th:text="${material.empty_file_name}" target="_blank"  referrerpolicy="no-referrer" th:href="${material.empty_file_url}"></a></td>
+                        <td><a th:text="${material.sample_file_name}" target="_blank" referrerpolicy="no-referrer" th:href="${material.sample_file_url}"></a></td>
+                        <td th:text="${material.is_relate_license==0?'否':'是'}"></td>
+                        <td th:text="${material.submission_required==0?'否':'是'}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--添加或编辑用户-->
+    <div id="setUser2" class="layer_self_wrap" style="width:500px;display:none;height: 600px">
+        <form id="doooForm2" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">法规名称</label>
+                <div class="layui-input-block">
+                    <input type="type" value="" class="layui-input" name="term_name" id="term_name" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">法规内容</label>
+                <div class="layui-input-block">
+                    <textarea name="approval_type" placeholder="请输入内容" class="layui-textarea" id="content" style="height: 400px"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--添加或编辑用户-->
+    <div id="setUser" class="layer_self_wrap" style="width:500px;display:none;height: 600px">
+        <form id="situationForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
+            <input id="situationId" type="hidden" name="situationId"/>
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形名称</label>
+                <div class="layui-input-inline">
+                    <input id="situationDescribe" name="situationDescribe" lay-verify="required" autocomplete="off" class="layui-input" type="text" style="width: 390px;"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-block">
+                   <input name="departmentId" type="hidden" th:value="${serviceItem.service_agent_code}"/>
+                   <input type="text" class="layui-input" th:value="${serviceItem.service_agent_name}" readonly="readonly" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属事项</label>
+                <div class="layui-input-block">
+                    <input name="doooId"  id="doooId" type="hidden" th:value="${serviceItem.carry_out_code}"/>
+                    <input  type="text" class="layui-input" th:value="${serviceItem.name}" readonly="readonly" />
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形类型</label>
+                <div class="layui-input-block">
+                    <select name="nodesType" lay-verify="required" id="nodesTyps">
+                        <option value="1">节点情形</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形级别</label>
+                <div class="layui-input-block">
+                    <select name="situationLevel" lay-verify="required" id="situationLevel">
+                        <option value="1">一级情形</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">情形状态</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-verify="required" id="type">
+                        <option value=""></option>
+                        <option value="1">单选</option>
+                        <option value="2">多选</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 10px;">
+                    <button class="layui-btn"  lay-submit="" lay-filter="userSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+    <script src="/js/dateUtils.js"></script>
+    <script src="/js/organ/itemDetails.js"></script>
+    <script>
+        function selectLawterm(basisCode){
+            $.ajax({
+                type: "POST",
+                data: {'basisCode':basisCode},
+                url: "/serviceItem/selectLawterm",
+                success: function (data) {
+                    if (data.code == 200) {
+                        $("#term_name").val(data.data.term_name);
+                        $("#content").val(data.data.content);
+                        layer.open({
+                            type:1,
+                            title: "法律法规",
+                            fixed:false,
+                            resize :false,
+                            shadeClose: true,
+                            area: ['550px'],
+                            content:$('#setUser2'),
+                            end:function(){
+                            }
+                        });
+                    }else{
+                        layer.alert(data.data,function(){
+                            location.reload();
+                        });
+                    }
+                },
+                error: function () {
+                    layer.alert("操作请求错误，请您稍后再试",function(){
+                        layer.closeAll();
+                        //加载load方法
+                        load(obj);//自定义
+                    });
+                }
+            });
+        }
+
+    </script>
+
+</div>
+</body>
+</html>

@@ -119,7 +119,45 @@ public class ServiceItem implements Serializable {
      */
     private String theme_fr_type;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 审批状态：1.待审批 2.审批中 3.审批通过
+     */
+    private Integer approval_type;
+
+    /**
+     * 提交说明
+     */
+    private String put_text;
+
+    /**
+     * 审批说明
+     */
+    private String approval_text;
+
+
+    public String getPut_text() {
+        return put_text;
+    }
+
+    public void setPut_text(String put_text) {
+        this.put_text = put_text;
+    }
+
+    public String getApproval_text() {
+        return approval_text;
+    }
+
+    public void setApproval_text(String approval_text) {
+        this.approval_text = approval_text;
+    }
+
+    public Integer getApproval_type() {
+        return approval_type;
+    }
+
+    public void setApproval_type(Integer approval_type) {
+        this.approval_type = approval_type;
+    }
 
     public String getCarry_out_code() {
         return carry_out_code;
@@ -297,101 +335,34 @@ public class ServiceItem implements Serializable {
         this.theme_fr_type = theme_fr_type;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        ServiceItem other = (ServiceItem) that;
-        return (this.getCarry_out_code() == null ? other.getCarry_out_code() == null : this.getCarry_out_code().equals(other.getCarry_out_code()))
-            && (this.getService_agent_code() == null ? other.getService_agent_code() == null : this.getService_agent_code().equals(other.getService_agent_code()))
-            && (this.getService_agent_name() == null ? other.getService_agent_name() == null : this.getService_agent_name().equals(other.getService_agent_name()))
-            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getService_code() == null ? other.getService_code() == null : this.getService_code().equals(other.getService_code()))
-            && (this.getCtg_code() == null ? other.getCtg_code() == null : this.getCtg_code().equals(other.getCtg_code()))
-            && (this.getAccept_time() == null ? other.getAccept_time() == null : this.getAccept_time().equals(other.getAccept_time()))
-            && (this.getConditions() == null ? other.getConditions() == null : this.getConditions().equals(other.getConditions()))
-            && (this.getLegal_period() == null ? other.getLegal_period() == null : this.getLegal_period().equals(other.getLegal_period()))
-            && (this.getLegal_period_type() == null ? other.getLegal_period_type() == null : this.getLegal_period_type().equals(other.getLegal_period_type()))
-            && (this.getPromised_period() == null ? other.getPromised_period() == null : this.getPromised_period().equals(other.getPromised_period()))
-            && (this.getPromised_period_type() == null ? other.getPromised_period_type() == null : this.getPromised_period_type().equals(other.getPromised_period_type()))
-            && (this.getApply_time() == null ? other.getApply_time() == null : this.getApply_time().equals(other.getApply_time()))
-            && (this.getAccept_time_sp() == null ? other.getAccept_time_sp() == null : this.getAccept_time_sp().equals(other.getAccept_time_sp()))
-            && (this.getHave_certificate() == null ? other.getHave_certificate() == null : this.getHave_certificate().equals(other.getHave_certificate()))
-            && (this.getNeed_charge() == null ? other.getNeed_charge() == null : this.getNeed_charge().equals(other.getNeed_charge()))
-            && (this.getSuit_online() == null ? other.getSuit_online() == null : this.getSuit_online().equals(other.getSuit_online()))
-            && (this.getOnline_service_url() == null ? other.getOnline_service_url() == null : this.getOnline_service_url().equals(other.getOnline_service_url()))
-            && (this.getEms() == null ? other.getEms() == null : this.getEms().equals(other.getEms()))
-            && (this.getFaq() == null ? other.getFaq() == null : this.getFaq().equals(other.getFaq()))
-            && (this.getTheme_gr_type() == null ? other.getTheme_gr_type() == null : this.getTheme_gr_type().equals(other.getTheme_gr_type()))
-            && (this.getTheme_fr_type() == null ? other.getTheme_fr_type() == null : this.getTheme_fr_type().equals(other.getTheme_fr_type()));
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getCarry_out_code() == null) ? 0 : getCarry_out_code().hashCode());
-        result = prime * result + ((getService_agent_code() == null) ? 0 : getService_agent_code().hashCode());
-        result = prime * result + ((getService_agent_name() == null) ? 0 : getService_agent_name().hashCode());
-        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getService_code() == null) ? 0 : getService_code().hashCode());
-        result = prime * result + ((getCtg_code() == null) ? 0 : getCtg_code().hashCode());
-        result = prime * result + ((getAccept_time() == null) ? 0 : getAccept_time().hashCode());
-        result = prime * result + ((getConditions() == null) ? 0 : getConditions().hashCode());
-        result = prime * result + ((getLegal_period() == null) ? 0 : getLegal_period().hashCode());
-        result = prime * result + ((getLegal_period_type() == null) ? 0 : getLegal_period_type().hashCode());
-        result = prime * result + ((getPromised_period() == null) ? 0 : getPromised_period().hashCode());
-        result = prime * result + ((getPromised_period_type() == null) ? 0 : getPromised_period_type().hashCode());
-        result = prime * result + ((getApply_time() == null) ? 0 : getApply_time().hashCode());
-        result = prime * result + ((getAccept_time_sp() == null) ? 0 : getAccept_time_sp().hashCode());
-        result = prime * result + ((getHave_certificate() == null) ? 0 : getHave_certificate().hashCode());
-        result = prime * result + ((getNeed_charge() == null) ? 0 : getNeed_charge().hashCode());
-        result = prime * result + ((getSuit_online() == null) ? 0 : getSuit_online().hashCode());
-        result = prime * result + ((getOnline_service_url() == null) ? 0 : getOnline_service_url().hashCode());
-        result = prime * result + ((getEms() == null) ? 0 : getEms().hashCode());
-        result = prime * result + ((getFaq() == null) ? 0 : getFaq().hashCode());
-        result = prime * result + ((getTheme_gr_type() == null) ? 0 : getTheme_gr_type().hashCode());
-        result = prime * result + ((getTheme_fr_type() == null) ? 0 : getTheme_fr_type().hashCode());
-        return result;
+    public ServiceItem() {
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", carry_out_code=").append(carry_out_code);
-        sb.append(", service_agent_code=").append(service_agent_code);
-        sb.append(", service_agent_name=").append(service_agent_name);
-        sb.append(", name=").append(name);
-        sb.append(", service_code=").append(service_code);
-        sb.append(", ctg_code=").append(ctg_code);
-        sb.append(", accept_time=").append(accept_time);
-        sb.append(", conditions=").append(conditions);
-        sb.append(", legal_period=").append(legal_period);
-        sb.append(", legal_period_type=").append(legal_period_type);
-        sb.append(", promised_period=").append(promised_period);
-        sb.append(", promised_period_type=").append(promised_period_type);
-        sb.append(", apply_time=").append(apply_time);
-        sb.append(", accept_time_sp=").append(accept_time_sp);
-        sb.append(", have_certificate=").append(have_certificate);
-        sb.append(", need_charge=").append(need_charge);
-        sb.append(", suit_online=").append(suit_online);
-        sb.append(", online_service_url=").append(online_service_url);
-        sb.append(", ems=").append(ems);
-        sb.append(", faq=").append(faq);
-        sb.append(", theme_gr_type=").append(theme_gr_type);
-        sb.append(", theme_fr_type=").append(theme_fr_type);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "ServiceItem{" +
+                "carry_out_code='" + carry_out_code + '\'' +
+                ", service_agent_code='" + service_agent_code + '\'' +
+                ", service_agent_name='" + service_agent_name + '\'' +
+                ", name='" + name + '\'' +
+                ", service_code='" + service_code + '\'' +
+                ", ctg_code='" + ctg_code + '\'' +
+                ", accept_time='" + accept_time + '\'' +
+                ", conditions='" + conditions + '\'' +
+                ", legal_period='" + legal_period + '\'' +
+                ", legal_period_type='" + legal_period_type + '\'' +
+                ", promised_period='" + promised_period + '\'' +
+                ", promised_period_type='" + promised_period_type + '\'' +
+                ", apply_time='" + apply_time + '\'' +
+                ", accept_time_sp='" + accept_time_sp + '\'' +
+                ", have_certificate='" + have_certificate + '\'' +
+                ", need_charge='" + need_charge + '\'' +
+                ", suit_online='" + suit_online + '\'' +
+                ", online_service_url='" + online_service_url + '\'' +
+                ", ems='" + ems + '\'' +
+                ", faq='" + faq + '\'' +
+                ", theme_gr_type='" + theme_gr_type + '\'' +
+                ", theme_fr_type='" + theme_fr_type + '\'' +
+                '}';
     }
 }

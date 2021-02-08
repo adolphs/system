@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ServiceWindowDAO extends MyBatisBaseDao<ServiceWindow, ServiceWindow> {
+
+    ServiceWindow queryWindowByCarryOutCode(String carryOutCode);
+
 }

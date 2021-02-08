@@ -24,16 +24,22 @@
     <result column="faq" jdbcType="VARCHAR" property="faq" />
     <result column="theme_gr_type" jdbcType="VARCHAR" property="theme_gr_type" />
     <result column="theme_fr_type" jdbcType="VARCHAR" property="theme_fr_type" />
+    <result column="put_text" jdbcType="VARCHAR" property="put_text" />
+    <result column="approval_text" jdbcType="VARCHAR" property="approval_text" />
+    <result column="approval_type" jdbcType="INTEGER" property="approval_type" />
   </resultMap>
   <sql id="Base_Column_List">
     carry_out_code, service_agent_code, service_agent_name, `name`, service_code, ctg_code, 
     accept_time, conditions, legal_period, legal_period_type, promised_period, promised_period_type, 
     apply_time, accept_time_sp, have_certificate, need_charge, suit_online, online_service_url, 
-    ems, faq, theme_gr_type, theme_fr_type
+    ems, faq, theme_gr_type, theme_fr_type,approval_type,approval_text,put_text
   </sql>
 
-  <select id="getItemList" resultType="com.wyait.manage.pojo.ServiceItem">
-        select * from service_item where 1=1
+  <select id="getItemList" resultMap="BaseResultMap">
+        select carry_out_code, service_agent_code, service_agent_name, `name`, service_code, ctg_code,
+    accept_time, conditions, legal_period, legal_period_type, promised_period, promised_period_type,
+    apply_time, accept_time_sp, have_certificate, need_charge, suit_online, online_service_url,
+    ems, faq, theme_gr_type, theme_fr_type,approval_type,approval_text,put_text from service_item where 1=1
     <if test="item.carry_out_code != null and item.carry_out_code != ''">
       and carry_out_code = #{item.carry_out_code}
     </if>
@@ -42,6 +48,9 @@
     </if>
     <if test="item.service_agent_code != null and item.service_agent_code != ''">
       and service_agent_code = #{item.service_agent_code}
+    </if>
+    <if test="item.approval_type != null and item.approval_type != ''">
+      and approval_type = #{item.approval_type}
     </if>
   </select>
 
@@ -70,7 +79,7 @@
       promised_period_type, apply_time, accept_time_sp, 
       have_certificate, need_charge, suit_online, 
       online_service_url, ems, faq, 
-      theme_gr_type, theme_fr_type)
+      theme_gr_type, theme_fr_type,approval_type,put_text,approval_text)
     values (#{carry_out_code,jdbcType=VARCHAR}, #{service_agent_code,jdbcType=VARCHAR}, 
       #{service_agent_name,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{service_code,jdbcType=VARCHAR}, 
       #{ctg_code,jdbcType=VARCHAR}, #{accept_time,jdbcType=VARCHAR}, #{conditions,jdbcType=VARCHAR}, 
@@ -78,8 +87,35 @@
       #{promised_period_type,jdbcType=VARCHAR}, #{apply_time,jdbcType=VARCHAR}, #{accept_time_sp,jdbcType=VARCHAR}, 
       #{have_certificate,jdbcType=VARCHAR}, #{need_charge,jdbcType=VARCHAR}, #{suit_online,jdbcType=VARCHAR}, 
       #{online_service_url,jdbcType=VARCHAR}, #{ems,jdbcType=VARCHAR}, #{faq,jdbcType=VARCHAR}, 
-      #{theme_gr_type,jdbcType=VARCHAR}, #{theme_fr_type,jdbcType=VARCHAR})
+      #{theme_gr_type,jdbcType=VARCHAR}, #{theme_fr_type,jdbcType=VARCHAR},#{approval_type,jdbcType=INTEGER},
+            #{put_text,jdbcType=VARCHAR}, #{approval_text,jdbcType=VARCHAR}     )
   </insert>
+
+  <select id="queryItemByCarryOutCode" resultMap="BaseResultMap">
+    select carry_out_code, service_agent_code, service_agent_name, `name`, service_code, ctg_code,
+           accept_time, conditions, legal_period, legal_period_type, promised_period, promised_period_type,
+           apply_time, accept_time_sp, have_certificate, need_charge, suit_online, online_service_url,
+           ems, faq, theme_gr_type, theme_fr_type, approval_type,put_text,approval_text from service_item
+    where
+      carry_out_code = #{carryOutCode}
+  </select>
+
+  <update id="updateApprovalTypeIsTwo" parameterType="com.wyait.manage.pojo.ServiceItem">
+    update  service_item set approval_type = #{serviceItem.approval_type},put_text = #{serviceItem.put_text}
+    where carry_out_code = #{serviceItem.carry_out_code}
+  </update>
+
+  <update id="updateApprovalTypeIsOne" parameterType="com.wyait.manage.pojo.ServiceItem">
+    update  service_item set approval_type = #{serviceItem.approval_type},approval_text = #{serviceItem.approval_text}
+    where carry_out_code = #{serviceItem.carry_out_code}
+  </update>
+
+  <update id="updateApprovalTypeIsThree" parameterType="com.wyait.manage.pojo.ServiceItem">
+    update  service_item set approval_type = #{serviceItem.approval_type}
+    where carry_out_code = #{serviceItem.carry_out_code}
+  </update>
+
+
 <!--  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.ServiceItem">-->
 <!--    insert into service_item-->
 <!--    <trim prefix="(" suffix=")" suffixOverrides=",">-->

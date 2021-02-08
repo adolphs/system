@@ -7,7 +7,7 @@
     <result column="wh" jdbcType="VARCHAR" property="wh" />
     <result column="basis_type" jdbcType="VARCHAR" property="basis_type" />
     <result column="office" jdbcType="VARCHAR" property="office" />
-    <result column="carry_out_date" jdbcType="TIMESTAMP" property="carry_out_date" />
+    <result column="carry_out_date" jdbcType="VARCHAR" property="carry_out_date" />
     <result column="carry_out_code" jdbcType="VARCHAR" property="carry_out_code" />
   </resultMap>
 
@@ -24,6 +24,12 @@
     </foreach>
   </insert>
 
+  <select id="queryLegalBasisByCarryOutCode" resultMap="BaseResultMap">
+    select *
+    from service_legal_basis
+    where
+      carry_out_code = #{carryOutCode}
+  </select>
 
   <insert id="insert" parameterType="com.wyait.manage.pojo.ServiceLegalBasis">
     insert into service_legal_basis (basis_code, `name`, wh, 

@@ -27,15 +27,6 @@
                         <option value=""></option>
                     </select>
                 </div>
-                <label class="layui-form-label" >所属类型</label>
-                <div class="layui-input-inline">
-                    <select name="approval_type" id="approvalType" autocomplete="off">
-                        <option value=""></option>
-                        <option value="3">审批通过</option>
-                        <option value="1">待审批</option>
-                        <option value="2">审批中</option>
-                    </select>
-                </div>
             </div>
 
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -59,17 +50,9 @@
         </script>
 
         <script type="text/html" id="optBar">
-            {{# if(d.approval_type === 1){}}
-            <a class="layui-btn layui-btn-xs" lay-event="put">通过</a>
             <a class="layui-btn layui-btn-xs" lay-event="select">详情</a>
-<!--            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
-            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-            {{#  } else if(d.approval_type === 2){ }}
-            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="recover">撤回</a>
-            {{#  } else { }}
-            <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="recover">退订</a>
-            <a class="layui-btn layui-btn-xs" lay-event="select">详情</a>
-            {{#  } }}
+            <a class="layui-btn layui-btn-xs" lay-event="recover">通过</a>
+            <a class="layui-btn layui-btn-xs" lay-event="put">驳回</a>
         </script>
     </div>
 
@@ -98,7 +81,7 @@
         <form id="doooForm2" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
             <input type="hidden" id="doooId3" name="carry_out_code" />
             <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">提交说明</label>
+                <label class="layui-form-label">驳回说明</label>
                 <div class="layui-input-block">
                     <textarea name="approval_type" placeholder="请输入内容" class="layui-textarea" id="approval_type"></textarea>
                 </div>
@@ -115,7 +98,7 @@
     <!--底部-->
     <div th:replace="fragments/footer :: footer"></div>
     <script src="/js/dateUtils.js"></script>
-    <script src="/js/organ/itemList.js"></script>
+    <script src="/js/organ/approvalItemList.js"></script>
     <script>
     layui.use(['form', 'upload', 'layer'], function () {
 

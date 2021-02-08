@@ -13,9 +13,6 @@
     <result column="traffic_guide" jdbcType="VARCHAR" property="traffic_guide" />
   </resultMap>
 
-  <sql id="Blob_Column_List">
-    address, traffic_guide
-  </sql>
   <insert id="insert" parameterType="com.wyait.manage.pojo.ServiceWindow">
     insert into service_window (window_code, `name`, phone, 
       office_hour, org_code, org_name, 
@@ -87,4 +84,8 @@
       </if>
     </trim>
   </insert>
+
+  <select id="queryWindowByCarryOutCode" resultMap="BaseResultMap">
+    select * from service_window where carry_out_code = #{carryOutCode}
+  </select>
 </mapper>

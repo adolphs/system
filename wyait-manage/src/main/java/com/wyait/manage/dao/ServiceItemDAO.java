@@ -17,4 +17,11 @@ public interface ServiceItemDAO{
 
     int insert(ServiceItem serviceItem);
 
+    ServiceItem queryItemByCarryOutCode(String carryOutCode);
+
+    int updateApprovalTypeIsTwo(@Param("serviceItem") ServiceItem serviceItem);
+
+    int updateApprovalTypeIsOne(@Param("serviceItem")ServiceItem serviceItem);
+
+    int updateApprovalTypeIsThree(@Param("serviceItem")ServiceItem serviceItem);
 }

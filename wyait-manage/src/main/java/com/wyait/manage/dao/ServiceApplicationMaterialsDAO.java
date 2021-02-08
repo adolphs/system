@@ -12,4 +12,8 @@ import java.util.List;
 @Repository
 public interface ServiceApplicationMaterialsDAO extends MyBatisBaseDao<ServiceApplicationMaterials, String> {
     int insertList(@Param("applicationMaterialsList") List<ServiceApplicationMaterials> applicationMaterialsList);
+
+    List<ServiceApplicationMaterials> queryMaterialsByCarryOutCode(String carryOutCode);
+
+    List<ServiceApplicationMaterials> selMaterialsBySituationDetailsId(String situationDetailsId);
 }

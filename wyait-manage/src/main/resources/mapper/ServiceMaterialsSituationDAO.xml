@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.ServiceMaterialsSituationDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.ServiceMaterialsSituation">
+    <result column="materials_id" jdbcType="VARCHAR" property="materialsId" />
+    <result column="situation_details_id" jdbcType="VARCHAR" property="situationDetailsId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.wyait.manage.pojo.ServiceMaterialsSituation">
+    insert into service_materials_situation (materials_id, situation_details_id)
+    values (#{materialsId,jdbcType=VARCHAR}, #{situationDetailsId,jdbcType=VARCHAR})
+  </insert>
+
+  <delete id="delMaterialsAndSituationDetails" parameterType="com.wyait.manage.pojo.ServiceMaterialsSituation">
+    delete from service_materials_situation
+    where materials_id = #{materialsId,jdbcType=VARCHAR}
+    and situation_details_id = #{situationDetailsId,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="selectByserviceMaterialsSituation" resultMap="BaseResultMap">
+     select * from service_materials_situation where materials_id = #{serviceMaterialsSituation.materialsId}
+        and situation_details_id = #{serviceMaterialsSituation.situationDetailsId}
+  </select>
+</mapper>

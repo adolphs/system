@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @auther h_baojian@sina.com
@@ -38,13 +39,38 @@ public class ServiceItemController {
     }
 
     /**
+     * 进入事项管理页面
+     * @return
+     */
+    @RequestMapping("/approvalItemList")
+    public String approvalItemList(){
+        return "organ/approvalItemList";
+    }
+
+    @RequestMapping("/serviceItemDetails")
+    public ModelAndView serviceItemDetails(String carryOutCode){
+        ModelAndView view = new ModelAndView();
+        //事项
+        view.addObject("serviceItem",serviceItemService.queryItemByCarryOutCode(carryOutCode));
+        //窗口
+        view.addObject("serviceWindow",serviceItemService.queryWindowByCarryOutCode(carryOutCode));
+        //法律法规
+        view.addObject("legalBasis",serviceItemService.queryLegalBasisByCarryOutCode(carryOutCode));
+        //材料列表
+        view.addObject("materials",serviceItemService.queryMaterialsByCarryOutCode(carryOutCode));
+        //视图
+        view.setViewName("organ/itemDetails");
+        return view;
+    }
+
+    /**
      * 分页查询部门支持筛选加分页
      * @param page
      * @param limit
      * @param item
      * @return
      */
-    @PostMapping("/getItemList")
+    @RequestMapping("/getItemList")
     @ResponseBody
     public PageDataResult getItemList(Integer page,
                                        Integer limit, ServiceItem item){
@@ -83,6 +109,33 @@ public class ServiceItemController {
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseResult(null,500,null,"同步时发出异常，请联系技术人员或者重新尝试");
+        }
+    }
+
+    /**
+     * 查看法律详情
+     * @param basisCode
+     * @return
+     */
+    @RequestMapping("/selectLawterm")
+    @ResponseBody
+    public ResponseResult selectLawterm(String basisCode){
+        try{
+            return serviceItemService.selectLawterm(basisCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseResult(null,500,null,"查看法律法规详情异常，请联系技术人员或者重新尝试");
+        }
+    }
+
+    @RequestMapping("/updateApprovalType")
+    @ResponseBody
+    public ResponseResult updateApprovalType(ServiceItem serviceItem){
+        try{
+            return serviceItemService.updateApprovalType(serviceItem);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseResult(null,500,null,"修改审批状态异常，请联系技术人员或者重新尝试");
         }
     }
 }

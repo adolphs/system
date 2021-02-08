@@ -1,5 +1,7 @@
 package com.wyait.manage.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -36,7 +38,7 @@ public class ServiceLegalBasis implements Serializable {
     /**
      * 实施时间
      */
-    private Date carry_out_date;
+    private String carry_out_date;
 
     /**
      * 事项编码
@@ -85,11 +87,11 @@ public class ServiceLegalBasis implements Serializable {
         this.office = office;
     }
 
-    public Date getCarry_out_date() {
+    public String getCarry_out_date() {
         return carry_out_date;
     }
 
-    public void setCarry_out_date(Date carry_out_date) {
+    public void setCarry_out_date(String carry_out_date) {
         this.carry_out_date = carry_out_date;
     }
 

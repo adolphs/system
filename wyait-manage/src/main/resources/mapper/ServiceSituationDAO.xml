@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyait.manage.dao.ServiceSituationDAO">
+  <resultMap id="BaseResultMap" type="com.wyait.manage.pojo.ServiceSituation">
+    <id column="situation_id" jdbcType="VARCHAR" property="situationId" />
+    <result column="dooo_id" jdbcType="VARCHAR" property="doooId" />
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="situation_describe" jdbcType="VARCHAR" property="situationDescribe" />
+    <result column="situation_level" jdbcType="INTEGER" property="situationLevel" />
+    <result column="pid" jdbcType="VARCHAR" property="pid" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="nodes_type" jdbcType="INTEGER" property="nodesType" />
+    <result column="new_time" jdbcType="TIMESTAMP" property="newTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    situation_id, dooo_id, department_id, situation_describe, situation_level, pid, `type`, 
+    nodes_type, new_time, update_time
+  </sql>
+
+  <select id="getSituationList" resultType="map">
+    select * from service_situation ss left join service_item si on si.carry_out_code = ss.dooo_id where dooo_id = #{situation.doooId} and pid is null
+  </select>
+
+  <select id="selectBydoooIdAndDescribe" resultMap="BaseResultMap">
+    select * from service_situation where dooo_id = #{situation.doooId} and situation_describe = #{situation.situationDescribe}
+  </select>
+
+  <select id="selectBydoooIdAndDescribeTwo" resultMap="BaseResultMap">
+    select * from service_situation where dooo_id = #{situation.doooId}
+                                      and situation_describe = #{situation.situationDescribe}
+                                      and situation_id != #{situation.situationId}
+  </select>
+
+
+  <select id="getSituationById" resultMap="BaseResultMap">
+    select * from service_situation where situation_id = #{situationId}
+  </select>
+  <update id="updateBySituationId" parameterType="com.wyait.manage.pojo.ServiceSituation">
+    update service_situation
+    set dooo_id = #{doooId,jdbcType=VARCHAR},
+        department_id = #{departmentId,jdbcType=VARCHAR},
+        situation_describe = #{situationDescribe,jdbcType=VARCHAR},
+        situation_level = #{situationLevel,jdbcType=INTEGER},
+        pid = #{pid,jdbcType=VARCHAR},
+        `type` = #{type,jdbcType=INTEGER},
+        nodes_type = #{nodesType,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where situation_id = #{situationId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="querySituationByPiD" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from service_situation
+    where pid = #{pid}
+  </select>
+
+  <delete id="delByPid" parameterType="string">
+    delete from service_situation
+    where pid = #{situationId,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from service_situation
+    where situation_id = #{situationId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from service_situation
+    where situation_id = #{situationId,jdbcType=VARCHAR}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.wyait.manage.pojo.ServiceSituation">
+    insert into service_situation (situation_id, dooo_id, department_id, 
+      situation_describe, situation_level, pid, 
+      `type`, nodes_type, new_time, 
+      update_time)
+    values (#{situationId,jdbcType=VARCHAR}, #{doooId,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR}, 
+      #{situationDescribe,jdbcType=VARCHAR}, #{situationLevel,jdbcType=INTEGER}, #{pid,jdbcType=VARCHAR},
+      #{type,jdbcType=INTEGER}, #{nodesType,jdbcType=INTEGER}, #{newTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyait.manage.pojo.ServiceSituation">
+    insert into service_situation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="situationId != null">
+        situation_id,
+      </if>
+      <if test="doooId != null">
+        dooo_id,
+      </if>
+      <if test="departmentId != null">
+        department_id,
+      </if>
+      <if test="situationDescribe != null">
+        situation_describe,
+      </if>
+      <if test="situationLevel != null">
+        situation_level,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="nodesType != null">
+        nodes_type,
+      </if>
+      <if test="newTime != null">
+        new_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="situationId != null">
+        #{situationId,jdbcType=VARCHAR},
+      </if>
+      <if test="doooId != null">
+        #{doooId,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        #{departmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="situationDescribe != null">
+        #{situationDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="situationLevel != null">
+        #{situationLevel,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="nodesType != null">
+        #{nodesType,jdbcType=INTEGER},
+      </if>
+      <if test="newTime != null">
+        #{newTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyait.manage.pojo.ServiceSituation">
+    update service_situation
+    <set>
+      <if test="doooId != null">
+        dooo_id = #{doooId,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        department_id = #{departmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="situationDescribe != null">
+        situation_describe = #{situationDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="situationLevel != null">
+        situation_level = #{situationLevel,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="nodesType != null">
+        nodes_type = #{nodesType,jdbcType=INTEGER},
+      </if>
+      <if test="newTime != null">
+        new_time = #{newTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where situation_id = #{situationId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyait.manage.pojo.ServiceSituation">
+    update service_situation
+    set dooo_id = #{doooId,jdbcType=VARCHAR},
+      department_id = #{departmentId,jdbcType=VARCHAR},
+      situation_describe = #{situationDescribe,jdbcType=VARCHAR},
+      situation_level = #{situationLevel,jdbcType=INTEGER},
+      pid = #{pid,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER},
+      nodes_type = #{nodesType,jdbcType=INTEGER},
+      new_time = #{newTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where situation_id = #{situationId,jdbcType=VARCHAR}
+  </update>
+</mapper>
